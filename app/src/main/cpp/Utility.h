@@ -31,6 +31,9 @@ public:
     static float *buildIdentityMatrix(float *outMatrix);
 
 
+    static Mat4f *
+    buildOrthographicMatrix(Mat4f *outMatrix, float halfHeight, float aspect, float near,
+                            float far);
 };
 
 #endif //ANDROIDGLINVESTIGATIONS_UTILITY_H

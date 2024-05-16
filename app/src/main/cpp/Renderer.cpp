@@ -78,7 +78,7 @@ static constexpr float kProjectionHalfHeight = 2.f;
  * The near plane distance for the projection matrix. Since this is an orthographic projection
  * matrix, it's convenient to have negative values for sorting (and avoiding z-fighting at 0).
  */
-static constexpr float kProjectionNearPlane = 1;
+static constexpr float kProjectionNearPlane = 0.1;
 
 /*!
  * The far plane distance for the projection matrix. Since this is an orthographic porjection
@@ -93,7 +93,7 @@ GLuint IBO;
 GLuint gWVPLocation;
 
 Vector3 CameraPos(0.0f, 0.0f, -1.0f);
-Vector3 CameraTarget(0.5f, 0.5f, 1.0f);
+Vector3 CameraTarget(0.0f, 0.0f, 1.0f);
 Vector3 CameraUp(0.0f, 1.0f, 0.0f);
 Camera *mainCamera;
 
@@ -141,10 +141,11 @@ void Renderer::render() {
         shaderNeedsNewProjectionMatrix_ = false;
     }
     rotation = 0.2;
+    mainCamera->OnRender();
 
     Mat4f View = mainCamera->Matrix();
     Model *model = scene_->First();
-    model->transform.Rotate(rotation, 0, 0);
+    model->transform.Rotate(0, rotation, 0);
     Mat4f finalProjection;
 
     finalProjection = (*projectionMatrix.get()) * View * model->transform.Matrix();
@@ -162,7 +163,7 @@ void Renderer::render() {
     // order provided. But the sample EGL setup requests a 24 bit depth buffer so you could
     // configure it at the end of initRenderer
     scene_->Render(*shader_);
-    mainCamera->OnRender();
+
     // Present the rendered image. This is an implicit glFlush.
     auto swapResult = eglSwapBuffers(display_, surface_);
     assert(swapResult == EGL_TRUE);
@@ -331,8 +332,6 @@ void Renderer::createModels() {
 
     // Create a model and put it in the back of the render list.
     Model model = Model(vertices, indices, spAndroidRobotTexture);
-    model.transform.SetPosition(0, 0, 2.0f);
-    model.transform.Rotate(0, 20, 0);
 
     scene_->Instantiate(model);
 }

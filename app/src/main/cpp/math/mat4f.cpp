@@ -1,4 +1,5 @@
 #include "mat4f.h"
+#include "math.h"
 
 // Default constructor initializing to identity matrix
 Mat4f::Mat4f() {
@@ -54,9 +55,9 @@ void Mat4f::InitRotationZ(float z) {
 void Mat4f::InitRotationMatrix(float rotationX, float rotationY, float rotationZ) {
     Mat4f rx, ry, rz;
 
-    float x = rotationX * M_PI / 180.0f;
-    float y = rotationY * M_PI / 180.0f;
-    float z = rotationZ * M_PI / 180.0f;
+    float x = ToRadian(rotationX);
+    float y = ToRadian(rotationY);
+    float z = ToRadian(rotationZ);
 
     rx.InitRotationX(x);
     ry.InitRotationY(y);

@@ -68,7 +68,7 @@ void Camera::Init() {
     Vector3 HTarget = Vector3(target_.x, 0, target_.z);
     HTarget.Normalize();
 
-    float Angle = ToRadian(asinf(abs(HTarget.z)));
+    float Angle = ToDegree(asinf(abs(HTarget.z)));
 
     if (HTarget.z >= 0.0f) {
         if (HTarget.x >= 0.0f) {
@@ -84,7 +84,7 @@ void Camera::Init() {
         }
     }
 
-    m_AngleV = -ToRadian(asinf(target_.y));
+    m_AngleV = -ToDegree(asinf(target_.y));
 }
 
 void Camera::OnMove(int DeltaX, int deltaY) {
@@ -95,7 +95,7 @@ void Camera::OnMove(int DeltaX, int deltaY) {
 }
 
 void Camera::Update() {
-    Vector3 YAxis(0, 0, 0);
+    Vector3 YAxis(0, 1, 0);
 
     Vector3 View(1, 0, 0);
     View.Rotate(m_AngleH, YAxis);
@@ -117,14 +117,15 @@ Camera::Camera(int WindowWidth, int WindowHeight, const Vector3 &Pos, const Vect
 
     m_windowWidth = WindowWidth;
     m_windowHeight = WindowHeight;
-    pos_          = Vector3(0.0f, 1.0f, 0.0f);
-    target_       = Vector3(0.0f, 0.0f, 1.0f);
-    up_           = Vector3(0.0f, 1.0f, 0.0f);
-    //Init();
+    pos_ = Pos;
+    target_ = Target;
+    up_ = Up;
+
+    Init();
 }
 
 void Camera::OnRender() {
-    //Update();
+    Update();
     m_OnUpperEdge = false;
     m_OnUpperEdge = false;
     m_OnLeftEdge = false;

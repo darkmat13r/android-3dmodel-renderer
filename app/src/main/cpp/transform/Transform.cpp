@@ -30,7 +30,7 @@ void Transform::Rotate(float x, float y, float z) {
 
 Mat4f Transform::Matrix() {
     Mat4f rotMat;
-    rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.y);
+    rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
 
     Mat4f transMat;
     transMat.InitTranslation(position_.x, position_.y, position_.z);

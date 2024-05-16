@@ -17,7 +17,11 @@ public:
             std::shared_ptr<TextureAsset> spTexture)
             : vertices_(std::move(vertices)),
               indices_(std::move(indices)),
-              spTexture_(std::move(spTexture)){}
+              spTexture_(std::move(spTexture)){
+        transform.SetRotation(0,0,0);
+        transform.SetPosition(0,0,2);
+        transform.SetScale(1,1,1);
+    }
 
     inline const Vertex *getVertexData() const {
         return vertices_.data();
