@@ -5,15 +5,15 @@
 #ifndef LEARNOPENGL_QUATERNION_H
 #define LEARNOPENGL_QUATERNION_H
 
-#include "math.h"
-#include "vector3.h"
+#include "glm/vec3.hpp"
+
 // Forward declaration of Vector3 class to avoid circular dependency
 struct Quaternion
 {
     float x, y, z, w;
     Quaternion();
 
-    Quaternion(float Angle, const Vector3& V);
+    Quaternion(float Angle, const glm::vec3& V);
 
     Quaternion(float _x, float _y, float _z, float _w);
 
@@ -22,8 +22,10 @@ struct Quaternion
     Quaternion Conjugate() const;
 
 
-    Vector3 ToDegrees();
+    glm::vec3 ToDegrees();
+
 };
-Quaternion operator*(const Quaternion& q, const Vector3& v);
+Quaternion operator*(const Quaternion& q, glm::vec<3, float,(glm::qualifier)0> v);
 Quaternion operator*(const Quaternion& l, const Quaternion& r);
+
 #endif //LEARNOPENGL_QUATERNION_H

@@ -1,7 +1,6 @@
 #include "Utility.h"
 #include "AndroidOut.h"
 #include "math/mat4f.h"
-#include "math/vector3.h"
 #include "math/math.h"
 
 #include <GLES3/gl3.h>

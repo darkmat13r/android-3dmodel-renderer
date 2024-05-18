@@ -6,12 +6,12 @@
 #define LEARNOPENGL_MATERIAL_H
 
 
-#include "Shader.h"
+#include "../unused/ShaderBase.h"
 
 class Material {
 
 private :
-    std::shared_ptr<Shader> shader_;
+    std::shared_ptr<ShaderBase> shader_;
 };
 
 

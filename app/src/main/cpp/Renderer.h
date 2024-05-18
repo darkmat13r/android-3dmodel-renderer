@@ -6,7 +6,7 @@
 
 #include "Model.h"
 #include "game/GameObject.h"
-#include "mesh/Shader.h"
+#include "unused/ShaderBase.h"
 #include "math/mat4f.h"
 #include "game/Scene.h"
 #include "game/Camera.h"
@@ -86,7 +86,7 @@ private:
 
     bool shaderNeedsNewProjectionMatrix_;
 
-    std::unique_ptr<Shader> shader_;
+    std::unique_ptr<ShaderBase> shader_;
     std::unique_ptr<Scene> scene_;
     std::unique_ptr<Mat4f> projectionMatrix;
 };
