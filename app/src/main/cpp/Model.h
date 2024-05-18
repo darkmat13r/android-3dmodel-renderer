@@ -11,6 +11,7 @@ typedef uint16_t Index;
 
 class Model : public GameObject{
 public:
+
     inline Model(
             std::vector<Vertex> vertices,
             std::vector<Index> indices,
@@ -39,11 +40,25 @@ public:
         return *spTexture_;
     }
 
+    inline size_t getVertexCount() const {
+        return vertices_.size();
+    }
+
+    GLuint getVAO() const { return vao; }
+    void setVAO(GLuint vaoID) { vao = vaoID; }
+    GLuint getVBO() const { return vbo; }
+    void setVBO(GLuint vboID) { vbo = vboID; }
+    GLuint getIBO() const { return ibo; }
+    void setIBO(GLuint iboID) { ibo = iboID; }
 
 private:
     std::vector<Vertex> vertices_;
     std::vector<Index> indices_;
     std::shared_ptr<TextureAsset> spTexture_;
+    GLuint vao = -1;
+    GLuint vbo = -1;
+    GLuint ibo = -1;
+
 };
 
 #endif //ANDROIDGLINVESTIGATIONS_MODEL_H

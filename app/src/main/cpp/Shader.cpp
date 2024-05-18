@@ -115,40 +115,75 @@ void Shader::deactivate() const {
     glUseProgram(0);
 }
 
-void Shader::drawModel(const Model &model) const {
-    // The position attribute is 3 floats
-    glVertexAttribPointer(
-            position_, // attrib
-            3, // elements
-            GL_FLOAT, // of type float
-            GL_FALSE, // don't normalize
-            sizeof(Vertex), // stride is Vertex bytes
-            model.getVertexData() // pull from the start of the vertex data
-    );
-    glEnableVertexAttribArray(position_);
-
-    // The uv attribute is 2 floats
-    glVertexAttribPointer(
-            uv_, // attrib
-            2, // elements
-            GL_FLOAT, // of type float
-            GL_FALSE, // don't normalize
-            sizeof(Vertex), // stride is Vertex bytes
-            ((uint8_t *) model.getVertexData()) + sizeof(Vector3) // offset Vector3 from the start
-    );
-    glEnableVertexAttribArray(uv_);
-
-    // Setup the texture
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, model.getTexture().getTextureID());
-
-    // Draw as indexed triangles
-    glDrawElements(GL_TRIANGLES, model.getIndexCount(), GL_UNSIGNED_SHORT, model.getIndexData());
-
-    glDisableVertexAttribArray(uv_);
-    glDisableVertexAttribArray(position_);
+void Shader::drawModel(const Model* model) {
+    glBindVertexArray(model->getVAO());
+    glDrawElements(GL_TRIANGLES, model->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);
+    glBindVertexArray(0);
 }
 
 void Shader::setProjectionMatrix(Mat4f *projectionMatrix) const {
+
     glUniformMatrix4fv(projectionMatrix_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
+}
+
+void Shader::Prepare(Model *model) {
+    GLuint vao, vbo, ibo;
+
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(Vertex) * model->getVertexCount(),
+                 model->getVertexData(),
+                 GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(position_);
+    glVertexAttribPointer(
+            position_,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void *) (0)
+    );
+
+    glEnableVertexAttribArray(uv_);
+    glVertexAttribPointer(
+            uv_,
+            2,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void *) offsetof(Vertex, uv)
+    );
+
+
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 sizeof(Index) * model->getIndexCount(),
+                 model->getIndexData(), GL_STATIC_DRAW);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, model->getTexture().getTextureID());
+
+
+    glBindVertexArray(vao);
+
+    // Store VAO, VBO, IBO IDs in the model
+    model->setVAO(vao);
+    model->setVBO(vbo);
+    model->setIBO(ibo);
+
+    Clean();
+}
+
+void Shader::Clean() const {
+    glBindVertexArray(0);
+    glDisableVertexAttribArray(position_);
+    glDisableVertexAttribArray(uv_);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

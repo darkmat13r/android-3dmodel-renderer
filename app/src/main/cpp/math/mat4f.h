@@ -8,7 +8,7 @@
 
 #include <cmath>
 #include <memory>
-#include "Vector3.h"
+#include "vector3.h"
 
 struct Mat4f {
     float m[4][4];

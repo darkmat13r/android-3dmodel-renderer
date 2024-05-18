@@ -1,0 +1,7 @@
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/android_jniiosystem.dir
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/edit_cache.dir
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/rebuild_cache.dir
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/list_install_components.dir
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/install.dir
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/install/local.dir
+/Volumes/ExtDrive/Projects/Android/learnopengl/assimp/port/AndroidJNI/build-android/CMakeFiles/install/strip.dir

@@ -141,6 +141,7 @@ void Renderer::render() {
         shaderNeedsNewProjectionMatrix_ = false;
     }
     rotation = 0.2;
+
     mainCamera->OnRender();
 
     Mat4f View = mainCamera->Matrix();
@@ -163,7 +164,7 @@ void Renderer::render() {
     // order provided. But the sample EGL setup requests a 24 bit depth buffer so you could
     // configure it at the end of initRenderer
     scene_->Render(*shader_);
-
+    shader_->Clean();
     // Present the rendered image. This is an implicit glFlush.
     auto swapResult = eglSwapBuffers(display_, surface_);
     assert(swapResult == EGL_TRUE);
@@ -323,6 +324,8 @@ void Renderer::createModels() {
             4, 7, 1, 4, 1, 0
     };
 
+
+
     // loads an image and assigns it to the square.
     //
     // Note: there is no texture management in this sample, so if you reuse an image be careful not
@@ -331,9 +334,11 @@ void Renderer::createModels() {
     auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "texture.png");
 
     // Create a model and put it in the back of the render list.
-    Model model = Model(vertices, indices, spAndroidRobotTexture);
+    std::shared_ptr<Model> model = std::make_shared<Model>(vertices, indices, spAndroidRobotTexture);
 
     scene_->Instantiate(model);
+    shader_->Prepare(model.get());
+
 }
 
 void Renderer::handleInput() {

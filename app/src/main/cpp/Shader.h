@@ -16,6 +16,7 @@ class Model;
  */
 class Shader {
 public:
+
     /*!
      * Loads a shader given the full sourcecode and names for necessary attributes and uniforms to
      * link to. Returns a valid shader on success or null on failure. Shader resources are
@@ -46,6 +47,9 @@ public:
      * Prepares the shader for use, call this before executing any draw commands
      */
     void activate() const;
+    void Clean() const;
+
+    void Prepare(Model *model) ;
 
     /*!
      * Cleans up the shader after use, call this after executing any draw commands
@@ -56,13 +60,16 @@ public:
      * Renders a single model
      * @param model a model to render
      */
-    void drawModel(const Model &model) const;
+    void drawModel( const Model* model) ;
 
     /*!
      * Sets the model/view/projection matrix in the shader.
      * @param projectionMatrix sixteen floats, column major, defining an OpenGL projection matrix.
      */
     void setProjectionMatrix(Mat4f *projectionMatrix) const;
+
+
+
 
 private:
     /*!
@@ -94,6 +101,7 @@ private:
     GLint position_;
     GLint uv_;
     GLint projectionMatrix_;
+
 };
 
 #endif //ANDROIDGLINVESTIGATIONS_SHADER_H
