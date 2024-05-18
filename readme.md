@@ -1,3 +1,3 @@
 ## Android 3d model viewer
 
-![screenshots/img.png](screenshots/img.png)
+<img alt="screenshots/img.png" src="screenshots/img.png" width="200"/>
