@@ -12,7 +12,7 @@ add_library(learnopengl SHARED
         main.cpp
         AndroidOut.cpp
         Renderer.cpp
-        Shader.cpp
+        mesh/Shader.cpp
         Model.h
         game/GameObject.cpp
         game/Scene.cpp

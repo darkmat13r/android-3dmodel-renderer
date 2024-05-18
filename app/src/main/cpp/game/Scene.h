@@ -8,7 +8,7 @@
 
 #include "GameObject.h"
 #include "../Model.h"
-#include "../Shader.h"
+#include "../mesh/Shader.h"
 
 class Scene {
 public:

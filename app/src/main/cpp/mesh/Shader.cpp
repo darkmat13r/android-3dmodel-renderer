@@ -1,8 +1,8 @@
 #include "Shader.h"
 
-#include "AndroidOut.h"
-#include "Model.h"
-#include "Utility.h"
+#include "../AndroidOut.h"
+#include "../Model.h"
+#include "../Utility.h"
 
 Shader *Shader::loadShader(
         const std::string &vertexSource,

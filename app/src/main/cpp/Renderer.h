@@ -6,7 +6,7 @@
 
 #include "Model.h"
 #include "game/GameObject.h"
-#include "Shader.h"
+#include "mesh/Shader.h"
 #include "math/mat4f.h"
 #include "game/Scene.h"
 #include "game/Camera.h"

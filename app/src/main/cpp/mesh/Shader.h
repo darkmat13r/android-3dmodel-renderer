@@ -3,7 +3,7 @@
 
 #include <string>
 #include <GLES3/gl3.h>
-#include "math/mat4f.h"
+#include "../math/mat4f.h"
 
 class Model;
 

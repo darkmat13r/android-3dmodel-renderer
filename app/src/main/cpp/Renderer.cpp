@@ -7,7 +7,7 @@
 #include <android/imagedecoder.h>
 
 #include "AndroidOut.h"
-#include "Shader.h"
+#include "mesh/Shader.h"
 #include "Utility.h"
 #include "TextureAsset.h"
 #include "game/Scene.h"
@@ -149,7 +149,7 @@ void Renderer::render() {
     model->transform.Rotate(0, rotation, 0);
     Mat4f finalProjection;
 
-    finalProjection = (*projectionMatrix.get()) * View * model->transform.Matrix();
+    finalProjection = (*projectionMatrix) * View * model->transform.Matrix();
 // send the matrix to the shader
 
     // Note: the shader must be active for this to work. Since we only have one shader for this

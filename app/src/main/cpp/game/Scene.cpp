@@ -3,7 +3,7 @@
 //
 
 #include "Scene.h"
-#include "../Shader.h"
+#include "../mesh/Shader.h"
 #include "../Model.h"
 #include "../game/GameObject.h"
 
