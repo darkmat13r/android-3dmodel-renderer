@@ -5,11 +5,11 @@
 #include "TextureAsset.h"
 #include "math/math.h"
 #include "transform/Transform.h"
-#include "game/GameObject.h"
+#include "core/Component.h"
 
 typedef uint16_t Index;
 
-class Model : public GameObject{
+class Model : public Component{
 public:
 
     inline Model(

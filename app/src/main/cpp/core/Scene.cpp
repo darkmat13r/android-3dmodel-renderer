@@ -5,9 +5,8 @@
 #include "Scene.h"
 #include "../unused/ShaderBase.h"
 #include "../Model.h"
-#include "../game/GameObject.h"
 
-void Scene::addObject( GameObject* gameObject) {
+void Scene::addObject(Component* gameObject) {
     this->gameObjects.push_back(gameObject);
 }
 
@@ -23,7 +22,7 @@ void Scene::update(){
     }
 }
 
-void Scene::removeObject(GameObject* gameObject) {
+void Scene::removeObject(Component* gameObject) {
 
 }
 

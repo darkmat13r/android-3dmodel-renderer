@@ -5,11 +5,11 @@
 #include <memory>
 
 #include "Model.h"
-#include "game/GameObject.h"
+#include "game/Component.h"
 #include "unused/ShaderBase.h"
 #include "math/mat4f.h"
 #include "game/Scene.h"
-#include "game/Camera.h"
+#include "camera/Camera.h"
 #include "mesh/shader/Shader.h"
 
 struct android_app;

@@ -11,7 +11,7 @@
 #include "Utility.h"
 #include "TextureAsset.h"
 #include "game/Scene.h"
-#include "game/GameObject.h"
+#include "game/Component.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}

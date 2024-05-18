@@ -3,14 +3,14 @@
 //
 
 
-#include "GameObject.h"
+#include "../core/Component.h"
 #include "math/quaternion.h"
 
 #ifndef LEARNOPENGL_CAMERA_H
 #define LEARNOPENGL_CAMERA_H
 
 
-class Camera : public GameObject {
+class Camera : public Component {
 
 public:
     Camera(int WindowWidth, int WindowHeight, const glm::vec3& Pos, const glm::vec3& Target, const glm::vec3& Up);
