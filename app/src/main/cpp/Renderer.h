@@ -10,6 +10,7 @@
 #include "math/mat4f.h"
 #include "game/Scene.h"
 #include "game/Camera.h"
+#include "mesh/shader/Shader.h"
 
 struct android_app;
 
@@ -86,7 +87,7 @@ private:
 
     bool shaderNeedsNewProjectionMatrix_;
 
-    std::unique_ptr<ShaderBase> shader_;
+    std::unique_ptr<Shader> shader_;
     std::unique_ptr<Scene> scene_;
     std::unique_ptr<Mat4f> projectionMatrix;
 };

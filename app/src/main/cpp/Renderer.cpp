@@ -40,36 +40,6 @@ aout << std::endl;\
 #define DARK_GRAY 20 / 255.f, 20 / 255.f, 20 / 255.f, 1
 
 
-// Vertex shader, you'd typically load this from assets
-static const char *vertex = R"vertex(#version 300 es
-in vec3 inPosition;
-in vec2 inUV;
-
-out vec2 fragUV;
-
-uniform mat4 uProjection;
-
-void main() {
-    fragUV = inUV;
-    gl_Position = uProjection * vec4(inPosition, 1.0);
-}
-)vertex";
-
-// Fragment shader, you'd typically load this from assets
-static const char *fragment = R"fragment(#version 300 es
-precision mediump float;
-
-in vec2 fragUV;
-
-uniform sampler2D uTexture;
-
-out vec4 outColor;
-
-void main() {
-    outColor = texture(uTexture, fragUV);
-}
-)fragment";
-
 /*!
  * Half the height of the projection matrix. This gives you a renderable area of height 4 ranging
  * from -2 to 2
@@ -166,8 +136,9 @@ void Renderer::render() {
     // Render all the models. There's no depth testing in this sample so they're accepted in the
     // order provided. But the sample EGL setup requests a 24 bit depth buffer so you could
     // configure it at the end of initRenderer
-    scene_->Render(*shader_);
-    shader_->Clean();
+    //TODO
+    //scene_->Render(*shader_);
+    //shader_->Clean();
     // Present the rendered image. This is an implicit glFlush.
     auto swapResult = eglSwapBuffers(display_, surface_);
     assert(swapResult == EGL_TRUE);
@@ -249,13 +220,17 @@ void Renderer::initRenderer() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    shader_ = std::unique_ptr<ShaderBase>(
-            ShaderBase::loadShader(vertex, fragment, "inPosition", "inUV", "uProjection"));
+    /* shader_ = std::unique_ptr<ShaderBase>(
+             ShaderBase::loadShader(vertex, fragment, "inPosition", "inUV", "uProjection"));*/
+    // Paths to shader files
+    std::string vertexShaderPath = "shaders/base_frag.vert";
+    std::string fragmentShaderPath = "shaders/base_frag.frag";
+    shader_ = std::make_unique<Shader>(vertexShaderPath, fragmentShaderPath);
     assert(shader_);
 
     // Note: there's only one shader in this demo, so I'll activate it here. For a more complex game
     // you'll want to track the active shader and activate/deactivate it as necessary
-    shader_->activate();
+    shader_->bind();
 
     // setup any other gl related global states
     glClearColor(DARK_GRAY);
@@ -301,15 +276,15 @@ void Renderer::createModels() {
      */
     std::vector<Vertex> vertices = {
             // Front face
-            Vertex(glm::vec3 {-0.5, -0.5, 0.5}, glm::vec2 {0, 0}), // Vertex 0
-            Vertex(glm::vec3 {0.5, -0.5, 0.5}, glm::vec2 {1, 0}), // Vertex 1
-            Vertex(glm::vec3 {0.5, 0.5, 0.5}, glm::vec2 {1, 1}), // Vertex 2
-            Vertex(glm::vec3 {-0.5, 0.5, 0.5}, glm::vec2 {0, 1}), // Vertex 3
+            Vertex(glm::vec3{-0.5, -0.5, 0.5}, glm::vec2{0, 0}), // Vertex 0
+            Vertex(glm::vec3{0.5, -0.5, 0.5}, glm::vec2{1, 0}), // Vertex 1
+            Vertex(glm::vec3{0.5, 0.5, 0.5}, glm::vec2{1, 1}), // Vertex 2
+            Vertex(glm::vec3{-0.5, 0.5, 0.5}, glm::vec2{0, 1}), // Vertex 3
             // Back face
-            Vertex(glm::vec3 {-0.5, -0.5, -0.5}, glm::vec2 {0, 0}), // Vertex 4
-            Vertex(glm::vec3 {-0.5, 0.5, -0.5}, glm::vec2 {1, 0}), // Vertex 5
-            Vertex(glm::vec3 {0.5, 0.5, -0.5}, glm::vec2 {1, 1}), // Vertex 6
-            Vertex(glm::vec3 {0.5, -0.5, -0.5}, glm::vec2 {0, 1}), // Vertex 7
+            Vertex(glm::vec3{-0.5, -0.5, -0.5}, glm::vec2{0, 0}), // Vertex 4
+            Vertex(glm::vec3{-0.5, 0.5, -0.5}, glm::vec2{1, 0}), // Vertex 5
+            Vertex(glm::vec3{0.5, 0.5, -0.5}, glm::vec2{1, 1}), // Vertex 6
+            Vertex(glm::vec3{0.5, -0.5, -0.5}, glm::vec2{0, 1}), // Vertex 7
     };
 
     std::vector<Index> indices = {
@@ -337,10 +312,11 @@ void Renderer::createModels() {
     auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "texture.png");
 
     // Create a model and put it in the back of the render list.
-    std::shared_ptr<Model> model = std::make_shared<Model>(vertices, indices, spAndroidRobotTexture);
+    std::shared_ptr<Model> model = std::make_shared<Model>(vertices, indices,
+                                                           spAndroidRobotTexture);
 
     scene_->Instantiate(model);
-    shader_->Prepare(model.get());
+    //shader_->Prepare(model.get());
 
 }
 
