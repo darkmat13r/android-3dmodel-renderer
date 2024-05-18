@@ -117,12 +117,11 @@ void Renderer::render() {
     mainCamera->OnRender();
 
     Mat4f View = mainCamera->Matrix();
-    Model *model = scene_->First();
-    model->transform.Rotate(0, rotation, 0);
+    /*Model *model = scene_->First();
+    model->transform.Rotate(0, rotation, 0);*/
     Mat4f finalProjection;
 
-    Mat4f modelMat = model->transform.Matrix();
-    finalProjection = (*projectionMatrix.get()) * View * modelMat;
+    finalProjection = (*projectionMatrix) * View/* * model->transform.Matrix()*/;
 // send the matrix to the shader
 
     // Note: the shader must be active for this to work. Since we only have one shader for this
@@ -312,10 +311,11 @@ void Renderer::createModels() {
     auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "texture.png");
 
     // Create a model and put it in the back of the render list.
-    std::shared_ptr<Model> model = std::make_shared<Model>(vertices, indices,
+   /* std::shared_ptr<Model> model = std::make_shared<Model>(vertices, indices,
                                                            spAndroidRobotTexture);
 
-    scene_->Instantiate(model);
+    scene_->addObject(model);*/
+   //TODO
     //shader_->Prepare(model.get());
 
 }

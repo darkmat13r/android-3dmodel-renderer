@@ -7,34 +7,28 @@
 #include "../Model.h"
 #include "../game/GameObject.h"
 
-void Scene::Instantiate(const std::shared_ptr<Model> &gameObject) {
-    this->gameObjects.emplace_back(gameObject);
+void Scene::addObject( GameObject* gameObject) {
+    this->gameObjects.push_back(gameObject);
 }
 
-
-void Scene::Render(ShaderBase &shader) {
-    if (!gameObjects.empty()) {
-        for (const auto &gameObject: gameObjects) {
-            // Use dynamic_cast to check if the gameObject is of type Model.
-             Model *model = gameObject.get();
-            // If the gameObject is a Model, then draw it.
-            if (model != nullptr) {
-                shader.drawModel(model);
-            }
-        }
+void Scene::render(Mat4f* projectionMatrix) {
+    for (const auto &item: gameObjects){
+        item->render(projectionMatrix);
     }
+}
+
+void Scene::update(){
+    for (const auto &item: gameObjects){
+        item->update();
+    }
+}
+
+void Scene::removeObject(GameObject* gameObject) {
 
 }
 
-Model *Scene::First() {
-    return gameObjects[0].get();
-}
 
 
-Model *Scene::Last() {
-    if (gameObjects.size() == 0) return nullptr;
-    return gameObjects[gameObjects.size() - 1].get();
-}
 
 
 

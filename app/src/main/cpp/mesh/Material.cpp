@@ -3,3 +3,7 @@
 //
 
 #include "Material.h"
+
+Shader *Material::getShader() const {
+    return shader_.get();
+}

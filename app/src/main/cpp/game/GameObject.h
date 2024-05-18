@@ -12,7 +12,8 @@ class GameObject {
 public:
     GameObject() : transform(Transform()){}
     Transform transform;
-    virtual void Draw();
+    virtual void render(Mat4f* f);
+    virtual void update();
 };
 
 #endif //LEARNOPENGL_GAMEOBJECT_H

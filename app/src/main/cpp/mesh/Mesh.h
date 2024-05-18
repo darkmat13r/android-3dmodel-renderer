@@ -6,13 +6,13 @@
 #define LEARNOPENGL_MESH_H
 
 
-#include <__memory/shared_ptr.h>
 #include "Material.h"
-
+#include <vector>
 class Mesh {
-
+public:
+    Material* getMaterial() const;
 private :
-    std::shared_ptr<std::vector<Material>> materials_;
+    std::shared_ptr<Material*> material_;
 };
 
 

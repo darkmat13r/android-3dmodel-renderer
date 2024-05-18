@@ -18,6 +18,8 @@ file(GLOB_RECURSE SOURCES
         "${CMAKE_SOURCE_DIR}/unused/*.cpp"
         "${CMAKE_SOURCE_DIR}/game/*.cpp"
         "${CMAKE_SOURCE_DIR}/math/*.cpp"
+        "${CMAKE_SOURCE_DIR}/mesh/*.cpp"
+        "${CMAKE_SOURCE_DIR}/mesh/shader/*.cpp"
         "${CMAKE_SOURCE_DIR}/transform/*.cpp"
         "${CMAKE_SOURCE_DIR}/AndroidJNI/*.cpp"
 )

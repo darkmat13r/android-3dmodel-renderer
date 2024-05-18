@@ -9,7 +9,9 @@
 #include "Mesh.h"
 
 class MeshRenderer {
-
+public :
+    MeshRenderer();
+    void render(Mat4f* projectionMatrix);
 private :
     std::vector<Mesh> meshes_;
 };

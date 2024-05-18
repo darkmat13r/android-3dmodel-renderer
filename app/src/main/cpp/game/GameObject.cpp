@@ -3,7 +3,11 @@
 //
 #include "GameObject.h"
 
-void GameObject::Draw() {
+void GameObject::update() {
+    //DO NOTHING
+}
+
+void GameObject::render(Mat4f *f) {
     //DO NOTHING
 }
 

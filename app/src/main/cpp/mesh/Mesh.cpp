@@ -3,3 +3,8 @@
 //
 
 #include "Mesh.h"
+
+Material*  Mesh::getMaterial() const{
+    return *this->material_;
+}
+

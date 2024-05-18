@@ -12,13 +12,16 @@
 
 class Scene {
 public:
-    void Instantiate(const std::shared_ptr<Model>& gameObject);
-    void Render(ShaderBase &shader);
-    Model * First();
-    Model *Last();
+    void addObject(GameObject *gameObject);
+
+    void removeObject(GameObject *gameObject);
+
+    void render(Mat4f* projectionMatrix);
 
 private:
-    std::vector<std::shared_ptr<Model>> gameObjects;
+    std::vector<GameObject *> gameObjects;
+
+    void update();
 };
 
 
