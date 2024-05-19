@@ -22,6 +22,8 @@ public :
 
     void update() override;
 
+    void onDestroy() override;
+
     void addMesh(const std::shared_ptr<Mesh>& mesh);
 
 private :
