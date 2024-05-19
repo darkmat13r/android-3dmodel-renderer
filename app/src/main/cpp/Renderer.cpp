@@ -13,6 +13,9 @@
 #include "core/Scene.h"
 #include "core/Component.h"
 #include "mesh/MeshRenderer.h"
+#include "assimp/Importer.hpp"
+#include "importer/ModelImporter.h"
+#include "assimp/port/AndroidJNI/AndroidJNIIOSystem.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -88,6 +91,7 @@ void Renderer::render() {
 }
 
 void Renderer::initRenderer() {
+
     // Choose your render attributes
     constexpr EGLint attribs[] = {
             EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
@@ -208,59 +212,24 @@ void Renderer::createModels() {
      * |   \ |
      * 3 --- 2
      */
-    std::vector<Vertex> vertices = {
-            // Front face
-            Vertex(glm::vec3{-0.5, -0.5, 0.5}, glm::vec2{0, 0}), // Vertex 0
-            Vertex(glm::vec3{0.5, -0.5, 0.5}, glm::vec2{1, 0}), // Vertex 1
-            Vertex(glm::vec3{0.5, 0.5, 0.5}, glm::vec2{1, 1}), // Vertex 2
-            Vertex(glm::vec3{-0.5, 0.5, 0.5}, glm::vec2{0, 1}), // Vertex 3
-            // Back face
-            Vertex(glm::vec3{-0.5, -0.5, -0.5}, glm::vec2{0, 0}), // Vertex 4
-            Vertex(glm::vec3{-0.5, 0.5, -0.5}, glm::vec2{1, 0}), // Vertex 5
-            Vertex(glm::vec3{0.5, 0.5, -0.5}, glm::vec2{1, 1}), // Vertex 6
-            Vertex(glm::vec3{0.5, -0.5, -0.5}, glm::vec2{0, 1}), // Vertex 7
-    };
-
-    std::vector<Index> indices = {
-            // Front face
-            0, 1, 2, 0, 2, 3,
-            // Right face
-            1, 7, 6, 1, 6, 2,
-            // Back face
-            7, 4, 5, 7, 5, 6,
-            // Left face
-            4, 0, 3, 4, 3, 5,
-            // Top face
-            3, 2, 6, 3, 6, 5,
-            // Bottom face
-            4, 7, 1, 4, 1, 0
-    };
-
-
 
     // loads an image and assigns it to the square.
     //
     // Note: there is no texture management in this sample, so if you reuse an image be careful not
     // to load it repeatedly. Since you get a shared_ptr you can safely reuse it in many models.
     auto assetManager = app_->activity->assetManager;
-    auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "texture.png");
+    auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "test_models/texture_2.png");
 
-    std::shared_ptr<MeshRenderer> meshRenderer
-            = std::make_shared<MeshRenderer>();
 
     std::shared_ptr<Material> material
             = std::make_shared<Material>(spAndroidRobotTexture);
 
-    std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(
-            vertices,
-            indices,
-            material
-    );
+    auto *importer = new Assimp::Importer();
+    auto *ioSystem = new Assimp::AndroidJNIIOSystem(
+            reinterpret_cast<ANativeActivity *>(app_->activity));
+    importer->SetIOHandler(ioSystem);
+    std::shared_ptr<MeshRenderer> meshRenderer = ModelImporter::import(importer, material);
 
-
-
-
-    meshRenderer->addMesh(mesh);
 
     scene_->addObject(meshRenderer);
 

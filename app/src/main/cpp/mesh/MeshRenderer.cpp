@@ -6,8 +6,8 @@
 #include "AndroidOut.h"
 
 MeshRenderer::MeshRenderer() {
-    transform->SetRotation(0, 0, 0);
-    transform->SetPosition(0, 0, 2);
+    transform->SetRotation(-90, 0, 0);
+    transform->SetPosition(0, 0, 4);
     transform->SetScale(1, 1, 1);
 }
 
