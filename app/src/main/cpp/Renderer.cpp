@@ -243,6 +243,9 @@ void Renderer::createModels() {
     auto assetManager = app_->activity->assetManager;
     auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "texture.png");
 
+    std::shared_ptr<MeshRenderer> meshRenderer
+            = std::make_shared<MeshRenderer>();
+
     std::shared_ptr<Material> material
             = std::make_shared<Material>();
 
@@ -252,8 +255,7 @@ void Renderer::createModels() {
             material
     );
 
-    std::shared_ptr<MeshRenderer> meshRenderer
-            = std::make_shared<MeshRenderer>();
+
 
 
     meshRenderer->addMesh(mesh);

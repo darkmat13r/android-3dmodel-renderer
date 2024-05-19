@@ -44,16 +44,14 @@ void Scene::render() {
 
     for ( auto component : components_) {
         if (component->transform) {
+            component->transform->Rotate(0, rotation_, 0);
             Mat4f model = component->transform->Matrix();
             Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
-            aout << "Render::finalProjectionMatrix " << &finalProjectionMatrix << std::endl;
             component->render(&finalProjectionMatrix);
 
         } else {
             aout << "Render::Component transform is gone " << component->transform << std::endl;
         }
-        aout << "Render::Component " << component << std::endl;
-
     }
 }
 

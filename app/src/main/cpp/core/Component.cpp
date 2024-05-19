@@ -10,7 +10,6 @@ void Component::update() {
 
 void Component::render(Mat4f *f) {
     //DO NOTHING
-    aout << "Component::render " << std::endl;
 }
 
 void Component::onAttach() {

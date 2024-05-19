@@ -14,14 +14,9 @@ MeshRenderer::MeshRenderer() {
 
 
 void MeshRenderer::render(Mat4f *projectionMatrix) {
-    aout << "MeshRenderer::render";
     for (const auto &mesh: meshes_) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
-        if(shader == nullptr){
-            aout << "MeshRenderer::render::shader " << shader << std::endl;
-        }
-        aout << "MeshRenderer::render::shader " << shader << std::endl;
         shader->setProjectionMatrix(projectionMatrix);
 
         glBindVertexArray(mesh->getVAO());
@@ -106,5 +101,9 @@ void MeshRenderer::update() {
 void MeshRenderer::addMesh(const std::shared_ptr<Mesh>& mesh) {
     meshes_.push_back(mesh);
     initMesh(mesh.get());
+}
+
+MeshRenderer::~MeshRenderer() {
+    aout << "MeshRenderer is destroyed." << std::endl;
 }
 

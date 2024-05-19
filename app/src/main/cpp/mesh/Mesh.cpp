@@ -11,7 +11,7 @@
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Index> indices,
            const std::shared_ptr<Material>& material)
         : vertices_(std::move(vertices)),
-          indices_(std::move(indices)), material_(material.get()) {
+          indices_(std::move(indices)), material_(material) {
 
 }
 

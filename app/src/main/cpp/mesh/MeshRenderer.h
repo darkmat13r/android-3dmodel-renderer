@@ -12,6 +12,7 @@
 class MeshRenderer : public Component {
 public :
     MeshRenderer();
+    ~MeshRenderer();
 
     void onAttach() override;
 
