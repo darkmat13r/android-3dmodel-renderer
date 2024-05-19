@@ -6,8 +6,8 @@
 #include "AndroidOut.h"
 
 MeshRenderer::MeshRenderer() {
-    transform->SetRotation(0, 0, 0);
-    transform->SetPosition(0, 0, 2);
+    transform->SetRotation(-90, 0, 0);
+    transform->SetPosition(0, 0, 4);
     transform->SetScale(1, 1, 1);
 }
 
@@ -18,12 +18,13 @@ void MeshRenderer::render(Mat4f *projectionMatrix) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
-
+        shader->bind();
         glBindVertexArray(mesh->getVAO());
         glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
         glBindVertexArray(0);
     }
 }
+
 
 void MeshRenderer::initMesh(Mesh *mesh) const {
     GLuint vao, vbo, ibo;
@@ -95,6 +96,8 @@ void MeshRenderer::onCreate() {
 
 }
 
+
+
 void MeshRenderer::update() {
     rotation = 0.2;
 
@@ -108,5 +111,15 @@ void MeshRenderer::addMesh(const std::shared_ptr<Mesh>& mesh) {
 
 MeshRenderer::~MeshRenderer() {
     aout << "MeshRenderer is destroyed." << std::endl;
+
+}
+
+void MeshRenderer::onDestroy() {
+    Component::onDestroy();
+    for (const auto &mesh : meshes_) {
+        Material* material = mesh->getMaterial();
+        Shader* shader  = material->getShader();
+        shader->unbind();
+    }
 }
 

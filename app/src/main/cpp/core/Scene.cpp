@@ -55,10 +55,11 @@ void Scene::render() {
     }
 }
 
+
+
 void Scene::update() {
     for (const auto &component: components_) {
         if (component && component->transform) {
-            component->transform->Rotate(0, rotation_, 0);
             component->update();
         } else {
             aout << "Update::Component transform is gone " << component << std::endl;
@@ -71,7 +72,13 @@ void Scene::removeObject(Component *gameObject) {
 }
 
 void Scene::onDestroy() {
-
+    for (const auto &component: components_) {
+        if (component && component->transform) {
+            component->onDestroy();
+        } else {
+            aout << "Update::Component transform is gone " << component << std::endl;
+        }
+    }
 }
 
 Scene::Scene(float width, float height) {

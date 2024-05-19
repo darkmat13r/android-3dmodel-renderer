@@ -7,10 +7,12 @@
 
 
 #include "../Model.h"
+#include "assimp/Importer.hpp"
+#include "mesh/MeshRenderer.h"
 
 class ModelImporter {
 public:
-    Model import();
+    static std::shared_ptr<MeshRenderer> import(Assimp::Importer *importer, std::shared_ptr<Material> material);
 };
 
 

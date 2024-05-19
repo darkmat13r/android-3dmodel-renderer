@@ -13,10 +13,11 @@
 
 class Mesh {
 public:
-     Mesh(
+    Mesh(
             std::vector<Vertex> vertices,
             std::vector<Index> indices,
-            const std::shared_ptr<Material>& material);
+            const std::shared_ptr<Material> &material);
+
     ~Mesh();
 
     GLuint getVAO() const;
@@ -40,6 +41,7 @@ public:
     const size_t getVertexCount();
 
     Material *getMaterial() const;
+
 private :
     std::vector<Vertex> vertices_;
     std::vector<Index> indices_;

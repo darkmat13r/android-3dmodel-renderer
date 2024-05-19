@@ -10,9 +10,19 @@
 #define ToDegree(x) (float)(((x) * 180.0f / M_PI))
 
 struct Vertex {
-    constexpr Vertex(const glm::vec3  &inPosition, const  glm::vec2  &inUV) : position(inPosition), uv(inUV) {}
+    constexpr Vertex(const glm::vec3 &inPosition,
+                     const glm::vec2 &inUV)
+            : position(inPosition),
+              uv(inUV), normal(glm::vec3{}) {};
 
-    glm::vec3  position;
+    constexpr Vertex(const glm::vec3 &inPosition,
+                     const glm::vec2 &inUV,
+                     const glm::vec3 &inNormal)
+            : position(inPosition),
+                uv(inUV), normal(inNormal) {}
+
+    glm::vec3 position;
+    glm::vec3 normal;
     glm::vec2 uv;
 };
 

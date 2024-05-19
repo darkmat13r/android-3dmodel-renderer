@@ -17,6 +17,8 @@ public:
     virtual void onCreate();
     virtual void render(Mat4f* f);
     virtual void update();
+    virtual void onDestroy();
+
 };
 
 #endif //LEARNOPENGL_COMPONENT_H

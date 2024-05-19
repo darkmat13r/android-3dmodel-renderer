@@ -25,6 +25,10 @@ void Component::onCreate() {
     //DO NOTHING
 }
 
+void Component::onDestroy() {
+    //DO NOTHING
+}
+
 Component::~Component() {
     aout << "Component is destroyed : " << this << std::endl;
 }
