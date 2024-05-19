@@ -52,18 +52,16 @@ Welcome to the 3D Model Viewer for Android! This project aims to provide a light
 4. **Run on a Device or Emulator:**
    Connect your Android device or start an emulator, then run the project from Android Studio.
 
-## Usage
+## Usage (Under Development)
 
-1. **Load a Model:**
-   Use the file picker to select a 3D model file from your device.
+1. **Load a Model:** (Currently loaded from assets folder)
+   Put 3d model in assets folder. Update the path in ModelImporter.
 
 2. **View Controls:**
-    - **Rotate:** Use one finger to rotate the model.
+    ~~- **Rotate:** Use one finger to rotate the model.
     - **Zoom:** Pinch with two fingers to zoom in and out.
-    - **Pan:** Use two fingers to move the model around the screen.
+    - **Pan:** Use two fingers to move the model around the screen.~~
 
-3. **Customize:**
-   Access the settings to customize rendering options, background color, and more.
 
 ## Contributing
 
