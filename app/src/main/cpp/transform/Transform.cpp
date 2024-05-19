@@ -31,9 +31,9 @@ void Transform::Rotate(float x, float y, float z) {
 
 Mat4f Transform::Matrix() {
     Mat4f rotMat;
-    aout << "rotation_ " << (&rotation_)  << std::endl;
-    aout << "position_ " << &position_  << std::endl;
-    aout << "scale_ " << &scale_  << std::endl;
+    aout << "rotation_ " << (&rotation_) << std::endl;
+    aout << "position_ " << &position_ << std::endl;
+    aout << "scale_ " << &scale_ << std::endl;
     rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
 
     Mat4f transMat;
@@ -45,6 +45,9 @@ Mat4f Transform::Matrix() {
     return transMat * rotMat * scaleMat;
 }
 
-Transform::Transform() : position_(0, 0, 0), rotation_(0, glm::vec3(0, 0, 0)), scale_(1, 1, 1){
+Transform::Transform() :
+        position_(0, 0, 0),
+        rotation_(0, glm::vec3(0, 0, 0)),
+        scale_(1, 1, 1) {
 
 }

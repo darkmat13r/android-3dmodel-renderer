@@ -28,7 +28,7 @@ static constexpr float kProjectionNearPlane = 0.1;
  */
 static constexpr float kProjectionFarPlane = 5.f;
 
-void Scene::addObject(Component *gameObject) {
+void Scene::addObject(const std::shared_ptr<Component>& gameObject) {
     this->components_.push_back(gameObject);
     gameObject->onAttach();
 }
@@ -42,16 +42,15 @@ void Scene::render() {
 
     Mat4f View = mainCamera_->Matrix();
 
-    for (const auto &component: components_) {
-        if (component) {
-            if (component->transform) {
-                Mat4f model = component->transform->Matrix();
-                Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
-                component->render(&finalProjectionMatrix);
+    for ( auto component : components_) {
+        if (component->transform) {
+            Mat4f model = component->transform->Matrix();
+            Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
+            aout << "Render::finalProjectionMatrix " << &finalProjectionMatrix << std::endl;
+            component->render(&finalProjectionMatrix);
 
-            } else {
-                aout << "Render::Component transform is gone " << component->transform << std::endl;
-            }
+        } else {
+            aout << "Render::Component transform is gone " << component->transform << std::endl;
         }
         aout << "Render::Component " << component << std::endl;
 
@@ -78,7 +77,16 @@ void Scene::onDestroy() {
 }
 
 Scene::Scene(float width, float height) {
-    projectionMatrix_ = std::make_unique<Mat4f>();
+    setSize(width, height);
+    glm::vec3 CameraPos(0.0f, 0.0f, -1.0f);
+    glm::vec3 CameraTarget(0.0f, 0.0f, 1.0f);
+    glm::vec3 CameraUp(0.0f, 1.0f, 0.0f);
+
+    mainCamera_ = std::make_shared<Camera>( CameraPos, CameraTarget, CameraUp);
+}
+
+void Scene::setSize(float width, float height) {
+    projectionMatrix_ = std::make_shared<Mat4f>();
     Utility::buildPerspectiveMat(
             projectionMatrix_.get(),
             kProjectionHalfHeight,
@@ -86,10 +94,6 @@ Scene::Scene(float width, float height) {
             kProjectionNearPlane,
             kProjectionFarPlane);
 
-    glm::vec3 CameraPos(0.0f, 0.0f, -1.0f);
-    glm::vec3 CameraTarget(0.0f, 0.0f, 1.0f);
-    glm::vec3 CameraUp(0.0f, 1.0f, 0.0f);
-    mainCamera_ = std::make_shared<Camera>(width, height, CameraPos, CameraTarget, CameraUp);
 }
 
 

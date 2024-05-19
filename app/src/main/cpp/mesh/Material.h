@@ -11,6 +11,7 @@
 class Material {
 public:
     Material();
+    ~Material();
     Shader* getShader() const;
 private :
     std::shared_ptr<Shader> shader_;

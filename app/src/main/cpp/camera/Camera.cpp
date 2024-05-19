@@ -111,17 +111,6 @@ void Camera::Update() {
     up_ = glm::normalize(glm::cross(target_, U));
 }
 
-Camera::Camera(int WindowWidth, int WindowHeight, const glm::vec3 &Pos, const glm::vec3 &Target,
-               const glm::vec3 &Up) {
-
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
-    pos_ = Pos;
-    target_ = Target;
-    up_ = Up;
-
-    Init();
-}
 
 void Camera::OnRender() {
     Update();
@@ -140,6 +129,14 @@ void Camera::Rotate(float Angle, const glm::vec3 &V, glm::vec3 &target) {
     target.x = W.x;
     target.y = W.y;
     target.z = W.z;
+}
+
+Camera::Camera(const glm::vec3 &Pos, const glm::vec3 &Target, const glm::vec3 &Up) {
+    pos_ = Pos;
+    target_ = Target;
+    up_ = Up;
+
+    Init();
 }
 
 

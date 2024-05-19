@@ -2,6 +2,7 @@
 // Created by Dark Matter on 5/13/24.
 //
 #include "Component.h"
+#include "AndroidOut.h"
 
 void Component::update() {
     //DO NOTHING
@@ -9,6 +10,7 @@ void Component::update() {
 
 void Component::render(Mat4f *f) {
     //DO NOTHING
+    aout << "Component::render " << std::endl;
 }
 
 void Component::onAttach() {
@@ -25,5 +27,6 @@ void Component::onCreate() {
 }
 
 Component::~Component() {
+    aout << "Component is destroyed : " << this << std::endl;
 }
 

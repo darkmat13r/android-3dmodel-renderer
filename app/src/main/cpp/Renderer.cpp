@@ -256,9 +256,9 @@ void Renderer::createModels() {
             = std::make_shared<MeshRenderer>();
 
 
-    meshRenderer->addMesh(mesh.get());
+    meshRenderer->addMesh(mesh);
 
-    scene_->addObject(meshRenderer.get());
+    scene_->addObject(meshRenderer);
 
 }
 
@@ -368,7 +368,8 @@ void Renderer::handleInput() {
 
 void Renderer::initScene() {
     if(scene_ != nullptr){
-        scene_->onDestroy();
+        scene_->setSize(width_, height_);
+    }else{
+        scene_ = std::make_shared<Scene>(width_, height_);
     }
-    scene_ = std::make_unique<Scene>(Scene(width_, height_));
 }

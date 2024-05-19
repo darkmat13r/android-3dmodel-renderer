@@ -11,8 +11,6 @@
 struct Quaternion
 {
     float x, y, z, w;
-    Quaternion();
-
     Quaternion(float Angle, const glm::vec3& V);
 
     Quaternion(float _x, float _y, float _z, float _w);

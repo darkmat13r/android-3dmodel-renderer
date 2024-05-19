@@ -16,8 +16,8 @@ public:
      Mesh(
             std::vector<Vertex> vertices,
             std::vector<Index> indices,
-            std::shared_ptr<Material> material);
-
+            const std::shared_ptr<Material>& material);
+    ~Mesh();
 
     GLuint getVAO() const;
 

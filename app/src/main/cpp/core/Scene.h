@@ -9,13 +9,15 @@
 #include "Component.h"
 #include "../Model.h"
 #include "camera/Camera.h"
+#include "mesh/MeshRenderer.h"
 
 
 class Scene {
 public:
     Scene(float width, float height);
+    void setSize(float width, float height);
 
-    void addObject(Component* gameObject);
+    void addObject(const std::shared_ptr<Component>& gameObject);
 
     void removeObject(Component *gameObject);
 
@@ -28,9 +30,9 @@ public:
     Camera *getMainCamera() const;
 
 private:
-    std::vector<Component*> components_;
+    std::vector<std::shared_ptr<Component>> components_;
     std::shared_ptr<Camera> mainCamera_;
-    std::unique_ptr<Mat4f> projectionMatrix_;
+    std::shared_ptr<Mat4f> projectionMatrix_;
     float rotation_;
 
 };

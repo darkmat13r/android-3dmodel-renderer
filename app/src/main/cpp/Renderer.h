@@ -83,7 +83,7 @@ private:
 
     bool shaderNeedsNewProjectionMatrix_;
 
-    std::unique_ptr<Scene> scene_;
+    std::shared_ptr<Scene> scene_;
 
 };
 

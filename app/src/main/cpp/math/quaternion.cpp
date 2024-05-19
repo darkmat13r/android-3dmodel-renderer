@@ -87,9 +87,3 @@ glm::vec3 Quaternion::ToDegrees()
     return {f[0], f[1], f[2]};
 }
 
-Quaternion::Quaternion() {
-    x = 0;
-    y = 0;
-    z = 0;
-    w = 0;
-}

@@ -21,10 +21,10 @@ public :
 
     void update() override;
 
-    void addMesh(Mesh* mesh);
+    void addMesh(const std::shared_ptr<Mesh>& mesh);
 
 private :
-    std::vector<Mesh *> meshes_;
+    std::vector<std::shared_ptr<Mesh>> meshes_;
     float  rotation;
     void initMesh(Mesh *mesh) const;
 };
