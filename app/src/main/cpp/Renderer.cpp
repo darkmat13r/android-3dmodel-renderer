@@ -151,7 +151,8 @@ void Renderer::render() {
     model->transform.Rotate(0, rotation, 0);
     Mat4f finalProjection;
 
-    finalProjection = (*projectionMatrix) * View * model->transform.Matrix();
+    Mat4f modelMat = model->transform.Matrix();
+    finalProjection = (*projectionMatrix.get()) * View * modelMat;
 // send the matrix to the shader
 
     // Note: the shader must be active for this to work. Since we only have one shader for this
