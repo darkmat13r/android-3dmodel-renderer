@@ -65,8 +65,8 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
             mesh->getIndexData(),
             GL_STATIC_DRAW
             );
-    //glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, model->getTexture().getTextureID());
+
+   mesh->getMaterial()->bindTexture();
 
     glBindVertexArray(vao);
 

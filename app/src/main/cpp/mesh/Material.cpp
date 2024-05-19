@@ -10,7 +10,8 @@ Shader *Material::getShader() const {
     return shader_.get();
 }
 
-Material::Material() {
+Material::Material(std::shared_ptr<TextureAsset> textureAsset) : spTexture_(
+        std::move(textureAsset)) {
     std::string vertexShaderPath = "shaders/base_frag.vert";
     std::string fragmentShaderPath = "shaders/base_frag.frag";
 
@@ -19,4 +20,9 @@ Material::Material() {
 
 Material::~Material() {
     aout << "Material::destroy" << std::endl;
+}
+
+void Material::bindTexture() const {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuseTextureId_);
 }

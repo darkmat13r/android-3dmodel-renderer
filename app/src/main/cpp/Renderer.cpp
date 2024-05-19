@@ -247,7 +247,7 @@ void Renderer::createModels() {
             = std::make_shared<MeshRenderer>();
 
     std::shared_ptr<Material> material
-            = std::make_shared<Material>();
+            = std::make_shared<Material>(spAndroidRobotTexture);
 
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(
             vertices,
