@@ -45,7 +45,6 @@ Mat4f Transform::Matrix() {
 
 Transform::Transform() :
         position_(0, 0, 0),
-        rotation_(0, glm::vec3(0, 0, 0)),
+        rotation_(0, 0, 0, 0),
         scale_(1, 1, 1) {
-
 }
