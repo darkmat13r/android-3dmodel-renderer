@@ -44,7 +44,7 @@ void Scene::render() {
 
     for ( auto component : components_) {
         if (component->transform) {
-            //component->transform->Rotate(0, rotation_, 0);
+            component->transform->Rotate(0, rotation_, 0);
             Mat4f model = component->transform->Matrix();
             Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
             component->render(&finalProjectionMatrix);
