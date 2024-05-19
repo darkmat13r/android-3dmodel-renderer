@@ -1107,7 +1107,7 @@
             "TEXCOORD_1": 3
           },
           "indices": 4,
-          "material": 0,
+          "material_": 0,
           "mode": 4
         }
       ]
@@ -1123,7 +1123,7 @@
             "TEXCOORD_1": 8
           },
           "indices": 9,
-          "material": 1,
+          "material_": 1,
           "mode": 4
         }
       ]
@@ -1139,7 +1139,7 @@
             "TEXCOORD_1": 13
           },
           "indices": 14,
-          "material": 2,
+          "material_": 2,
           "mode": 4
         }
       ]
@@ -1155,7 +1155,7 @@
             "TEXCOORD_1": 18
           },
           "indices": 19,
-          "material": 3,
+          "material_": 3,
           "mode": 4
         }
       ]
@@ -1171,7 +1171,7 @@
             "TEXCOORD_1": 23
           },
           "indices": 24,
-          "material": 4,
+          "material_": 4,
           "mode": 4
         }
       ]
@@ -1187,7 +1187,7 @@
             "TEXCOORD_1": 28
           },
           "indices": 29,
-          "material": 5,
+          "material_": 5,
           "mode": 4
         }
       ]
@@ -1203,7 +1203,7 @@
             "TEXCOORD_1": 33
           },
           "indices": 34,
-          "material": 6,
+          "material_": 6,
           "mode": 4
         }
       ]
@@ -1219,7 +1219,7 @@
             "TEXCOORD_1": 38
           },
           "indices": 39,
-          "material": 7,
+          "material_": 7,
           "mode": 4
         }
       ]
@@ -1235,7 +1235,7 @@
             "TEXCOORD_1": 43
           },
           "indices": 44,
-          "material": 8,
+          "material_": 8,
           "mode": 4
         }
       ]
@@ -1251,7 +1251,7 @@
             "TEXCOORD_1": 48
           },
           "indices": 49,
-          "material": 9,
+          "material_": 9,
           "mode": 4
         }
       ]
@@ -1267,7 +1267,7 @@
             "TEXCOORD_1": 53
           },
           "indices": 54,
-          "material": 10,
+          "material_": 10,
           "mode": 4
         }
       ]
@@ -1282,7 +1282,7 @@
             "TEXCOORD_0": 57
           },
           "indices": 58,
-          "material": 11,
+          "material_": 11,
           "mode": 4
         }
       ]

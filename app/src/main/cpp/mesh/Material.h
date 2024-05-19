@@ -10,6 +10,7 @@
 
 class Material {
 public:
+    Material();
     Shader* getShader() const;
 private :
     std::shared_ptr<Shader> shader_;

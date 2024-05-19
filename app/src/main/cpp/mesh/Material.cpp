@@ -3,7 +3,15 @@
 //
 
 #include "Material.h"
+#include "string"
 
 Shader *Material::getShader() const {
     return shader_.get();
+}
+
+Material::Material() {
+    std::string vertexShaderPath = "shaders/base_frag.vert";
+    std::string fragmentShaderPath = "shaders/base_frag.frag";
+
+    shader_ = std::make_shared<Shader>(vertexShaderPath, fragmentShaderPath);
 }

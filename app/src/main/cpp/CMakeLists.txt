@@ -19,6 +19,7 @@ file(GLOB_RECURSE SOURCES
         "${CMAKE_SOURCE_DIR}/game/*.cpp"
         "${CMAKE_SOURCE_DIR}/math/*.cpp"
         "${CMAKE_SOURCE_DIR}/mesh/*.cpp"
+        "${CMAKE_SOURCE_DIR}/shaders/*.cpp"
         "${CMAKE_SOURCE_DIR}/mesh/shader/*.cpp"
         "${CMAKE_SOURCE_DIR}/transform/*.cpp"
         "${CMAKE_SOURCE_DIR}/AndroidJNI/*.cpp"
@@ -34,6 +35,18 @@ endif()
 
 # Add the executable target
 add_library(learnopengl SHARED ${SOURCES})
+
+
+# Specify the path to the shaders
+set(SHADER_SOURCE_DIR "${CMAKE_SOURCE_DIR}/shaders")
+set(SHADER_BINARY_DIR "${CMAKE_BINARY_DIR}/shaders")
+
+# Copy shader files to the build directory
+file(GLOB SHADER_FILES "${SHADER_SOURCE_DIR}/*.vert" "${SHADER_SOURCE_DIR}/*.frag")
+foreach(SHADER_FILE ${SHADER_FILES})
+    get_filename_component(FILE_NAME ${SHADER_FILE} NAME)
+    configure_file(${SHADER_FILE} ${SHADER_BINARY_DIR}/${FILE_NAME} COPYONLY)
+endforeach()
 
 
 # Searches for a package provided by the game activity dependency

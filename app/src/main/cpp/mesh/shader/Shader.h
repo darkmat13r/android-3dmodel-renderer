@@ -17,7 +17,8 @@ public:
     void bind();
     void unbind();
     void setProjectionMatrix(const Mat4f* projectionMatrix);
-
+    GLint getPositionAttrib() const;
+    GLint getUvAttrib() const;
 private:
     GLuint program_ = 0;
     GLint projectionMatrixLocation_ = 0;
@@ -25,7 +26,7 @@ private:
     GLint uvAttribute_ = 0;
     std::string readFile(std::string &fileName) const;
 
-    GLuint compileShader(std::string &shaderCode, GLenum shaderType);
+    static GLuint compileShader(const char* shaderCode, GLenum shaderType);
 
 };
 

@@ -10,8 +10,11 @@
 class Component {
 
 public:
-    Component() : transform(Transform()){}
-    Transform transform;
+    Component() ;
+    ~ Component();
+    std::shared_ptr<Transform> transform;
+    virtual void onAttach();
+    virtual void onCreate();
     virtual void render(Mat4f* f);
     virtual void update();
 };

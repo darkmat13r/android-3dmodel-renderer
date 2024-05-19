@@ -13,11 +13,20 @@ class MeshRenderer : public Component {
 public :
     MeshRenderer();
 
+    void onAttach() override;
+
+    void onCreate() override;
+
     void render(Mat4f *f) override;
 
+    void update() override;
+
+    void addMesh(Mesh* mesh);
+
 private :
-    std::vector<Material*> materials_;
-    std::vector<Mesh> meshes_;
+    std::vector<Mesh *> meshes_;
+    float  rotation;
+    void initMesh(Mesh *mesh) const;
 };
 
 

@@ -11,3 +11,19 @@ void Component::render(Mat4f *f) {
     //DO NOTHING
 }
 
+void Component::onAttach() {
+ //DO NOTHING
+}
+
+Component::Component() {
+    transform = std::make_shared<Transform>();
+    onCreate();
+}
+
+void Component::onCreate() {
+    //DO NOTHING
+}
+
+Component::~Component() {
+}
+

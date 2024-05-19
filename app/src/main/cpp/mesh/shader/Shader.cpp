@@ -8,37 +8,88 @@
 #include <sstream>
 #include <iostream>
 
-Shader::Shader(std::string& vertexShaderPath, std::string& fragmentShaderPath) {
-    program_ = glCreateProgram();
-    std::string vertexShaderSource = readFile(vertexShaderPath);
-    std::string fragmentShaderSource = readFile(fragmentShaderPath);
+// Vertex shader, you'd typically load this from assets
+static const char *vertexShaderSource = R"vertex(#version 300 es
+in vec3 inPosition;
+in vec2 inUV;
 
+out vec2 fragUV;
+
+uniform mat4 uProjection;
+
+void main() {
+    fragUV = inUV;
+    gl_Position = uProjection * vec4(inPosition, 1.0);
+}
+)vertex";
+
+// Fragment shader, you'd typically load this from assets
+static const char *fragmentShaderSource = R"fragment(#version 300 es
+precision mediump float;
+
+in vec2 fragUV;
+
+uniform sampler2D uTexture;
+
+out vec4 outColor;
+
+void main() {
+    outColor = texture(uTexture, fragUV);
+}
+)fragment";
+
+
+Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
+    program_ = glCreateProgram();
     GLuint vertexShader = compileShader(vertexShaderSource, GL_VERTEX_SHADER);
     GLuint fragmentShader = compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
 
     glAttachShader(program_, vertexShader);
-    glAttachShader(program_, vertexShader);
+    glAttachShader(program_, fragmentShader);
 
-    GLint  success;
+    glLinkProgram(program_);
+
+    GLint success;
     glGetProgramiv(program_, GL_LINK_STATUS, &success);
-    if(!success){
-        char infoLog[512];
-        glGetProgramInfoLog(program_, 512, nullptr, infoLog);
-        aout << "ERROR: Shader program linking failed. : " << infoLog << std::endl;
+    if (!success) {
+        GLint logLength = 0;
+        glGetProgramiv(program_, GL_INFO_LOG_LENGTH, &logLength);
+
+        // If we fail to link the shader program, log the result for debugging
+        if (logLength) {
+            GLchar *log = new GLchar[logLength];
+            glGetProgramInfoLog(program_, logLength, nullptr, log);
+            aout << "Failed to link program with:\n" << log << std::endl;
+            delete[] log;
+        }
         glDeleteProgram(program_);
+    } else {
+        projectionMatrixLocation_ = glGetUniformLocation(program_, "uProjection");
+        positionAttribute_ = glGetAttribLocation(program_, "inPosition");
+        uvAttribute_ = glGetUniformLocation(program_, "inUV");
+        if (projectionMatrixLocation_ == -1
+            || positionAttribute_ == -1
+            || uvAttribute_ == -1) {
+            glDeleteProgram(program_);
+        }
     }
+
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    projectionMatrixLocation_ = glGetUniformLocation(program_, "uProjection");
-    positionAttribute_ = glGetUniformLocation(program_, "uPosition");
-    uvAttribute_ = glGetUniformLocation(program_, "uPosition");
 }
 
-GLuint Shader::compileShader(std::string &shaderCode, GLenum shaderType) {
+GLint Shader::getPositionAttrib() const {
+    return positionAttribute_;
+}
+
+GLint Shader::getUvAttrib() const {
+    return uvAttribute_;
+}
+
+GLuint Shader::compileShader(const char *shaderCode, GLenum shaderType) {
     auto shader = glCreateShader(shaderType);
-    const char *source = shaderCode.c_str();
-    glShaderSource(shader, 1, &source, nullptr);
+    glShaderSource(shader, 1, &shaderCode, nullptr);
     glCompileShader(shader);
 
     GLint success;
@@ -64,7 +115,8 @@ std::string Shader::readFile(std::string &fileName) const {
 
 
 void Shader::bind() {
-    glUseProgram(program_);
+    if (program_)
+        glUseProgram(program_);
 }
 
 void Shader::unbind() {
@@ -72,6 +124,7 @@ void Shader::unbind() {
 }
 
 void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) {
-    glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
+    if (projectionMatrixLocation_)
+        glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
 }
 

@@ -10,26 +10,44 @@
 #include "math/math.h"
 #include "Model.h"
 #include <vector>
+
 class Mesh {
 public:
-    inline Mesh(
+     Mesh(
             std::vector<Vertex> vertices,
-    std::vector<Index> indices);
+            std::vector<Index> indices,
+            std::shared_ptr<Material> material);
 
-    inline const Vertex *getVertexData() ;
 
-    inline const size_t getIndexCount();
+    GLuint getVAO() const;
 
-    inline const Index *getIndexData();
+    void setVAO(GLuint vaoID);
 
-    inline size_t getVertexCount() ;
+    GLuint getVBO() const;
 
+    void setVBO(GLuint vboID);
+
+    GLuint getIBO() const;
+
+    void setIBO(GLuint iboID);
+
+    const Vertex *getVertexData() const;
+
+    const size_t getIndexCount() const;
+
+    const Index *getIndexData() const;
+
+    const size_t getVertexCount();
+
+    Material *getMaterial() const;
 private :
     std::vector<Vertex> vertices_;
     std::vector<Index> indices_;
+    std::shared_ptr<Material> material_;
     GLuint vao = -1;
     GLuint vbo = -1;
     GLuint ibo = -1;
+
 };
 
 

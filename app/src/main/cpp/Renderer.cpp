@@ -10,8 +10,9 @@
 #include "unused/ShaderBase.h"
 #include "Utility.h"
 #include "TextureAsset.h"
-#include "game/Scene.h"
-#include "game/Component.h"
+#include "core/Scene.h"
+#include "core/Component.h"
+#include "mesh/MeshRenderer.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -40,34 +41,9 @@ aout << std::endl;\
 #define DARK_GRAY 20 / 255.f, 20 / 255.f, 20 / 255.f, 1
 
 
-/*!
- * Half the height of the projection matrix. This gives you a renderable area of height 4 ranging
- * from -2 to 2
- */
-static constexpr float kProjectionHalfHeight = 2.f;
-
-/*!
- * The near plane distance for the projection matrix. Since this is an orthographic projection
- * matrix, it's convenient to have negative values for sorting (and avoiding z-fighting at 0).
- */
-static constexpr float kProjectionNearPlane = 0.1;
-
-/*!
- * The far plane distance for the projection matrix. Since this is an orthographic porjection
- * matrix, it's convenient to have the far plane equidistant from 0 as the near plane.
- */
-static constexpr float kProjectionFarPlane = 5.f;
 #define WINDOW_WIDTH  2560
 #define WINDOW_HEIGHT 1440
 
-GLuint VBO;
-GLuint IBO;
-GLuint gWVPLocation;
-
-glm::vec3 CameraPos(0.0f, 0.0f, -1.0f);
-glm::vec3 CameraTarget(0.0f, 0.0f, 1.0f);
-glm::vec3 CameraUp(0.0f, 1.0f, 0.0f);
-Camera *mainCamera;
 
 Renderer::~Renderer() {
     if (display_ != EGL_NO_DISPLAY) {
@@ -83,9 +59,8 @@ Renderer::~Renderer() {
         eglTerminate(display_);
         display_ = EGL_NO_DISPLAY;
     }
-    if (mainCamera) {
-        delete mainCamera;
-    }
+    scene_->onDestroy();
+
 }
 
 void Renderer::render() {
@@ -94,51 +69,18 @@ void Renderer::render() {
     // changed.
     updateRenderArea();
 
+    scene_->render();
 
-    // When the renderable area changes, the projection matrix has to also be updated. This is true
-    // even if you change from the sample orthographic projection matrix as your aspect ratio has
-    // likely changed.
-    if (shaderNeedsNewProjectionMatrix_) {
-
-        // build an orthographic projection matrix for 2d rendering
-
-        Utility::buildPerspectiveMat(
-                projectionMatrix.get(),
-                kProjectionHalfHeight,
-                float(width_) / height_,
-                kProjectionNearPlane,
-                kProjectionFarPlane);
-
-        // make sure the matrix isn't generated every frame
-        shaderNeedsNewProjectionMatrix_ = false;
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        aout << "OpenGL error in Renderer::render():" << err;
     }
-    rotation = 0.2;
-
-    mainCamera->OnRender();
-
-    Mat4f View = mainCamera->Matrix();
-    /*Model *model = scene_->First();
-    model->transform.Rotate(0, rotation, 0);*/
-    Mat4f finalProjection;
-
-    finalProjection = (*projectionMatrix) * View/* * model->transform.Matrix()*/;
-// send the matrix to the shader
-
-    // Note: the shader must be active for this to work. Since we only have one shader for this
-    // demo, we can assume that it's active.
-    shader_->setProjectionMatrix(&finalProjection);
 
 
+    scene_->update();
     // clear the color buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Render all the models. There's no depth testing in this sample so they're accepted in the
-    // order provided. But the sample EGL setup requests a 24 bit depth buffer so you could
-    // configure it at the end of initRenderer
-    //TODO
-    //scene_->Render(*shader_);
-    //shader_->Clean();
-    // Present the rendered image. This is an implicit glFlush.
     auto swapResult = eglSwapBuffers(display_, surface_);
     assert(swapResult == EGL_TRUE);
 }
@@ -219,17 +161,6 @@ void Renderer::initRenderer() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    /* shader_ = std::unique_ptr<ShaderBase>(
-             ShaderBase::loadShader(vertex, fragment, "inPosition", "inUV", "uProjection"));*/
-    // Paths to shader files
-    std::string vertexShaderPath = "shaders/base_frag.vert";
-    std::string fragmentShaderPath = "shaders/base_frag.frag";
-    shader_ = std::make_unique<Shader>(vertexShaderPath, fragmentShaderPath);
-    assert(shader_);
-
-    // Note: there's only one shader in this demo, so I'll activate it here. For a more complex game
-    // you'll want to track the active shader and activate/deactivate it as necessary
-    shader_->bind();
 
     // setup any other gl related global states
     glClearColor(DARK_GRAY);
@@ -238,8 +169,7 @@ void Renderer::initRenderer() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // get some demo models into memory
-    createModels();
+
 }
 
 void Renderer::updateRenderArea() {
@@ -252,7 +182,10 @@ void Renderer::updateRenderArea() {
     if (width != width_ || height != height_) {
         width_ = width;
         height_ = height;
-        mainCamera = new Camera(width, height, CameraPos, CameraTarget, CameraUp);
+        //TODO create scene here
+        initScene();
+        // get some demo models into memory
+        createModels();
 
         glViewport(0, 0, width, height);
 
@@ -310,13 +243,22 @@ void Renderer::createModels() {
     auto assetManager = app_->activity->assetManager;
     auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "texture.png");
 
-    // Create a model and put it in the back of the render list.
-   /* std::shared_ptr<Model> model = std::make_shared<Model>(vertices, indices,
-                                                           spAndroidRobotTexture);
+    std::shared_ptr<Material> material
+            = std::make_shared<Material>();
 
-    scene_->addObject(model);*/
-   //TODO
-    //shader_->Prepare(model.get());
+    std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(
+            vertices,
+            indices,
+            material
+    );
+
+    std::shared_ptr<MeshRenderer> meshRenderer
+            = std::make_shared<MeshRenderer>();
+
+
+    meshRenderer->addMesh(mesh.get());
+
+    scene_->addObject(meshRenderer.get());
 
 }
 
@@ -378,7 +320,7 @@ void Renderer::handleInput() {
                     float deltaY = y - lastY;
                     aout << "deltaX : " << deltaX;
                     aout << "deltaY : " << deltaY;
-                    mainCamera->OnMove(deltaX, deltaY);
+                    scene_->getMainCamera()->OnMove(deltaX, deltaY);
                     lastX = x;
                     lastY = y;
                 }
@@ -425,5 +367,8 @@ void Renderer::handleInput() {
 }
 
 void Renderer::initScene() {
-    scene_ = std::make_unique<Scene>(Scene());
+    if(scene_ != nullptr){
+        scene_->onDestroy();
+    }
+    scene_ = std::make_unique<Scene>(Scene(width_, height_));
 }

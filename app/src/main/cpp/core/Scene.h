@@ -8,19 +8,31 @@
 
 #include "Component.h"
 #include "../Model.h"
+#include "camera/Camera.h"
+
 
 class Scene {
 public:
+    Scene(float width, float height);
+
     void addObject(Component *gameObject);
 
     void removeObject(Component *gameObject);
 
-    void render(Mat4f* projectionMatrix);
-
-private:
-    std::vector<Component *> gameObjects;
+    void render();
 
     void update();
+
+    void onDestroy();
+
+    Camera *getMainCamera() const;
+
+private:
+    std::vector<Component *> components_;
+    std::shared_ptr<Camera> mainCamera_;
+    std::unique_ptr<Mat4f> projectionMatrix_;
+    float rotation_;
+
 };
 
 
