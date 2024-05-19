@@ -66,7 +66,7 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
     } else {
         projectionMatrixLocation_ = glGetUniformLocation(program_, "uProjection");
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
-        uvAttribute_ = glGetUniformLocation(program_, "inUV");
+        uvAttribute_ = glGetAttribLocation(program_, "inUV");
         if (projectionMatrixLocation_ == -1
             || positionAttribute_ == -1
             || uvAttribute_ == -1) {

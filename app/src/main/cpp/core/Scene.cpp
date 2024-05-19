@@ -7,6 +7,7 @@
 #include "../Model.h"
 #include "Utility.h"
 #include "AndroidOut.h"
+#include "mesh/MeshRenderer.h"
 
 /*!
  * Half the height of the projection matrix. This gives you a renderable area of height 4 ranging
@@ -32,7 +33,7 @@ void Scene::addObject(Component *gameObject) {
     gameObject->onAttach();
 }
 
-Camera* Scene::getMainCamera() const{
+Camera *Scene::getMainCamera() const {
     return mainCamera_.get();
 }
 
@@ -42,19 +43,29 @@ void Scene::render() {
     Mat4f View = mainCamera_->Matrix();
 
     for (const auto &component: components_) {
-        aout << "Test " << component->transform << std::endl;
-        Mat4f model = component->transform->Matrix();
+        if (component) {
+            if (component->transform) {
+                Mat4f model = component->transform->Matrix();
+                Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
+                component->render(&finalProjectionMatrix);
 
-        Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
-        component->render(&finalProjectionMatrix);
+            } else {
+                aout << "Render::Component transform is gone " << component->transform << std::endl;
+            }
+        }
+        aout << "Render::Component " << component << std::endl;
+
     }
 }
 
 void Scene::update() {
-    return;
-    for (const auto &item: components_) {
-        item->transform->Rotate(0, rotation_, 0);
-        item->update();
+    for (const auto &component: components_) {
+        if (component && component->transform) {
+            component->transform->Rotate(0, rotation_, 0);
+            //  component->update();
+        } else {
+            aout << "Update::Component transform is gone " << component << std::endl;
+        }
     }
 }
 
@@ -78,7 +89,7 @@ Scene::Scene(float width, float height) {
     glm::vec3 CameraPos(0.0f, 0.0f, -1.0f);
     glm::vec3 CameraTarget(0.0f, 0.0f, 1.0f);
     glm::vec3 CameraUp(0.0f, 1.0f, 0.0f);
-    mainCamera_ = std::make_shared<Camera>( width, height, CameraPos, CameraTarget, CameraUp);
+    mainCamera_ = std::make_shared<Camera>(width, height, CameraPos, CameraTarget, CameraUp);
 }
 
 

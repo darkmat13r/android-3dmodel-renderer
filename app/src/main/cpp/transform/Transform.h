@@ -12,7 +12,7 @@
 
 class Transform {
 public :
-    Transform() : position_(0, 0, 0), rotation_(0, glm::vec3(0, 0, 0)), scale_(1, 1, 1) {}
+    Transform();
     void SetScale(float scaleX, float scaleY, float scaleZ);
     void SetPosition(float x, float y, float z);
     void SetRotation(float x, float y, float z);

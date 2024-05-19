@@ -15,7 +15,7 @@ class Scene {
 public:
     Scene(float width, float height);
 
-    void addObject(Component *gameObject);
+    void addObject(Component* gameObject);
 
     void removeObject(Component *gameObject);
 
@@ -28,7 +28,7 @@ public:
     Camera *getMainCamera() const;
 
 private:
-    std::vector<Component *> components_;
+    std::vector<Component*> components_;
     std::shared_ptr<Camera> mainCamera_;
     std::unique_ptr<Mat4f> projectionMatrix_;
     float rotation_;
