@@ -69,6 +69,10 @@ void Renderer::render() {
     // changed.
     updateRenderArea();
 
+
+    // clear the color buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+
     scene_->render();
 
     GLenum err;
@@ -78,8 +82,6 @@ void Renderer::render() {
 
 
     scene_->update();
-    // clear the color buffer
-    glClear(GL_COLOR_BUFFER_BIT);
 
     auto swapResult = eglSwapBuffers(display_, surface_);
     assert(swapResult == EGL_TRUE);
