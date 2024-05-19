@@ -185,7 +185,7 @@ void Renderer::updateRenderArea() {
         //TODO create scene here
         initScene();
         // get some demo models into memory
-        createModels();
+
 
         glViewport(0, 0, width, height);
 
@@ -373,5 +373,6 @@ void Renderer::initScene() {
         scene_->setSize(width_, height_);
     }else{
         scene_ = std::make_shared<Scene>(width_, height_);
+        createModels();
     }
 }

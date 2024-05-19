@@ -18,7 +18,6 @@ void MeshRenderer::render(Mat4f *projectionMatrix) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
-        shader->bind();
 
         glBindVertexArray(mesh->getVAO());
         glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
@@ -88,7 +87,7 @@ void MeshRenderer::onAttach() {
     for (const auto &mesh : meshes_) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
-        shader->bind();
+
     }
 }
 
@@ -103,6 +102,7 @@ void MeshRenderer::update() {
 
 void MeshRenderer::addMesh(const std::shared_ptr<Mesh>& mesh) {
     meshes_.push_back(mesh);
+    mesh->getMaterial()->getShader()->bind();
     initMesh(mesh.get());
 }
 
