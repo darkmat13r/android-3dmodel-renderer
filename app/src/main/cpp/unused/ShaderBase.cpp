@@ -116,9 +116,7 @@ void ShaderBase::deactivate() const {
 }
 
 void ShaderBase::drawModel(const Model* model) {
-    glBindVertexArray(model->getVAO());
-    glDrawElements(GL_TRIANGLES, model->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);
-    glBindVertexArray(0);
+
 }
 
 void ShaderBase::setProjectionMatrix(Mat4f *projectionMatrix) const {

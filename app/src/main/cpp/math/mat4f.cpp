@@ -79,7 +79,6 @@ void Mat4f::InitTranslation(float x, float y, float z) {
 // Initialize camera transformation matrix
 void Mat4f::InitCameraTransform(glm::vec3 Target, glm::vec3 Up) {
     glm::vec3 N = glm::normalize(Target);
-    ;
 
     glm::vec3 UpNorm = Up;
     UpNorm = glm::normalize(UpNorm);

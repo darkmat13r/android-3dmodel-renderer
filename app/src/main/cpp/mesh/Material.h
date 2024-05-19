@@ -6,12 +6,18 @@
 #define LEARNOPENGL_MATERIAL_H
 
 
-#include "../unused/ShaderBase.h"
+#include "mesh/shader/Shader.h"
+#include "TextureAsset.h"
 
 class Material {
-
+public:
+    explicit Material(std::shared_ptr<TextureAsset> textureAsset);
+    ~Material();
+    Shader* getShader() const;
+    void bindTexture() const;
 private :
-    std::shared_ptr<ShaderBase> shader_;
+    std::shared_ptr<Shader> shader_;
+    std::shared_ptr<TextureAsset> diffuseTexture_;
 };
 
 

@@ -3,17 +3,17 @@
 //
 
 
-#include "GameObject.h"
+#include "../core/Component.h"
 #include "math/quaternion.h"
 
 #ifndef LEARNOPENGL_CAMERA_H
 #define LEARNOPENGL_CAMERA_H
 
 
-class Camera : public GameObject {
+class Camera : public Component {
 
 public:
-    Camera(int WindowWidth, int WindowHeight, const glm::vec3& Pos, const glm::vec3& Target, const glm::vec3& Up);
+    Camera(const glm::vec3& Pos, const glm::vec3& Target, const glm::vec3& Up);
     void Init();
 
     void SetPosition(float x, float y, float z);
@@ -34,20 +34,17 @@ public:
     static void Rotate(float Angle, const glm::vec3& V,  glm::vec3& target);
 
 private :
-    glm::vec3 target_;
-    glm::vec3 pos_;
-    glm::vec3 up_;
+    glm::vec3 target_{};
+    glm::vec3 pos_{};
+    glm::vec3 up_{};
     float speed_ = 0.2f;
-    int m_windowWidth;
-    int m_windowHeight;
+    float m_AngleH{};
+    float m_AngleV{};
 
-    float m_AngleH;
-    float m_AngleV;
-
-    bool m_OnUpperEdge;
-    bool m_OnLowerEdge;
-    bool m_OnLeftEdge;
-    bool m_OnRightEdge;
+    bool m_OnUpperEdge{};
+    bool m_OnLowerEdge{};
+    bool m_OnLeftEdge{};
+    bool m_OnRightEdge{};
 
 };
 #endif //LEARNOPENGL_CAMERA_H

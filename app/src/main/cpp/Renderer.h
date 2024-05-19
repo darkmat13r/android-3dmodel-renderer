@@ -5,11 +5,11 @@
 #include <memory>
 
 #include "Model.h"
-#include "game/GameObject.h"
 #include "unused/ShaderBase.h"
 #include "math/mat4f.h"
-#include "game/Scene.h"
-#include "game/Camera.h"
+#include "camera/Camera.h"
+#include "mesh/shader/Shader.h"
+#include "core/Scene.h"
 
 struct android_app;
 
@@ -27,11 +27,8 @@ public:
             width_(0),
             height_(0),
             scene_(),
-            shaderNeedsNewProjectionMatrix_(true),
-            projectionMatrix(
-                    Mat4f::Identity()
-            ) {
-        initScene();
+            shaderNeedsNewProjectionMatrix_(true)
+            {
         initRenderer();
     }
 
@@ -86,9 +83,8 @@ private:
 
     bool shaderNeedsNewProjectionMatrix_;
 
-    std::unique_ptr<ShaderBase> shader_;
-    std::unique_ptr<Scene> scene_;
-    std::unique_ptr<Mat4f> projectionMatrix;
+    std::shared_ptr<Scene> scene_;
+
 };
 
 #endif //ANDROIDGLINVESTIGATIONS_RENDERER_H

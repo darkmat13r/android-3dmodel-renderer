@@ -3,6 +3,7 @@
 //
 
 #include "Transform.h"
+#include "AndroidOut.h"
 
 void Transform::SetScale(float scaleX, float scaleY, float scaleZ) {
     this->scale_.x = scaleX;
@@ -30,6 +31,7 @@ void Transform::Rotate(float x, float y, float z) {
 
 Mat4f Transform::Matrix() {
     Mat4f rotMat;
+
     rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
 
     Mat4f transMat;
@@ -38,5 +40,11 @@ Mat4f Transform::Matrix() {
     Mat4f scaleMat;
     scaleMat.InitScaleMatrix(scale_.x, scale_.y, scale_.z);
 
-    return transMat * rotMat *  scaleMat;
+    return transMat * rotMat * scaleMat;
+}
+
+Transform::Transform() :
+        position_(0, 0, 0),
+        rotation_(0, 0, 0, 0),
+        scale_(1, 1, 1) {
 }

@@ -5,11 +5,11 @@
 #include "TextureAsset.h"
 #include "math/math.h"
 #include "transform/Transform.h"
-#include "game/GameObject.h"
+#include "core/Component.h"
 
 typedef uint16_t Index;
 
-class Model : public GameObject{
+class Model : public Component{
 public:
 
     inline Model(
@@ -19,9 +19,9 @@ public:
             : vertices_(std::move(vertices)),
               indices_(std::move(indices)),
               spTexture_(std::move(spTexture)){
-        transform.SetRotation(0,0,0);
-        transform.SetPosition(0,0,2);
-        transform.SetScale(1,1,1);
+        transform->SetRotation(0,0,0);
+        transform->SetPosition(0,0,2);
+        transform->SetScale(1,1,1);
     }
 
     inline const Vertex *getVertexData() const {
