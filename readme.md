@@ -1,8 +1,6 @@
 
 # 3D Model Viewer for Android
 
-![Project Logo](path/to/logo.png)
-
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -28,7 +26,7 @@ Welcome to the 3D Model Viewer for Android! This project aims to provide a light
 
 ## Screenshots
 
-![Screenshot 1](screenshots/cube.png)
+<img alt="Screenshot 1" src="screenshots/cube.png" width="200px"/>
 
 ## Installation
 
