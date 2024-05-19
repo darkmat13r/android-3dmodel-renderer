@@ -115,8 +115,7 @@ std::string Shader::readFile(std::string &fileName) const {
 
 
 void Shader::bind() const {
-    if (program_)
-        glUseProgram(program_);
+    glUseProgram(program_);
 }
 
 void Shader::unbind() const{
@@ -124,7 +123,6 @@ void Shader::unbind() const{
 }
 
 void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const{
-    if (projectionMatrixLocation_)
-        glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
+    glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
 }
 

@@ -18,9 +18,10 @@ void MeshRenderer::render(Mat4f *projectionMatrix) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
+        shader->bind();
 
         glBindVertexArray(mesh->getVAO());
-        glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);
+        glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
         glBindVertexArray(0);
     }
 }
@@ -37,8 +38,6 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
                  sizeof(Vertex) * mesh->getVertexCount(),
                  mesh->getVertexData(),
                  GL_STATIC_DRAW);
-
-    //TODO
     GLint positionAttrib = mesh->getMaterial()->getShader()->getPositionAttrib();
     glEnableVertexAttribArray(positionAttrib);
     glVertexAttribPointer(
@@ -47,28 +46,32 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
             GL_FLOAT,
             GL_FALSE,
             sizeof(Vertex),
-            (void *) 0
+            (void *) (0)
     );
+
     GLint uvAttrib = mesh->getMaterial()->getShader()->getUvAttrib();
     glEnableVertexAttribArray(uvAttrib);
-    glVertexAttribPointer(uvAttrib, 2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(Vertex),
-                          (void *) offsetof(Vertex, uv));
+    glVertexAttribPointer(
+            uvAttrib,
+            2,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void *) offsetof(Vertex, uv)
+    );
+
 
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(
-            GL_ELEMENT_ARRAY_BUFFER,
-            sizeof (Index ) * mesh->getIndexCount(),
-            mesh->getIndexData(),
-            GL_STATIC_DRAW
-            );
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 sizeof(Index) * mesh->getIndexCount(),
+                 mesh->getIndexData(), GL_STATIC_DRAW);
 
-   mesh->getMaterial()->bindTexture();
+    mesh->getMaterial()->bindTexture();
+
 
     glBindVertexArray(vao);
+
 
     mesh->setVAO(vao);
     mesh->setVBO(vbo);

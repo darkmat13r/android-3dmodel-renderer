@@ -90,8 +90,6 @@ void Camera::Init() {
 void Camera::OnMove(int DeltaX, int deltaY) {
     m_AngleH += (float) DeltaX / 20;
     m_AngleV += (float) deltaY / 20;
-
-
 }
 
 void Camera::Update() {

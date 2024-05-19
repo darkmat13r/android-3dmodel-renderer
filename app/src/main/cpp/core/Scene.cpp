@@ -20,7 +20,7 @@ static constexpr float kProjectionHalfHeight = 2.f;
  * The near plane distance for the projection matrix. Since this is an orthographic projection
  * matrix, it's convenient to have negative values for sorting (and avoiding z-fighting at 0).
  */
-static constexpr float kProjectionNearPlane = 0.1;
+static constexpr float kProjectionNearPlane = 0.01;
 
 /*!
  * The far plane distance for the projection matrix. Since this is an orthographic porjection
@@ -42,7 +42,7 @@ void Scene::render() {
 
     Mat4f View = mainCamera_->Matrix();
 
-    for ( auto component : components_) {
+    for ( const auto& component : components_) {
         if (component->transform) {
             component->transform->Rotate(0, rotation_, 0);
             Mat4f model = component->transform->Matrix();
@@ -59,7 +59,7 @@ void Scene::update() {
     for (const auto &component: components_) {
         if (component && component->transform) {
             component->transform->Rotate(0, rotation_, 0);
-            //  component->update();
+            component->update();
         } else {
             aout << "Update::Component transform is gone " << component << std::endl;
         }

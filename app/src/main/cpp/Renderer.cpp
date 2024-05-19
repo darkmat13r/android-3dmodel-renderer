@@ -163,7 +163,7 @@ void Renderer::initRenderer() {
 
 
     // setup any other gl related global states
-    glClearColor(DARK_GRAY);
+    glClearColor(CORNFLOWER_BLUE);
 
     // enable alpha globally for now, you probably don't want to do this in a game
     glEnable(GL_BLEND);
