@@ -12,7 +12,7 @@
 
 class Transform {
 public :
-    Transform() : position_(0, 0, 0), rotation_(0, Vector3(0, 0, 0)), scale_(1, 1, 1) {}
+    Transform() : position_(0, 0, 0), rotation_(0, glm::vec3(0, 0, 0)), scale_(1, 1, 1) {}
     void SetScale(float scaleX, float scaleY, float scaleZ);
     void SetPosition(float x, float y, float z);
     void SetRotation(float x, float y, float z);
@@ -20,9 +20,9 @@ public :
     Mat4f Matrix();
 
 private:
-    Vector3 position_;
+    glm::vec3 position_;
     Quaternion rotation_;
-    Vector3 scale_;
+    glm::vec3 scale_;
 };
 
 

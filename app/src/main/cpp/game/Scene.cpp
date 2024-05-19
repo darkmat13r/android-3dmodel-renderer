@@ -3,7 +3,7 @@
 //
 
 #include "Scene.h"
-#include "../Shader.h"
+#include "../unused/ShaderBase.h"
 #include "../Model.h"
 #include "../game/GameObject.h"
 
@@ -12,7 +12,7 @@ void Scene::Instantiate(const std::shared_ptr<Model> &gameObject) {
 }
 
 
-void Scene::Render(Shader &shader) {
+void Scene::Render(ShaderBase &shader) {
     if (!gameObjects.empty()) {
         for (const auto &gameObject: gameObjects) {
             // Use dynamic_cast to check if the gameObject is of type Model.

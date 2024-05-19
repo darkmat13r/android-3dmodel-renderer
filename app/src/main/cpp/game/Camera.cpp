@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+#include "glm/geometric.hpp"
 
 void Camera::SetPosition(float x, float y, float z) {
     pos_.x = x;
@@ -21,7 +22,7 @@ void Camera::OnDown() {
 }
 
 void Camera::OnLeft() {
-    /*  Vector3 left = target_.cross(up_);
+    /*  glm::vec3 left = target_.cross(up_);
       left.Normalize();
       left *= speed_;
       pos_ += left;*/
@@ -30,7 +31,7 @@ void Camera::OnLeft() {
 }
 
 void Camera::OnRight() {
-    /*  Vector3 right = up_.cross(target_);
+    /*  glm::vec3 right = up_.cross(target_);
       right.Normalize();
       right *= speed_;
       pos_ += right;*/
@@ -65,10 +66,9 @@ Mat4f Camera::Matrix() {
 
 
 void Camera::Init() {
-    Vector3 HTarget = Vector3(target_.x, 0, target_.z);
-    HTarget.Normalize();
+    glm::vec3 HTarget = glm::normalize(glm::vec3(target_.x, 0, target_.z));
 
-    float Angle = ToDegree(asinf(abs(HTarget.z)));
+    auto Angle = ToDegree(asinf(abs(HTarget.z)));
 
     if (HTarget.z >= 0.0f) {
         if (HTarget.x >= 0.0f) {
@@ -95,25 +95,24 @@ void Camera::OnMove(int DeltaX, int deltaY) {
 }
 
 void Camera::Update() {
-    Vector3 YAxis(0, 1, 0);
+    glm::vec3 YAxis(0, 1, 0);
 
-    Vector3 View(1, 0, 0);
-    View.Rotate(m_AngleH, YAxis);
-    View.Normalize();
+    glm::vec3 View(1, 0, 0);
+    Rotate(m_AngleH, YAxis, View);
+    View = glm::normalize(View);
 
 
-    Vector3 U = YAxis.cross(View);
-    U.Normalize();
-    View.Rotate(m_AngleV, U);
-    target_ = View;
-    target_.Normalize();
+    glm::vec3 U = glm::cross(YAxis, View);;
+    U = glm::normalize(U);
+    Rotate(m_AngleV, U, View);
 
-    up_ = target_.cross(U);
-    up_.Normalize();
+    target_ = glm::normalize(View);
+
+    up_ = glm::normalize(glm::cross(target_, U));
 }
 
-Camera::Camera(int WindowWidth, int WindowHeight, const Vector3 &Pos, const Vector3 &Target,
-               const Vector3 &Up) {
+Camera::Camera(int WindowWidth, int WindowHeight, const glm::vec3 &Pos, const glm::vec3 &Target,
+               const glm::vec3 &Up) {
 
     m_windowWidth = WindowWidth;
     m_windowHeight = WindowHeight;
@@ -131,6 +130,16 @@ void Camera::OnRender() {
     m_OnLeftEdge = false;
     m_OnRightEdge = false;
 
+}
+
+void Camera::Rotate(float Angle, const glm::vec3 &V, glm::vec3 &target) {
+    Quaternion RotationQ(Angle, V);
+    Quaternion ConjugateQ = RotationQ.Conjugate();
+    Quaternion W = RotationQ * target * ConjugateQ;
+
+    target.x = W.x;
+    target.y = W.y;
+    target.z = W.z;
 }
 
 

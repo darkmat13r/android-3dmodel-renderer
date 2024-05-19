@@ -1,5 +1,7 @@
 #include "mat4f.h"
 #include "math.h"
+#include "glm/vec3.hpp"
+#include "glm/geometric.hpp"
 
 // Default constructor initializing to identity matrix
 Mat4f::Mat4f() {
@@ -75,17 +77,17 @@ void Mat4f::InitTranslation(float x, float y, float z) {
 }
 
 // Initialize camera transformation matrix
-void Mat4f::InitCameraTransform(Vector3 Target, Vector3 Up) {
-    Vector3 N = Target;
-    N.Normalize();
+void Mat4f::InitCameraTransform(glm::vec3 Target, glm::vec3 Up) {
+    glm::vec3 N = glm::normalize(Target);
+    ;
 
-    Vector3 UpNorm = Up;
-    UpNorm.Normalize();
+    glm::vec3 UpNorm = Up;
+    UpNorm = glm::normalize(UpNorm);
 
-    Vector3 U = UpNorm.cross(N);
-    U.Normalize();
+    glm::vec3 U = glm::cross(UpNorm, N);
+    U = glm::normalize(U);
 
-    Vector3 V = N.cross(U);
+    glm::vec3 V = glm::cross(N, U);
 
     m[0][0] = U.x; m[0][1] = U.y; m[0][2] = U.z; m[0][3] = 0.0f;
     m[1][0] = V.x; m[1][1] = V.y; m[1][2] = V.z; m[1][3] = 0.0f;
@@ -94,7 +96,7 @@ void Mat4f::InitCameraTransform(Vector3 Target, Vector3 Up) {
 }
 
 // Initialize camera matrix with position and target
-void Mat4f::InitCamera(Vector3 target, Vector3 pos, Vector3 up) {
+void Mat4f::InitCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up) {
     Mat4f translation;
     translation.InitIdentity();
     translation.InitTranslation(-pos.x, -pos.y, -pos.z);

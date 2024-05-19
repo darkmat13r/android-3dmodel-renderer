@@ -7,7 +7,7 @@
 #include <android/imagedecoder.h>
 
 #include "AndroidOut.h"
-#include "Shader.h"
+#include "unused/ShaderBase.h"
 #include "Utility.h"
 #include "TextureAsset.h"
 #include "game/Scene.h"
@@ -37,6 +37,8 @@ aout << std::endl;\
 
 //! Color for cornflower blue. Can be sent directly to glClearColor
 #define CORNFLOWER_BLUE 100 / 255.f, 149 / 255.f, 237 / 255.f, 1
+#define DARK_GRAY 20 / 255.f, 20 / 255.f, 20 / 255.f, 1
+
 
 // Vertex shader, you'd typically load this from assets
 static const char *vertex = R"vertex(#version 300 es
@@ -92,9 +94,9 @@ GLuint VBO;
 GLuint IBO;
 GLuint gWVPLocation;
 
-Vector3 CameraPos(0.0f, 0.0f, -1.0f);
-Vector3 CameraTarget(0.0f, 0.0f, 1.0f);
-Vector3 CameraUp(0.0f, 1.0f, 0.0f);
+glm::vec3 CameraPos(0.0f, 0.0f, -1.0f);
+glm::vec3 CameraTarget(0.0f, 0.0f, 1.0f);
+glm::vec3 CameraUp(0.0f, 1.0f, 0.0f);
 Camera *mainCamera;
 
 Renderer::~Renderer() {
@@ -247,8 +249,8 @@ void Renderer::initRenderer() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    shader_ = std::unique_ptr<Shader>(
-            Shader::loadShader(vertex, fragment, "inPosition", "inUV", "uProjection"));
+    shader_ = std::unique_ptr<ShaderBase>(
+            ShaderBase::loadShader(vertex, fragment, "inPosition", "inUV", "uProjection"));
     assert(shader_);
 
     // Note: there's only one shader in this demo, so I'll activate it here. For a more complex game
@@ -256,7 +258,7 @@ void Renderer::initRenderer() {
     shader_->activate();
 
     // setup any other gl related global states
-    glClearColor(CORNFLOWER_BLUE);
+    glClearColor(DARK_GRAY);
 
     // enable alpha globally for now, you probably don't want to do this in a game
     glEnable(GL_BLEND);
@@ -299,15 +301,15 @@ void Renderer::createModels() {
      */
     std::vector<Vertex> vertices = {
             // Front face
-            Vertex(Vector3{-0.5, -0.5, 0.5}, Vector2{0, 0}), // Vertex 0
-            Vertex(Vector3{0.5, -0.5, 0.5}, Vector2{1, 0}), // Vertex 1
-            Vertex(Vector3{0.5, 0.5, 0.5}, Vector2{1, 1}), // Vertex 2
-            Vertex(Vector3{-0.5, 0.5, 0.5}, Vector2{0, 1}), // Vertex 3
+            Vertex(glm::vec3 {-0.5, -0.5, 0.5}, glm::vec2 {0, 0}), // Vertex 0
+            Vertex(glm::vec3 {0.5, -0.5, 0.5}, glm::vec2 {1, 0}), // Vertex 1
+            Vertex(glm::vec3 {0.5, 0.5, 0.5}, glm::vec2 {1, 1}), // Vertex 2
+            Vertex(glm::vec3 {-0.5, 0.5, 0.5}, glm::vec2 {0, 1}), // Vertex 3
             // Back face
-            Vertex(Vector3{-0.5, -0.5, -0.5}, Vector2{0, 0}), // Vertex 4
-            Vertex(Vector3{-0.5, 0.5, -0.5}, Vector2{1, 0}), // Vertex 5
-            Vertex(Vector3{0.5, 0.5, -0.5}, Vector2{1, 1}), // Vertex 6
-            Vertex(Vector3{0.5, -0.5, -0.5}, Vector2{0, 1}), // Vertex 7
+            Vertex(glm::vec3 {-0.5, -0.5, -0.5}, glm::vec2 {0, 0}), // Vertex 4
+            Vertex(glm::vec3 {-0.5, 0.5, -0.5}, glm::vec2 {1, 0}), // Vertex 5
+            Vertex(glm::vec3 {0.5, 0.5, -0.5}, glm::vec2 {1, 1}), // Vertex 6
+            Vertex(glm::vec3 {0.5, -0.5, -0.5}, glm::vec2 {0, 1}), // Vertex 7
     };
 
     std::vector<Index> indices = {

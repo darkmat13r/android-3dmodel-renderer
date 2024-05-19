@@ -8,12 +8,12 @@
 
 #include "GameObject.h"
 #include "../Model.h"
-#include "../Shader.h"
+#include "../unused/ShaderBase.h"
 
 class Scene {
 public:
     void Instantiate(const std::shared_ptr<Model>& gameObject);
-    void Render( Shader &shader);
+    void Render(ShaderBase &shader);
     Model * First();
     Model *Last();
 

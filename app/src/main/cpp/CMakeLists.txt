@@ -6,18 +6,19 @@ cmake_minimum_required(VERSION 3.22.1)
 project("learnopengl")
 # Include the Assimp headers
 include_directories(third_party)
+# Include directories for GLM
+include_directories(third_party/glm)
 # Creates your game shared library. The name must be the same as the
 # one used for loading in your Kotlin/Java or AndroidManifest.txt files.
 add_library(learnopengl SHARED
         main.cpp
         AndroidOut.cpp
         Renderer.cpp
-        Shader.cpp
+        unused/ShaderBase.cpp
         Model.h
         game/GameObject.cpp
         game/Scene.cpp
         math/quaternion.cpp
-        math/vector3.cpp
         math/mat4f.cpp
         game/Camera.cpp
         transform/Transform.cpp
@@ -31,6 +32,8 @@ find_package(game-activity REQUIRED CONFIG)
 
 # Specify the path to the prebuilt Assimp library
 set(assimp_libs ${CMAKE_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libassimp.so)
+
+add_subdirectory(third_party/glm)
 
 # Configure libraries CMake uses to link your target library.
 target_link_libraries(learnopengl
@@ -46,4 +49,5 @@ target_link_libraries(learnopengl
         log
         # Assimp library
         ${assimp_libs}
+        glm
 )

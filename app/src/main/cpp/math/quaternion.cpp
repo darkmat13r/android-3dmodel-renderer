@@ -3,9 +3,10 @@
 //
 
 #include "quaternion.h"
-#include "vector3.h"
+#include "math.h"
 
-Quaternion::Quaternion(float Angle, const Vector3& V)
+
+Quaternion::Quaternion(float Angle, const glm::vec3& V)
 {
     float HalfAngleInRadians = ToRadian(Angle/2);
 
@@ -44,7 +45,7 @@ Quaternion Quaternion::Conjugate() const
 }
 
 
-Quaternion operator*(const Quaternion& q, const Vector3& v)
+Quaternion operator*(const Quaternion& q, const glm::vec<3, float,(glm::qualifier)0> v)
 {
     float w = - (q.x * v.x) - (q.y * v.y) - (q.z * v.z);
     float x =   (q.w * v.x) + (q.y * v.z) - (q.z * v.y);
@@ -71,7 +72,7 @@ Quaternion operator*(const Quaternion& l, const Quaternion& r)
 
 
 
-Vector3 Quaternion::ToDegrees()
+glm::vec3 Quaternion::ToDegrees()
 {
     float f[3];
 
@@ -83,7 +84,7 @@ Vector3 Quaternion::ToDegrees()
     f[1] = ToDegree(f[1]);
     f[2] = ToDegree(f[2]);
 
-    return Vector3(f);
+    return {f[0], f[1], f[2]};
 }
 
 Quaternion::Quaternion() {
@@ -92,8 +93,3 @@ Quaternion::Quaternion() {
     z = 0;
     w = 0;
 }
-
-
-Quaternion operator*(const Quaternion& l, const Quaternion& r);
-
-Quaternion operator*(const Quaternion& q, const Vector3& v);

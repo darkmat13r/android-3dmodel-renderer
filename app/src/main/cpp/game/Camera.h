@@ -2,16 +2,18 @@
 // Created by Dark Matter on 5/13/24.
 //
 
+
+#include "GameObject.h"
+#include "math/quaternion.h"
+
 #ifndef LEARNOPENGL_CAMERA_H
 #define LEARNOPENGL_CAMERA_H
 
 
-#include "GameObject.h"
-
 class Camera : public GameObject {
 
 public:
-    Camera(int WindowWidth, int WindowHeight, const Vector3& Pos, const Vector3& Target, const Vector3& Up);
+    Camera(int WindowWidth, int WindowHeight, const glm::vec3& Pos, const glm::vec3& Target, const glm::vec3& Up);
     void Init();
 
     void SetPosition(float x, float y, float z);
@@ -29,10 +31,12 @@ public:
     void PanDown();
     Mat4f Matrix();
 
+    static void Rotate(float Angle, const glm::vec3& V,  glm::vec3& target);
+
 private :
-    Vector3 target_;
-    Vector3 pos_;
-    Vector3 up_;
+    glm::vec3 target_;
+    glm::vec3 pos_;
+    glm::vec3 up_;
     float speed_ = 0.2f;
     int m_windowWidth;
     int m_windowHeight;
@@ -46,6 +50,4 @@ private :
     bool m_OnRightEdge;
 
 };
-
-
 #endif //LEARNOPENGL_CAMERA_H

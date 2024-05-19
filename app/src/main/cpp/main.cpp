@@ -2,6 +2,7 @@
 
 #include "AndroidOut.h"
 #include "Renderer.h"
+#include "utils.h"
 
 #include <game-activity/GameActivity.cpp>
 #include <game-text-input/gametextinput.cpp>
@@ -67,10 +68,11 @@ bool motion_event_filter_func(const GameActivityMotionEvent *motionEvent) {
 void android_main(struct android_app *pApp) {
     // Can be removed, useful to ensure your code is running
     aout << "Welcome to android_main" << std::endl;
-    Assimp::Importer* importer = new Assimp::Importer();
-    Assimp::AndroidJNIIOSystem *ioSystem = new Assimp::AndroidJNIIOSystem(
+    auto *importer = new Assimp::Importer();
+    auto *ioSystem = new Assimp::AndroidJNIIOSystem(
             reinterpret_cast<ANativeActivity *>(pApp->activity));
-    ioSystem->AndroidExtractAsset("");
+    importer->SetIOHandler(ioSystem);
+
     // Register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
 

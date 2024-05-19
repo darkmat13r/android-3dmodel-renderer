@@ -2,7 +2,6 @@
 #define ANDROIDGLINVESTIGATIONS_UTILITY_H
 
 #include <cassert>
-#include "math/vector3.h"
 #include "math/quaternion.h"
 #include "math/mat4f.h"
 

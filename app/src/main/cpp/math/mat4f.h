@@ -8,7 +8,8 @@
 
 #include <cmath>
 #include <memory>
-#include "vector3.h"
+#include "glm/detail/type_vec3.hpp"
+#include "glm/vec3.hpp"
 
 struct Mat4f {
     float m[4][4];
@@ -27,8 +28,8 @@ struct Mat4f {
     void InitRotationZ(float z);
     void InitRotationMatrix(float rotationX, float rotationY, float rotationZ);
     void InitTranslation(float x, float y, float z);
-    void InitCameraTransform(Vector3 Target, Vector3 Up);
-    void InitCamera(Vector3 target, Vector3 pos, Vector3 up);
+    void InitCameraTransform(glm::vec3 Target, glm::vec3 Up);
+    void InitCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up);
     void InitIdentity();
 
     // Static method to create an identity matrix and return a unique_ptr
