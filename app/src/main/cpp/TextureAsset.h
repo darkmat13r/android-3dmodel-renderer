@@ -29,6 +29,7 @@ private:
     inline TextureAsset(GLuint textureId) : textureID_(textureId) {}
 
     GLuint textureID_;
+
 };
 
 #endif //ANDROIDGLINVESTIGATIONS_TEXTUREASSET_H

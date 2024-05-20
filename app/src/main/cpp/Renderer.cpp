@@ -72,9 +72,8 @@ void Renderer::render() {
     // changed.
     updateRenderArea();
 
-
-    // clear the color buffer
-    glClear(GL_COLOR_BUFFER_BIT);
+    // Clear the screen and depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     scene_->render();
 
@@ -166,7 +165,7 @@ void Renderer::initRenderer() {
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
-
+    glEnable(GL_DEPTH_TEST);
 
     // setup any other gl related global states
     glClearColor(CORNFLOWER_BLUE);
@@ -218,18 +217,15 @@ void Renderer::createModels() {
     // Note: there is no texture management in this sample, so if you reuse an image be careful not
     // to load it repeatedly. Since you get a shared_ptr you can safely reuse it in many models.
     auto assetManager = app_->activity->assetManager;
-    auto spAndroidRobotTexture = TextureAsset::loadAsset(assetManager, "test_models/texture_2.png");
-
-
-    std::shared_ptr<Material> material
-            = std::make_shared<Material>(spAndroidRobotTexture);
 
     auto *importer = new Assimp::Importer();
     auto *ioSystem = new Assimp::AndroidJNIIOSystem(
             reinterpret_cast<ANativeActivity *>(app_->activity));
-    importer->SetIOHandler(ioSystem);
-    std::shared_ptr<MeshRenderer> meshRenderer = ModelImporter::import(importer, material);
 
+    importer->SetIOHandler(ioSystem);
+
+    std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
+    std::shared_ptr<MeshRenderer> meshRenderer = modelImporter->import(importer);
 
     scene_->addObject(meshRenderer);
 
