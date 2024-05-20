@@ -30,11 +30,19 @@ precision mediump float;
 in vec2 fragUV;
 
 uniform sampler2D uTexture;
+uniform vec4 uDiffColor;
+uniform bool uUseTexture;
 
 out vec4 outColor;
 
 void main() {
-    outColor = texture(uTexture, fragUV);
+    if(uUseTexture){
+        vec4 textureColor  = texture(uTexture, fragUV);
+        outColor =  textureColor;
+    }else{
+        outColor =  uDiffColor;
+    }
+
 }
 )fragment";
 
@@ -65,10 +73,14 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
         glDeleteProgram(program_);
     } else {
         projectionMatrixLocation_ = glGetUniformLocation(program_, "uProjection");
+        diffuseColorLocation_ = glGetUniformLocation(program_, "uDiffColor");
+        useDiffText_ = glGetUniformLocation(program_, "uUseTexture");
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
         uvAttribute_ = glGetAttribLocation(program_, "inUV");
         if (projectionMatrixLocation_ == -1
             || positionAttribute_ == -1
+            || useDiffText_ == -1
+            || diffuseColorLocation_ == -1
             || uvAttribute_ == -1) {
             glDeleteProgram(program_);
         }
@@ -124,5 +136,13 @@ void Shader::unbind() const{
 
 void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const{
     glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
+}
+
+GLint Shader::getDiffColorLocation() const {
+    return diffuseColorLocation_;
+}
+
+GLint Shader::getUseDiffTextureLocation() const {
+    return useDiffText_;
 }
 

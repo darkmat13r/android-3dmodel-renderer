@@ -11,13 +11,23 @@
 
 class Material {
 public:
-    explicit Material(std::shared_ptr<TextureAsset> textureAsset);
+    Material(std::shared_ptr<TextureAsset> textureAsset);
+
+    Material(glm::vec4 diffuseColor);
+    Material();
+
     ~Material();
-    Shader* getShader() const;
+
+    Shader *getShader() const;
+
     void bindTexture() const;
+
 private :
     std::shared_ptr<Shader> shader_;
     std::shared_ptr<TextureAsset> diffuseTexture_;
+    glm::vec4 diffuseColor_;
+
+    void loadShader();
 };
 
 

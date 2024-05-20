@@ -22,6 +22,8 @@ public:
     void setProjectionMatrix(const Mat4f *projectionMatrix)  const;
 
     GLint getPositionAttrib() const;
+    GLint getDiffColorLocation() const;
+    GLint getUseDiffTextureLocation() const;
 
     GLint getUvAttrib() const;
 
@@ -30,6 +32,8 @@ private:
     GLint projectionMatrixLocation_ = 0;
     GLint positionAttribute_ = 0;
     GLint uvAttribute_ = 0;
+    GLint diffuseColorLocation_ = 0;
+    GLint useDiffText_ = 0;
 
     std::string readFile(std::string &fileName) const;
 
