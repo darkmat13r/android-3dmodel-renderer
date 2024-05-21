@@ -18,8 +18,7 @@ private:
 public:
     ModelImporter(AAssetManager *aAssetManager);
 
-    std::shared_ptr<MeshRenderer>
-    import(Assimp::Importer *importer);
+    std::shared_ptr<MeshRenderer> import(Assimp::Importer *importer, const char* modelPath);
 
     void loadMesh(std::shared_ptr<MeshRenderer> &meshRenderer,
                   const aiScene *aiScene, const char *modelPath);

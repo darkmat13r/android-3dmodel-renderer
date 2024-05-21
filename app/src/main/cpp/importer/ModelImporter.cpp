@@ -10,9 +10,8 @@
 #include "mesh/Mesh.h"
 #include "mesh/MeshRenderer.h"
 
-std::shared_ptr<MeshRenderer> ModelImporter::import(Assimp::Importer *importer) {
+std::shared_ptr<MeshRenderer> ModelImporter::import(Assimp::Importer *importer, const char* modelPath) {
     std::shared_ptr<MeshRenderer> meshRenderer = std::make_shared<MeshRenderer>();
-    const char *modelPath = "test_2/scene.gltf";
     auto aiScene = importer->ReadFile(modelPath, ASSIMP_LOAD_FLAGS);
     aout << "aiScene imported . " << aiScene << std::endl;
     loadMesh(meshRenderer, aiScene, modelPath);
@@ -112,7 +111,7 @@ std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiM
         }
 
         auto texture = TextureAsset::loadAsset(assetManager, fullPath);
-        return std::__ndk1::make_shared<Material>(texture);
+        return std::make_shared<Material>(texture);
     }
     return std::make_shared<Material>();
 }

@@ -225,9 +225,17 @@ void Renderer::createModels() {
     importer->SetIOHandler(ioSystem);
 
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
-    std::shared_ptr<MeshRenderer> meshRenderer = modelImporter->import(importer);
+    //Load one model
+    std::shared_ptr<MeshRenderer> carObject = modelImporter->import(importer, "stylized_sports_car_360/scene.gltf");
+    carObject->transform->SetPosition(2, -2, 4);
+    carObject->transform->SetScale(0.2, 0.2, 0.2);
+    carObject->transform->SetRotation(90, 0, 0);
+    //scene_->addObject(carObject);
 
-    scene_->addObject(meshRenderer);
+    //Load one model
+    std::shared_ptr<MeshRenderer> alienObject = modelImporter->import(importer, "test_2/scene.gltf");
+
+    scene_->addObject(alienObject);
 
 }
 
