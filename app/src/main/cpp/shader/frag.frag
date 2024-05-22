@@ -28,5 +28,6 @@ void main() {
     }else{
         finalColor =  uMaterial.diffuseColor;
     }
-    outColor = finalColor * uMaterial.ambientColor * uLight.color * uLight.ambientIntensity;
+    vec4 lightColor = vec4(uMaterial.ambientColor.rgb, 1.0) * uLight.color * uLight.ambientIntensity;
+    outColor = finalColor ;
 }

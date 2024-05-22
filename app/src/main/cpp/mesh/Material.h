@@ -11,8 +11,8 @@
 
 class Material {
 public:
-    glm::vec4 diffuseColor;
-    glm::vec4 ambientColor;
+    glm::vec4 diffuseColor = {1.0, 1.0, 1.0, 1.0};
+    glm::vec4 ambientColor = {1.0, 1.0, 1.0, 1.0};
 
     Material(std::shared_ptr<TextureAsset> textureAsset);
     Material(glm::vec4 diffuseColor);

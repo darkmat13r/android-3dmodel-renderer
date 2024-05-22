@@ -47,9 +47,6 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
             || positionAttribute_ == -1
             || useDiffText_ == -1
             || diffuseColorLocation_ == -1
-            || ambientColorLocation_ == -1
-            || lightColorLocation_ == -1
-            || lightAmbientIntensityLocation_ == -1
             || uvAttribute_ == -1) {
             glDeleteProgram(program_);
         }
