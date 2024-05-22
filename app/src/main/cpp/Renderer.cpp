@@ -226,16 +226,14 @@ void Renderer::createModels() {
 
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
     //Load one model
-    std::shared_ptr<MeshRenderer> carObject = modelImporter->import(importer, "stylized_sports_car_360/scene.gltf");
-    carObject->transform->SetPosition(2, -2, 4);
-    carObject->transform->SetScale(0.2, 0.2, 0.2);
-    carObject->transform->SetRotation(90, 0, 0);
-    //scene_->addObject(carObject);
+    std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
+                                                                      "stylized_sports_car_360/scene.gltf");
+    environment->transform->SetPosition(0, -2, 4);
+    environment->transform->SetScale(0.5, 0.5, 0.5);
+    environment->transform->SetRotation(90, 0, 0);
 
-    //Load one model
-    std::shared_ptr<MeshRenderer> alienObject = modelImporter->import(importer, "test_2/scene.gltf");
+    scene_->addObject(environment);
 
-    scene_->addObject(alienObject);
 
 }
 
@@ -344,9 +342,9 @@ void Renderer::handleInput() {
 }
 
 void Renderer::initScene() {
-    if(scene_ != nullptr){
+    if (scene_ != nullptr) {
         scene_->setSize(width_, height_);
-    }else{
+    } else {
         scene_ = std::make_shared<Scene>(width_, height_);
         createModels();
     }

@@ -22,12 +22,16 @@ public:
 
     void bindTexture() const;
 
+    void unbindTexture() const;
+
+
 private :
     std::shared_ptr<Shader> shader_;
     std::shared_ptr<TextureAsset> diffuseTexture_;
     glm::vec4 diffuseColor_;
 
     void loadShader();
+
 };
 
 

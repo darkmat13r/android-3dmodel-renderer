@@ -18,10 +18,13 @@ void MeshRenderer::render(Mat4f *projectionMatrix) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
-        shader->bind();
+
+        mesh->getMaterial()->bindTexture();
         glBindVertexArray(mesh->getVAO());
         glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
         glBindVertexArray(0);
+        mesh->getMaterial()->unbindTexture();
+
     }
 }
 
@@ -66,8 +69,6 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                  sizeof(Index) * mesh->getIndexCount(),
                  mesh->getIndexData(), GL_STATIC_DRAW);
-
-    mesh->getMaterial()->bindTexture();
 
 
     glBindVertexArray(vao);

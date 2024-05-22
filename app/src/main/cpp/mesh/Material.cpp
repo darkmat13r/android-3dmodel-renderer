@@ -37,12 +37,19 @@ void Material::bindTexture() const {
     if (diffuseTexture_) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseTexture_->getTextureID());
+        aout << "Bind Text : " << diffuseTexture_->getTextureID() << std::endl;
         glUniform1i(shader_->getUseDiffTextureLocation(), GL_TRUE);
     }else {
         glUniform1i(shader_->getUseDiffTextureLocation(), GL_FALSE);
         //Push Color to fragment shader
         glUniform4fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor_.x);
     }
+}
+
+
+void Material::unbindTexture() const {
+    aout << "Unbind Text : " << diffuseTexture_->getTextureID() << std::endl;
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Material::Material() {
