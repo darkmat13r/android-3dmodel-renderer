@@ -4,13 +4,13 @@ precision mediump float;
 in vec2 fragUV;
 
 struct Material{
-    vec4 diffuseColor;
-    vec4 ambientColor;
+    vec3 diffuseColor;
+    vec3 ambientColor;
     bool useTexture;
 };
 
 struct Light{
-    vec4 color;
+    vec3 color;
     float ambientIntensity;
 };
 
@@ -26,8 +26,8 @@ void main() {
         vec4 textureColor  = texture(uTexture, fragUV);
         finalColor =  textureColor;
     }else{
-        finalColor =  uMaterial.diffuseColor;
+        finalColor =  vec4(uMaterial.diffuseColor, 1.0);
     }
-    vec4 lightColor = vec4(uMaterial.ambientColor.rgb, 1.0) * uLight.color * uLight.ambientIntensity;
-    outColor = finalColor ;
+    vec3 lightColor = uMaterial.ambientColor * uLight.color * uLight.ambientIntensity;
+    outColor = finalColor * vec4(lightColor, 1.0);
 }

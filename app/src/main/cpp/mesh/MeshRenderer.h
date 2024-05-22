@@ -20,7 +20,7 @@ public :
 
     void onCreate() override;
 
-    void render(Mat4f *f) override;
+    void render(Mat4f *projectionMatrix, Light *light);
 
     void update() override;
 
@@ -28,7 +28,6 @@ public :
 
     void addMesh(const std::shared_ptr<Mesh> &mesh);
 
-    void setLight(Light *light);
 
 private :
     std::vector<std::shared_ptr<Mesh>> meshes_;

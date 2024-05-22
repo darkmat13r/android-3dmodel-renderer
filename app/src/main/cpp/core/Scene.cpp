@@ -50,10 +50,6 @@ void Scene::render() {
         auto *light = dynamic_cast<Light *>(component.get());
         if (pMeshRenderer != nullptr) {
             if (component->transform) {
-                component->transform->Rotate(0, rotation_, 0);
-                Mat4f model = component->transform->Matrix();
-                Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
-                component->render(&finalProjectionMatrix);
                 meshRenderers.push_back(pMeshRenderer);
             } else {
                 aout << "Render::Component transform is gone " << component->transform << std::endl;
@@ -63,8 +59,11 @@ void Scene::render() {
         }
     }
     for (const auto &pLight: lights) {
-        for (const auto &item: meshRenderers) {
-            item->setLight(pLight);
+        for (const auto &component: meshRenderers) {
+            component->transform->Rotate(0, rotation_, 0);
+            Mat4f model = component->transform->Matrix();
+            Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
+            component->render(&finalProjectionMatrix, pLight);
         }
     }
 }

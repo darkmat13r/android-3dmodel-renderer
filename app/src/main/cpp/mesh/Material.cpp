@@ -11,7 +11,7 @@ Shader *Material::getShader() const {
 }
 
 Material::Material(std::shared_ptr<TextureAsset> textureAsset) : diffuseTexture_(
-        std::move(textureAsset)), diffuseColor(0, 0, 0, 1) {
+        std::move(textureAsset)), diffuseColor(1, 1, 1) {
     loadShader();
 
 }
@@ -41,9 +41,9 @@ void Material::bindTexture() const {
     }else {
         glUniform1i(shader_->getUseDiffTextureLocation(), GL_FALSE);
         //Push Color to fragment shader
-        glUniform4fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor.x);
+        glUniform3fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor.x);
     }
-    glUniform4fv(shader_->getAmbientColorLocation(), 1, (const GLfloat *) &ambientColor.x);
+    glUniform3fv(shader_->getAmbientColorLocation(), 1, (const GLfloat *) &ambientColor.x);
 }
 
 
