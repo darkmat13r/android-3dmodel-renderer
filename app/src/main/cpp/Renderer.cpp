@@ -167,7 +167,7 @@ void Renderer::initRenderer() {
     glEnable(GL_DEPTH_TEST);
 
     // setup any other gl related global states
-    glClearColor(CORNFLOWER_BLUE);
+    glClearColor(DARK_GRAY);
 
     // enable alpha globally for now, you probably don't want to do this in a game
     glEnable(GL_BLEND);
@@ -213,9 +213,9 @@ void Renderer::createModels() {
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
-                                                                      "stylized_sports_car_360/scene.gltf");
-    environment->transform->SetPosition(0, -2, 4);
-    environment->transform->SetScale(0.5, 0.5, 0.5);
+                                                                      "soul_stealer_bard_fan_art/scene.gltf");
+    environment->transform->SetPosition(0, -1, 4);
+    environment->transform->SetScale(0.01, 0.01, 0.01);
     environment->transform->SetRotation(90, 0, 0);
 
     scene_->addObject(environment);
