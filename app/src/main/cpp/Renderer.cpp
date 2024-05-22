@@ -203,19 +203,7 @@ void Renderer::updateRenderArea() {
  * @brief Create any demo models we want for this demo.
  */
 void Renderer::createModels() {
-    /*
-     * This is a square:
-     * 0 --- 1
-     * | \   |
-     * |  \  |
-     * |   \ |
-     * 3 --- 2
-     */
 
-    // loads an image and assigns it to the square.
-    //
-    // Note: there is no texture management in this sample, so if you reuse an image be careful not
-    // to load it repeatedly. Since you get a shared_ptr you can safely reuse it in many models.
     auto assetManager = app_->activity->assetManager;
 
     auto *importer = new Assimp::Importer();
@@ -234,6 +222,9 @@ void Renderer::createModels() {
 
     scene_->addObject(environment);
 
+    std::shared_ptr<Light> light = std::make_shared<Light>();
+
+    scene_->addObject(light);
 
 }
 

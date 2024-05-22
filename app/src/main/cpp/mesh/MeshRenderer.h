@@ -8,10 +8,12 @@
 
 #include "Mesh.h"
 #include "core/Component.h"
+#include "light/Light.h"
 
 class MeshRenderer : public Component {
 public :
     MeshRenderer();
+
     ~MeshRenderer();
 
     void onAttach() override;
@@ -24,11 +26,14 @@ public :
 
     void onDestroy() override;
 
-    void addMesh(const std::shared_ptr<Mesh>& mesh);
+    void addMesh(const std::shared_ptr<Mesh> &mesh);
+
+    void setLight(Light *light);
 
 private :
     std::vector<std::shared_ptr<Mesh>> meshes_;
-    float  rotation;
+    float rotation;
+
     void initMesh(Mesh *mesh) const;
 };
 

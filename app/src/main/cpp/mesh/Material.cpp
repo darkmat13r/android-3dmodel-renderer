@@ -11,7 +11,7 @@ Shader *Material::getShader() const {
 }
 
 Material::Material(std::shared_ptr<TextureAsset> textureAsset) : diffuseTexture_(
-        std::move(textureAsset)), diffuseColor_(0, 0, 0, 1) {
+        std::move(textureAsset)), diffuseColor(0, 0, 0, 1) {
     loadShader();
 
 }
@@ -24,7 +24,7 @@ void Material::loadShader() {
 }
 
 
-Material::Material(glm::vec4 diffuseColor) : diffuseColor_(diffuseColor) {
+Material::Material(glm::vec4 diffuseColor) : diffuseColor(diffuseColor) {
     loadShader();
 }
 
@@ -37,23 +37,22 @@ void Material::bindTexture() const {
     if (diffuseTexture_) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseTexture_->getTextureID());
-        aout << "Bind Text : " << diffuseTexture_->getTextureID() << std::endl;
         glUniform1i(shader_->getUseDiffTextureLocation(), GL_TRUE);
     }else {
         glUniform1i(shader_->getUseDiffTextureLocation(), GL_FALSE);
         //Push Color to fragment shader
-        glUniform4fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor_.x);
+        glUniform4fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor.x);
     }
+    glUniform4fv(shader_->getAmbientColorLocation(), 1, (const GLfloat *) &ambientColor.x);
 }
 
 
 void Material::unbindTexture() const {
-    aout << "Unbind Text : " << diffuseTexture_->getTextureID() << std::endl;
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Material::Material() {
-    diffuseColor_ = glm::vec4 (0, 0, 0, 1);
+    diffuseColor = glm::vec4 (0, 0, 0, 1);
     loadShader();
 }
 

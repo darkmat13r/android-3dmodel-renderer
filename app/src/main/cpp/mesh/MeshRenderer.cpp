@@ -4,6 +4,7 @@
 
 #include "MeshRenderer.h"
 #include "AndroidOut.h"
+#include "core/Behaviour.h"
 
 MeshRenderer::MeshRenderer() {
     transform->SetRotation(0, 0, 0);
@@ -17,14 +18,14 @@ void MeshRenderer::render(Mat4f *projectionMatrix) {
     for (const auto &mesh: meshes_) {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
-        shader->setProjectionMatrix(projectionMatrix);
-
+        shader->bind();
         mesh->getMaterial()->bindTexture();
+        shader->setProjectionMatrix(projectionMatrix);
         glBindVertexArray(mesh->getVAO());
         glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
-        glBindVertexArray(0);
         mesh->getMaterial()->unbindTexture();
-
+        shader->unbind();
+        glBindVertexArray(0);
     }
 }
 
@@ -121,6 +122,12 @@ void MeshRenderer::onDestroy() {
         Material* material = mesh->getMaterial();
         Shader* shader  = material->getShader();
         shader->unbind();
+    }
+}
+
+void MeshRenderer::setLight( Light *light) {
+    for (const auto &mesh : meshes_) {
+        light->bind(mesh->getMaterial()->getShader());
     }
 }
 

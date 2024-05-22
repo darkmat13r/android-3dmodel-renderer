@@ -74,7 +74,7 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
             if(aiMaterial->mNumProperties > 0){
                 aiColor3D color  (0.f, 0.f, 0.f);
                 aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-                return std::make_shared<Material>(glm::vec4 (color.r, color.g, color.b, 1.f));
+                auto material =  std::make_shared<Material>();
             }
         }
     }
