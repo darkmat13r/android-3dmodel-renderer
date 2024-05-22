@@ -5,6 +5,7 @@
 
 std::shared_ptr<TextureAsset>
 TextureAsset::loadAsset(AAssetManager *assetManager, const std::string &assetPath) {
+    aout << "LoadAsset :" << assetPath << std::endl;
     // Get the image from asset manager
     auto pAndroidRobotPng = AAssetManager_open(
             assetManager,

@@ -82,7 +82,6 @@ void Renderer::render() {
         aout << "OpenGL error in Renderer::render():" << err;
     }
 
-
     scene_->update();
 
     auto swapResult = eglSwapBuffers(display_, surface_);
@@ -187,10 +186,9 @@ void Renderer::updateRenderArea() {
     if (width != width_ || height != height_) {
         width_ = width;
         height_ = height;
-        //TODO create scene here
-        initScene();
-        // get some demo models into memory
 
+
+        initScene();
 
         glViewport(0, 0, width, height);
 

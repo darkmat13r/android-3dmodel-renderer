@@ -11,6 +11,8 @@
 
 class Material {
 public:
+    std::string materialName;
+
     glm::vec3 diffuseColor = {1.0, 1.0, 1.0};
     glm::vec3 ambientColor = {1.0, 1.0, 1.0};
 

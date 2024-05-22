@@ -14,17 +14,22 @@ MeshRenderer::MeshRenderer() {
 
 
 void MeshRenderer::render(Mat4f *projectionMatrix, Light *light) {
+    unsigned int textureN = 0;
     for (const auto &mesh: meshes_) {
         Material *material = mesh->getMaterial();
         Shader *shader = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
         shader->bind();
+
         material->bindTexture();
+
         light->bind(shader);
 
         glBindVertexArray(mesh->getVAO());
         glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);
         glBindVertexArray(0);
+        material->unbindTexture();
+        textureN++;
        // shader->unbind();
     }
 }

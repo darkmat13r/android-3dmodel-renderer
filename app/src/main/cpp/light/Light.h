@@ -17,8 +17,8 @@ enum LightType {
 class Light : public Behaviour {
 public:
     Light();
-    glm::vec4 color = {1.0, 0.0, 0.0, 1.0};
-    float ambientIntensity = 0.6;
+    glm::vec4 color = {1.0, 1.0, 1.0, 1.0};
+    float ambientIntensity = 1.0;
 
     void bind(Shader *shader) override;
 };

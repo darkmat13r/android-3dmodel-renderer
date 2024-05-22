@@ -10,7 +10,8 @@
 #include "mesh/Mesh.h"
 #include "mesh/MeshRenderer.h"
 
-std::shared_ptr<MeshRenderer> ModelImporter::import(Assimp::Importer *importer, const char* modelPath) {
+std::shared_ptr<MeshRenderer>
+ModelImporter::import(Assimp::Importer *importer, const char *modelPath) {
     std::shared_ptr<MeshRenderer> meshRenderer = std::make_shared<MeshRenderer>();
     auto aiScene = importer->ReadFile(modelPath, ASSIMP_LOAD_FLAGS);
     aout << "aiScene imported . " << aiScene << std::endl;
@@ -27,10 +28,10 @@ void ModelImporter::loadMesh(std::shared_ptr<MeshRenderer> &meshRenderer,
 
         loadSingleMesh(aiMesh, vertices, indices);
 
-        std::shared_ptr<Material> material = loadMaterial(aiScene,  modelPath);
+        std::shared_ptr<Material> material = loadMaterial(aiScene, aiMesh, modelPath);
 
         std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(vertices, indices,
-                                                                            material);
+                                                            material);
         meshRenderer->addMesh(mesh);
     }
 }
@@ -62,21 +63,21 @@ void ModelImporter::loadSingleMesh(const aiMesh *aiMesh, std::vector<Vertex> &ve
 }
 
 std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
-                                  std::string path) {
+                                                      const aiMesh *aiMesh,
+                                                      std::string path) {
 
 
-    for (int i = 0; i < pScene->mNumMaterials; ++i) {
-        if(pScene->mMaterials){
-            auto aiMaterial = pScene->mMaterials[i];
-            if (aiMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-                return getDiffuseTexture(aiMaterial, path);
-            }
-            if(aiMaterial->mNumProperties > 0){
-                aiColor3D color  (0.f, 0.f, 0.f);
-                aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-                auto material =  std::make_shared<Material>();
-            }
+    if (pScene->mMaterials) {
+        auto aiMaterial = pScene->mMaterials[aiMesh->mMaterialIndex];
+
+        if (aiMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
+            return getDiffuseTexture(aiMaterial, path);
+        } else if (aiMaterial->mNumProperties > 0) {
+            aiColor3D color(0.f, 0.f, 0.f);
+            aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+            return std::make_shared<Material>();
         }
+
     }
     return std::make_shared<Material>();
 }
@@ -86,11 +87,11 @@ std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiM
     aiString materialMath;
     std::string::size_type slashIndex = path.find_last_of("/");
     std::string dir;
-    if(slashIndex == std::string::npos){
+    if (slashIndex == std::string::npos) {
         dir = "";
-    }else if(slashIndex == 0){
+    } else if (slashIndex == 0) {
         dir = "/";
-    }else{
+    } else {
         dir = path.substr(0, slashIndex);
     }
 
@@ -98,25 +99,27 @@ std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiM
                                NULL, NULL) == AI_SUCCESS) {
         std::string p(materialMath.data);
 
-        if(p.substr(0, 2) == ".\\"){
+        if (p.substr(0, 2) == ".\\") {
             p = p.substr(2, p.size() - 2);
         }
         std::string fullPath = getStringAfterAssets(p);
         std::string::size_type lastIndex = p.find("assets/");
 
-        if(lastIndex == std::string::npos){
-           fullPath = dir + "/" + p;
-        }else{
+        if (lastIndex == std::string::npos) {
+            fullPath = dir + "/" + p;
+        } else {
             fullPath = getStringAfterAssets(p);
         }
 
         auto texture = TextureAsset::loadAsset(assetManager, fullPath);
-        return std::make_shared<Material>(texture);
+        auto material = std::make_shared<Material>(texture);
+        material->materialName = fullPath;
+        return material;
     }
     return std::make_shared<Material>();
 }
 
-std::string ModelImporter::getStringAfterAssets(const std::string& filePath) {
+std::string ModelImporter::getStringAfterAssets(const std::string &filePath) {
     const std::string target = "assets/";
     size_t pos = filePath.find(target);
     if (pos != std::string::npos) {
