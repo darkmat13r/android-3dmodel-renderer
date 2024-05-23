@@ -13,11 +13,11 @@
 class Transform {
 public :
     Transform();
-    void SetScale(float scaleX, float scaleY, float scaleZ);
-    void SetPosition(float x, float y, float z);
-    void SetRotation(float x, float y, float z);
-    void Rotate(float x, float y, float z);
-    Mat4f Matrix();
+    void setScale(float scaleX, float scaleY, float scaleZ);
+    void setPosition(float x, float y, float z);
+    void setRotation(float x, float y, float z);
+    void rotate(float x, float y, float z);
+    glm::mat4 matrix() ;
 
 private:
     glm::vec3 position_;

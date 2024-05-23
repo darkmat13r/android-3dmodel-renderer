@@ -23,15 +23,15 @@ public:
      * @return the generated matrix, this will be the same as @a outMatrix so you can chain calls
      *     together if needed
      */
-    static Mat4f *
-    buildPerspectiveMat(Mat4f *outMatrix, float halfHeight, float aspect, float near,
+    static glm::mat4 *
+    buildPerspectiveMat(glm::mat4 *outMatrix, float halfHeight, float aspect, float near,
                         float far);
 
     static float *buildIdentityMatrix(float *outMatrix);
 
 
-    static Mat4f *
-    buildOrthographicMatrix(Mat4f *outMatrix, float halfHeight, float aspect, float near,
+    static glm::mat4 *
+    buildOrthographicMatrix(glm::mat4 *outMatrix, float halfHeight, float aspect, float near,
                             float far);
 };
 

@@ -40,13 +40,13 @@ Camera *Scene::getMainCamera() const {
 void Scene::render() {
     mainCamera_->OnRender();
 
-    Mat4f View = mainCamera_->Matrix();
+    glm::mat4 View = mainCamera_->Matrix();
 
     for ( const auto& component : components_) {
         if (component->transform) {
-            component->transform->Rotate(0, rotation_, 0);
-            Mat4f model = component->transform->Matrix();
-            Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
+            component->transform->rotate(0, rotation_, 0);
+            glm::mat4 model = component->transform->matrix();
+            glm::mat4 finalProjectionMatrix = (*projectionMatrix_) * View * model;
             component->render(&finalProjectionMatrix);
 
         } else {
@@ -91,7 +91,7 @@ Scene::Scene(float width, float height) {
 }
 
 void Scene::setSize(float width, float height) {
-    projectionMatrix_ = std::make_shared<Mat4f>();
+    projectionMatrix_ = std::make_shared<glm::mat4>();
     Utility::buildPerspectiveMat(
             projectionMatrix_.get(),
             kProjectionHalfHeight,

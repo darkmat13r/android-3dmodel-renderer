@@ -3,6 +3,7 @@
 #include "../AndroidOut.h"
 #include "../Model.h"
 #include "../Utility.h"
+#include "gtc/type_ptr.hpp"
 
 ShaderBase *ShaderBase::loadShader(
         const std::string &vertexSource,
@@ -115,13 +116,12 @@ void ShaderBase::deactivate() const {
     glUseProgram(0);
 }
 
-void ShaderBase::drawModel(const Model* model) {
+void ShaderBase::drawModel(const Model *model) {
 
 }
 
-void ShaderBase::setProjectionMatrix(Mat4f *projectionMatrix) const {
-
-    glUniformMatrix4fv(projectionMatrix_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
+void ShaderBase::setProjectionMatrix(glm::mat4 *projectionMatrix) const {
+    glUniformMatrix4fv(projectionMatrix_, 1, GL_FALSE, glm::value_ptr(*projectionMatrix));
 }
 
 void ShaderBase::Prepare(Model *model) {

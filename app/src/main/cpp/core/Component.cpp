@@ -8,7 +8,7 @@ void Component::update() {
     //DO NOTHING
 }
 
-void Component::render(Mat4f *f) {
+void Component::render(glm::mat4 *f) {
     //DO NOTHING
 }
 

@@ -32,7 +32,7 @@ public:
 private:
     std::vector<std::shared_ptr<Component>> components_;
     std::shared_ptr<Camera> mainCamera_;
-    std::shared_ptr<Mat4f> projectionMatrix_;
+    std::shared_ptr<glm::mat4> projectionMatrix_;
     float rotation_ = 0.2;
 
 };

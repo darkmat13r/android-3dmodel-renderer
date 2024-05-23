@@ -458,7 +458,7 @@ ASSIMP_API void aiSetImportPropertyMatrix(
 // --------------------------------------------------------------------------------
 /** Construct a quaternion from a 3x3 rotation matrix.
  *  @param quat Receives the output quaternion.
- *  @param mat Matrix to 'quaternionize'.
+ *  @param mat matrix to 'quaternionize'.
  *  @see aiQuaternion(const aiMatrix3x3& pRotMatrix)
  */
 ASSIMP_API void aiCreateQuaternionFromMatrix(
@@ -469,7 +469,7 @@ ASSIMP_API void aiCreateQuaternionFromMatrix(
 /** Decompose a transformation matrix into its rotational, translational and
  *  scaling components.
  *
- * @param mat Matrix to decompose
+ * @param mat matrix to decompose
  * @param scaling Receives the scaling component
  * @param rotation Receives the rotational component
  * @param position Receives the translational component.
@@ -498,7 +498,7 @@ ASSIMP_API void aiTransposeMatrix3(
 // --------------------------------------------------------------------------------
 /** Transform a vector by a 3x3 matrix
  *  @param vec Vector to be transformed.
- *  @param mat Matrix to transform the vector with.
+ *  @param mat matrix to transform the vector with.
  */
 ASSIMP_API void aiTransformVecByMatrix3(
         C_STRUCT aiVector3D *vec,
@@ -507,7 +507,7 @@ ASSIMP_API void aiTransformVecByMatrix3(
 // --------------------------------------------------------------------------------
 /** Transform a vector by a 4x4 matrix
  *  @param vec Vector to be transformed.
- *  @param mat Matrix to transform the vector with.
+ *  @param mat matrix to transform the vector with.
  */
 ASSIMP_API void aiTransformVecByMatrix4(
         C_STRUCT aiVector3D *vec,
@@ -516,7 +516,7 @@ ASSIMP_API void aiTransformVecByMatrix4(
 // --------------------------------------------------------------------------------
 /** Multiply two 4x4 matrices.
  *  @param dst First factor, receives result.
- *  @param src Matrix to be multiplied with 'dst'.
+ *  @param src matrix to be multiplied with 'dst'.
  */
 ASSIMP_API void aiMultiplyMatrix4(
         C_STRUCT aiMatrix4x4 *dst,
@@ -525,7 +525,7 @@ ASSIMP_API void aiMultiplyMatrix4(
 // --------------------------------------------------------------------------------
 /** Multiply two 3x3 matrices.
  *  @param dst First factor, receives result.
- *  @param src Matrix to be multiplied with 'dst'.
+ *  @param src matrix to be multiplied with 'dst'.
  */
 ASSIMP_API void aiMultiplyMatrix3(
         C_STRUCT aiMatrix3x3 *dst,
@@ -533,14 +533,14 @@ ASSIMP_API void aiMultiplyMatrix3(
 
 // --------------------------------------------------------------------------------
 /** Get a 3x3 identity matrix.
- *  @param mat Matrix to receive its personal identity
+ *  @param mat matrix to receive its personal identity
  */
 ASSIMP_API void aiIdentityMatrix3(
         C_STRUCT aiMatrix3x3 *mat);
 
 // --------------------------------------------------------------------------------
 /** Get a 4x4 identity matrix.
- *  @param mat Matrix to receive its personal identity
+ *  @param mat matrix to receive its personal identity
  */
 ASSIMP_API void aiIdentityMatrix4(
         C_STRUCT aiMatrix4x4 *mat);
@@ -828,7 +828,7 @@ ASSIMP_API void aiVector3NormalizeSafe(
         C_STRUCT aiVector3D *v);
 
 // --------------------------------------------------------------------------------
-/** Rotate a 3D vector by a quaternion.
+/** rotate a 3D vector by a quaternion.
  *  @param v The vector to rotate by \p q
  *  @param q Quaternion to use to rotate \p v
  */
@@ -880,14 +880,14 @@ ASSIMP_API int aiMatrix3AreEqualEpsilon(
 
 // --------------------------------------------------------------------------------
 /** Invert a 3x3 matrix.
- *  @param mat Matrix to invert
+ *  @param mat matrix to invert
  */
 ASSIMP_API void aiMatrix3Inverse(
         C_STRUCT aiMatrix3x3 *mat);
 
 // --------------------------------------------------------------------------------
 /** Get the determinant of a 3x3 matrix.
- *  @param mat Matrix to get the determinant from
+ *  @param mat matrix to get the determinant from
  */
 ASSIMP_API float aiMatrix3Determinant(
         const C_STRUCT aiMatrix3x3 *mat);
@@ -957,7 +957,7 @@ ASSIMP_API void aiMatrix4FromScalingQuaternionPosition(
 // --------------------------------------------------------------------------------
 /** Add 4x4 matrices.
  *  @param dst First addend, receives result.
- *  @param src Matrix to be added to 'dst'.
+ *  @param src matrix to be added to 'dst'.
  */
 ASSIMP_API void aiMatrix4Add(
         C_STRUCT aiMatrix4x4 *dst,
@@ -989,14 +989,14 @@ ASSIMP_API int aiMatrix4AreEqualEpsilon(
 
 // --------------------------------------------------------------------------------
 /** Invert a 4x4 matrix.
- *  @param result Matrix to invert
+ *  @param result matrix to invert
  */
 ASSIMP_API void aiMatrix4Inverse(
         C_STRUCT aiMatrix4x4 *mat);
 
 // --------------------------------------------------------------------------------
 /** Get the determinant of a 4x4 matrix.
- *  @param mat Matrix to get the determinant from
+ *  @param mat matrix to get the determinant from
  *  @return The determinant of the matrix
  */
 ASSIMP_API float aiMatrix4Determinant(
@@ -1004,7 +1004,7 @@ ASSIMP_API float aiMatrix4Determinant(
 
 // --------------------------------------------------------------------------------
 /** Returns true of the matrix is the identity matrix.
- *  @param mat Matrix to get the determinant from
+ *  @param mat matrix to get the determinant from
  *  @return 1 if \p mat is an identity matrix.
  *  @return 0 if \p mat is not an identity matrix.
  */
@@ -1015,7 +1015,7 @@ ASSIMP_API int aiMatrix4IsIdentity(
 /** Decompose a transformation matrix into its scaling,
  *  rotational as euler angles, and translational components.
  *
- * @param mat Matrix to decompose
+ * @param mat matrix to decompose
  * @param scaling Receives the output scaling for the x,y,z axes
  * @param rotation Receives the output rotation as a Euler angles
  * @param position Receives the output position for the x,y,z axes
@@ -1031,7 +1031,7 @@ ASSIMP_API void aiMatrix4DecomposeIntoScalingEulerAnglesPosition(
  *  rotational split into an axis and rotational angle,
  *  and it's translational components.
  *
- * @param mat Matrix to decompose
+ * @param mat matrix to decompose
  * @param rotation Receives the rotational component
  * @param axis Receives the output rotation axis
  * @param angle Receives the output rotation angle
@@ -1048,7 +1048,7 @@ ASSIMP_API void aiMatrix4DecomposeIntoScalingAxisAnglePosition(
 /** Decompose a transformation matrix into its rotational and
  *  translational components.
  *
- * @param mat Matrix to decompose
+ * @param mat matrix to decompose
  * @param rotation Receives the rotational component
  * @param position Receives the translational component.
  */

@@ -29,7 +29,7 @@ public:
     void OnZoomOut();
     void PanUp();
     void PanDown();
-    Mat4f Matrix();
+    glm::mat4 Matrix();
 
     static void Rotate(float Angle, const glm::vec3& V,  glm::vec3& target);
 

@@ -78,10 +78,7 @@ void Renderer::render() {
     scene_->render();
 
     GLenum err;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        aout << "OpenGL error in Renderer::render():" << err;
-    }
-
+    Utility::checkAndLogGlError();
 
     scene_->update();
 
@@ -168,7 +165,7 @@ void Renderer::initRenderer() {
     glEnable(GL_DEPTH_TEST);
 
     // setup any other gl related global states
-    glClearColor(CORNFLOWER_BLUE);
+    glClearColor(DARK_GRAY);
 
     // enable alpha globally for now, you probably don't want to do this in a game
     glEnable(GL_BLEND);
@@ -187,10 +184,9 @@ void Renderer::updateRenderArea() {
     if (width != width_ || height != height_) {
         width_ = width;
         height_ = height;
-        //TODO create scene here
-        initScene();
-        // get some demo models into memory
 
+
+        initScene();
 
         glViewport(0, 0, width, height);
 
@@ -203,19 +199,7 @@ void Renderer::updateRenderArea() {
  * @brief Create any demo models we want for this demo.
  */
 void Renderer::createModels() {
-    /*
-     * This is a square:
-     * 0 --- 1
-     * | \   |
-     * |  \  |
-     * |   \ |
-     * 3 --- 2
-     */
 
-    // loads an image and assigns it to the square.
-    //
-    // Note: there is no texture management in this sample, so if you reuse an image be careful not
-    // to load it repeatedly. Since you get a shared_ptr you can safely reuse it in many models.
     auto assetManager = app_->activity->assetManager;
 
     auto *importer = new Assimp::Importer();
@@ -225,9 +209,18 @@ void Renderer::createModels() {
     importer->SetIOHandler(ioSystem);
 
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
-    std::shared_ptr<MeshRenderer> meshRenderer = modelImporter->import(importer);
+    //Load one model
+    std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
+                                                                      "soul_stealer_bard_fan_art/scene.gltf");
+    environment->transform->setPosition(0, -1, 4);
+    environment->transform->setScale(0.01, 0.01, 0.01);
+    environment->transform->setRotation(90, 0, 0);
 
-    scene_->addObject(meshRenderer);
+    scene_->addObject(environment);
+
+    std::shared_ptr<Light> light = std::make_shared<Light>();
+
+    scene_->addObject(light);
 
 }
 
@@ -336,9 +329,9 @@ void Renderer::handleInput() {
 }
 
 void Renderer::initScene() {
-    if(scene_ != nullptr){
+    if (scene_ != nullptr) {
         scene_->setSize(width_, height_);
-    }else{
+    } else {
         scene_ = std::make_shared<Scene>(width_, height_);
         createModels();
     }

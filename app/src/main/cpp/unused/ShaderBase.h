@@ -66,7 +66,7 @@ public:
      * Sets the model/view/projection matrix in the shader.
      * @param projectionMatrix sixteen floats, column major, defining an OpenGL projection matrix.
      */
-    void setProjectionMatrix(Mat4f *projectionMatrix) const;
+    void setProjectionMatrix(glm::mat4 *projectionMatrix) const;
 
 private:
     /*!

@@ -3,7 +3,6 @@
 //
 
 #include "Camera.h"
-#include "glm/geometric.hpp"
 
 void Camera::SetPosition(float x, float y, float z) {
     pos_.x = x;
@@ -58,9 +57,9 @@ void Camera::OnZoomOut() {
 
 }
 
-Mat4f Camera::Matrix() {
-    Mat4f cameraMat;
-    cameraMat.InitCamera(target_, pos_, up_);
+glm::mat4 Camera::Matrix() {
+    auto cameraMat = glm::mat4(1.0f);
+    InitCamera(cameraMat, target_, pos_, up_);
     return cameraMat;
 }
 

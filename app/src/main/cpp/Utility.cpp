@@ -27,26 +27,29 @@ bool Utility::checkAndLogGlError(bool alwaysLog) {
         return false;
     }
 }
-Mat4f *
-Utility::buildOrthographicMatrix(Mat4f *outMatrix, float halfHeight, float aspect, float near,
+glm::mat4 *
+Utility::buildOrthographicMatrix(glm::mat4 *outMatrix, float halfHeight, float aspect, float near,
                                  float far) {
     float halfWidth = halfHeight * aspect;
 
     float A = -2.f / (far - near);
     float B = -(far + near) / (far - near);
-    outMatrix->InitIdentity();
-    outMatrix->m[0][0] = 1/aspect;
-    outMatrix->m[1][1] = 1/aspect;
-    outMatrix->m[2][2] = A;
-    outMatrix->m[2][3] = B;
-    outMatrix->m[3][3] = 0;
-    outMatrix->m[3][2] = 1;
+    (*outMatrix)[0][0] = 1/aspect;
+    (*outMatrix)[1][1] = 1/aspect;
+    (*outMatrix)[2][2] = A;
+    (*outMatrix)[2][3] = B;
+    (*outMatrix)[3][3] = 0;
+    (*outMatrix)[3][2] = 1;
 
     return outMatrix;
 }
-Mat4f *
-Utility::buildPerspectiveMat(Mat4f *outMatrix, float halfHeight, float aspect, float near,
+glm::mat4 *
+Utility::buildPerspectiveMat(glm::mat4 *outMatrix, float halfHeight, float aspect, float near,
                              float far) {
+    // Initialize matrix to zero before setting perspective values
+    if(outMatrix == nullptr){
+        *outMatrix = glm::mat4(1.0f);
+    }
     float pov = 90;
     float tan = tanf(ToRadian(pov / 2));
     float halfWidth = halfHeight * aspect;
@@ -54,13 +57,12 @@ Utility::buildPerspectiveMat(Mat4f *outMatrix, float halfHeight, float aspect, f
     float zRange = (near - far);
     float A = (-far - near) / zRange;
     float B = 2 * far * near / zRange;
-    outMatrix->InitIdentity();
-    outMatrix->m[0][0] = d/aspect;
-    outMatrix->m[1][1] = d;
-    outMatrix->m[2][2] = A;
-    outMatrix->m[2][3] = B;
-    outMatrix->m[3][3] = 0;
-    outMatrix->m[3][2] = 1;
+    (*outMatrix)[0][0] = d/aspect;
+    (*outMatrix)[1][1] = d;
+    (*outMatrix)[2][2] = A;
+    (*outMatrix)[2][3] = B;
+    (*outMatrix)[3][3] = 0;
+    (*outMatrix)[3][2] = 1;
 
     return outMatrix;
 }

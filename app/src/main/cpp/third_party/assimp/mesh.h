@@ -294,7 +294,7 @@ struct aiBone {
     C_STRUCT aiVertexWeight *mWeights;
 
     /**
-     * Matrix that transforms from mesh space to bone space in bind pose.
+     * matrix that transforms from mesh space to bone space in bind pose.
      *
      * This matrix describes the position of the mesh
      * in the local space of this bone when the skeleton was bound.
@@ -1040,7 +1040,7 @@ struct aiMesh {
  * for the bone. The bone stores the locale transformation to its parent as well.
  * You can compute the offset matrix by multiplying the hierarchy like:
  * Tree: s1 -> s2 -> s3
- * Offset-Matrix s3 = locale-s3 * locale-s2 * locale-s1
+ * Offset-matrix s3 = locale-s3 * locale-s2 * locale-s1
  */
 struct aiSkeletonBone {
     /// The parent bone index, is -1 one if this bone represents the root bone.
@@ -1066,7 +1066,7 @@ struct aiSkeletonBone {
     /// The influence weights of this bone, by vertex index.
     C_STRUCT aiVertexWeight *mWeights;
 
-    /** Matrix that transforms from bone space to mesh space in bind pose.
+    /** matrix that transforms from bone space to mesh space in bind pose.
      *
      * This matrix describes the position of the mesh
      * in the local space of this bone when the skeleton was bound.
@@ -1079,7 +1079,7 @@ struct aiSkeletonBone {
      */
     C_STRUCT aiMatrix4x4 mOffsetMatrix;
 
-    /// Matrix that transforms the locale bone in bind pose.
+    /// matrix that transforms the locale bone in bind pose.
     C_STRUCT aiMatrix4x4 mLocalMatrix;
 
 #ifdef __cplusplus

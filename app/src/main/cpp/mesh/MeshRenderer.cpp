@@ -4,24 +4,38 @@
 
 #include "MeshRenderer.h"
 #include "AndroidOut.h"
+#include "core/Behaviour.h"
+#include "light/DirectionalLight.h"
 
 MeshRenderer::MeshRenderer() {
-    transform->SetRotation(0, 0, 0);
-    transform->SetPosition(0, -2, 4);
-    transform->SetScale(1, 1, 1);
+    transform->setRotation(0, 0, 0);
+    transform->setPosition(0, -2, 4);
 }
 
 
-
-void MeshRenderer::render(Mat4f *projectionMatrix) {
+void MeshRenderer::render(glm::mat4 *projectionMatrix, Light *light) {
+    unsigned int textureN = 0;
     for (const auto &mesh: meshes_) {
-        Material* material = mesh->getMaterial();
-        Shader* shader  = material->getShader();
+        Material *material = mesh->getMaterial();
+        Shader *shader = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
         shader->bind();
+
+        material->bindTexture();
+
+        DirectionalLight* pDirectionalLight = dynamic_cast<DirectionalLight*>(light);
+        if(pDirectionalLight){
+            pDirectionalLight->CalLocalDirection(this->transform->matrix());
+        }
+
+        light->bind(shader);
+
         glBindVertexArray(mesh->getVAO());
-        glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
+        glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);
         glBindVertexArray(0);
+        material->unbindTexture();
+        textureN++;
+       // shader->unbind();
     }
 }
 
@@ -60,6 +74,17 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
             (void *) offsetof(Vertex, uv)
     );
 
+    GLint normalAttribute = mesh->getMaterial()->getShader()->normalAttribute;
+    glEnableVertexAttribArray(normalAttribute);
+    glVertexAttribPointer(
+            normalAttribute,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void *) offsetof(Vertex, normal)
+    );
+
 
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
@@ -67,11 +92,7 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
                  sizeof(Index) * mesh->getIndexCount(),
                  mesh->getIndexData(), GL_STATIC_DRAW);
 
-    mesh->getMaterial()->bindTexture();
-
-
     glBindVertexArray(vao);
-
 
     mesh->setVAO(vao);
     mesh->setVBO(vbo);
@@ -85,9 +106,9 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
 }
 
 void MeshRenderer::onAttach() {
-    for (const auto &mesh : meshes_) {
-        Material* material = mesh->getMaterial();
-        Shader* shader  = material->getShader();
+    for (const auto &mesh: meshes_) {
+        Material *material = mesh->getMaterial();
+        Shader *shader = material->getShader();
 
     }
 }
@@ -97,13 +118,12 @@ void MeshRenderer::onCreate() {
 }
 
 
-
 void MeshRenderer::update() {
     rotation = 0.2;
 
 }
 
-void MeshRenderer::addMesh(const std::shared_ptr<Mesh>& mesh) {
+void MeshRenderer::addMesh(const std::shared_ptr<Mesh> &mesh) {
     meshes_.push_back(mesh);
     mesh->getMaterial()->getShader()->bind();
     initMesh(mesh.get());
@@ -116,9 +136,9 @@ MeshRenderer::~MeshRenderer() {
 
 void MeshRenderer::onDestroy() {
     Component::onDestroy();
-    for (const auto &mesh : meshes_) {
-        Material* material = mesh->getMaterial();
-        Shader* shader  = material->getShader();
+    for (const auto &mesh: meshes_) {
+        Material *material = mesh->getMaterial();
+        Shader *shader = material->getShader();
         shader->unbind();
     }
 }

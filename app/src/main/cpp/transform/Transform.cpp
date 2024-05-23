@@ -4,41 +4,42 @@
 
 #include "Transform.h"
 #include "AndroidOut.h"
+#include "glm.hpp"
 
-void Transform::SetScale(float scaleX, float scaleY, float scaleZ) {
+void Transform::setScale(float scaleX, float scaleY, float scaleZ) {
     this->scale_.x = scaleX;
     this->scale_.y = scaleY;
     this->scale_.z = scaleZ;
 }
 
-void Transform::SetPosition(float x, float y, float z) {
+void Transform::setPosition(float x, float y, float z) {
     this->position_.x = x;
     this->position_.y = y;
     this->position_.z = z;
 }
 
-void Transform::SetRotation(float x, float y, float z) {
+void Transform::setRotation(float x, float y, float z) {
     this->rotation_.x = x;
     this->rotation_.y = y;
     this->rotation_.z = z;
 }
 
-void Transform::Rotate(float x, float y, float z) {
+void Transform::rotate(float x, float y, float z) {
     this->rotation_.x += x;
     this->rotation_.y += y;
     this->rotation_.z += z;
 }
 
-Mat4f Transform::Matrix() {
-    Mat4f rotMat;
+glm::mat4 Transform::matrix() {
+    auto rotMat = glm::mat4(1.0);
 
-    rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
+    InitRotationMatrix(rotMat, rotation_.x, rotation_.y, rotation_.z);
 
-    Mat4f transMat;
-    transMat.InitTranslation(position_.x, position_.y, position_.z);
+    auto transMat = glm::mat4(1.0);;
+    InitTranslation(transMat, position_.x, position_.y, position_.z);
 
-    Mat4f scaleMat;
-    scaleMat.InitScaleMatrix(scale_.x, scale_.y, scale_.z);
+    auto scaleMat = glm::mat4(1.0);;
+    InitScaleMatrix(scaleMat, scale_.x, scale_.y, scale_.z);
 
     return transMat * rotMat * scaleMat;
 }
