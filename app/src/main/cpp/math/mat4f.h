@@ -1,43 +1,63 @@
-//
-// Created by Dark Matter on 5/16/24.
-//
+#ifndef MAT4F_H
+#define MAT4F_H
 
-#ifndef LEARNOPENGL_MAT4F_H
-#define LEARNOPENGL_MAT4F_H
-
-
-#include <cmath>
+#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <memory>
-#include "glm/detail/type_vec3.hpp"
-#include "glm/vec3.hpp"
 
-struct Mat4f {
-    float m[4][4];
+class Mat4f {
+public:
+    glm::mat4 m;
 
-    // Constructors
+    // Default constructor initializing to identity matrix
     Mat4f();
+
+    // Parameterized constructor
     Mat4f(float a00, float a01, float a02, float a03,
           float a10, float a11, float a12, float a13,
           float a20, float a21, float a22, float a23,
           float a30, float a31, float a32, float a33);
 
-    // Member functions
-    void InitScaleMatrix(float scaleX, float scaleY, float scaleZ);
-    void InitRotationX(float x);
-    void InitRotationY(float y);
-    void InitRotationZ(float z);
-    void InitRotationMatrix(float rotationX, float rotationY, float rotationZ);
-    void InitTranslation(float x, float y, float z);
-    void InitCameraTransform(glm::vec3 Target, glm::vec3 Up);
-    void InitCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up);
+    // Initialize identity matrix
     void InitIdentity();
 
-    // Static method to create an identity matrix and return a unique_ptr
+    // Initialize scale matrix
+    void InitScaleMatrix(float scaleX, float scaleY, float scaleZ);
+
+    // Initialize rotation matrix around X axis
+    void InitRotationX(float x);
+
+    // Initialize rotation matrix around Y axis
+    void InitRotationY(float y);
+
+    // Initialize rotation matrix around Z axis
+    void InitRotationZ(float z);
+
+    // Initialize rotation matrix for combined rotations
+    void InitRotationMatrix(float rotationX, float rotationY, float rotationZ);
+
+    // Initialize translation matrix
+    void InitTranslation(float x, float y, float z);
+
+    // Initialize camera transformation matrix
+    void InitCameraTransform(const glm::vec3 Target, const glm::vec3 Up);
+
+    // Initialize camera matrix with position and target
+    void InitCamera(const glm::vec3 target, const glm::vec3 pos, const glm::vec3 up);
+
+    // Create an identity matrix
     static std::unique_ptr<Mat4f> Identity();
 
-    // Overloaded operators
-    Mat4f operator*(const Mat4f &other) const;
+    // Matrix multiplication
+    Mat4f operator*(const Mat4f& other) const;
+
+    // Function to print the matrix
+    void Print() const;
 };
 
+// Type alias
+using Mat4fAlias = Mat4f;
 
-#endif //LEARNOPENGL_MAT4F_H
+#endif // MAT4F_H

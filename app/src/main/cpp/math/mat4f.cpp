@@ -2,6 +2,7 @@
 #include "math.h"
 #include "glm/vec3.hpp"
 #include "glm/geometric.hpp"
+#include "glm.hpp"
 
 // Default constructor initializing to identity matrix
 Mat4f::Mat4f() {
