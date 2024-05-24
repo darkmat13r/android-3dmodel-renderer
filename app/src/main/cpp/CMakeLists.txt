@@ -8,6 +8,7 @@ project("learnopengl")
 include_directories(third_party)
 # Include directories for GLM
 include_directories(third_party/glm)
+
 # Creates your game shared library. The name must be the same as the
 # one used for loading in your Kotlin/Java or AndroidManifest.txt files.
 # Gather all source files in the current directory and subdirectories
@@ -15,15 +16,19 @@ include_directories(third_party/glm)
 # Gather all source files from specified directories
 file(GLOB_RECURSE SOURCES
         "${CMAKE_SOURCE_DIR}/*.cpp"
+        "${CMAKE_SOURCE_DIR}/mesh/shader/*.frag"
         "${CMAKE_SOURCE_DIR}/unused/*.cpp"
         "${CMAKE_SOURCE_DIR}/game/*.cpp"
         "${CMAKE_SOURCE_DIR}/math/*.cpp"
+        "${CMAKE_SOURCE_DIR}/light/*.cpp"
         "${CMAKE_SOURCE_DIR}/mesh/*.cpp"
         "${CMAKE_SOURCE_DIR}/shaders/*.cpp"
         "${CMAKE_SOURCE_DIR}/mesh/shader/*.cpp"
         "${CMAKE_SOURCE_DIR}/transform/*.cpp"
         "${CMAKE_SOURCE_DIR}/AndroidJNI/*.cpp"
 )
+# Include the shaders.cmake script
+include("${CMAKE_SOURCE_DIR}/shader/shaders.cmake")
 
 # Print the gathered sources for debugging
 message("Source files: ${CMAKE_SOURCE_DIR}")
@@ -56,6 +61,10 @@ find_package(game-activity REQUIRED CONFIG)
 set(assimp_libs ${CMAKE_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libassimp.so)
 
 add_subdirectory(third_party/glm)
+
+
+# Add the build directory to the include path
+target_include_directories(learnopengl PRIVATE ${CMAKE_BINARY_DIR})
 
 # Configure libraries CMake uses to link your target library.
 target_link_libraries(learnopengl
