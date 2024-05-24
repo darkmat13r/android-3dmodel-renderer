@@ -135,3 +135,10 @@ Mat4f Mat4f::operator*(const Mat4f &other) const {
     }
     return ret;
 }
+
+
+const Mat4f Mat4f::inverse() {
+    Mat4f inverse  = Mat4f();
+    //  inverse.m = glm::inverse(m);
+    return inverse;
+}

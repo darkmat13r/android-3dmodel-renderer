@@ -55,6 +55,8 @@ public:
 
     // Function to print the matrix
     void Print() const;
+
+    const Mat4f inverse();
 };
 
 // Type alias
