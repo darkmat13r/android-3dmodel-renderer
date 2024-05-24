@@ -28,7 +28,7 @@ static constexpr float kProjectionNearPlane = 0.01;
  * The far plane distance for the projection matrix. Since this is an orthographic porjection
  * matrix, it's convenient to have the far plane equidistant from 0 as the near plane.
  */
-static constexpr float kProjectionFarPlane = 10.f;
+static constexpr float kProjectionFarPlane = 100.f;
 
 void Scene::addObject(const std::shared_ptr<Component> &gameObject) {
     this->components_.push_back(gameObject);
@@ -61,8 +61,11 @@ void Scene::render() {
     for (const auto &pLight: lights) {
         for (const auto &component: meshRenderers) {
             component->transform->rotate(0, rotation_, 0);
+
             glm::mat4 model = component->transform->matrix();
+
             glm::mat4 finalProjectionMatrix = (*projectionMatrix_) * View * model;
+
             component->render(&finalProjectionMatrix, pLight);
         }
     }

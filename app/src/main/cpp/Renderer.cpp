@@ -211,10 +211,10 @@ void Renderer::createModels() {
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
-                                                                      "soul_stealer_bard_fan_art/scene.gltf");
-    //environment->transform->setPosition(0, -1, 4);
-  //  environment->transform->setScale(0.01, 0.01, 0.01);
-    //environment->transform->setRotation(90, 0, 0);
+                                                                      "test_models/untitled.obj");
+    environment->transform->setPosition(0, -1, 4);
+    environment->transform->setScale(0.1,0.1, 0.1);
+    environment->transform->setRotation(90, 0, 0);
 
     scene_->addObject(environment);
 

@@ -46,17 +46,15 @@ Utility::buildOrthographicMatrix(glm::mat4 *outMatrix, float halfHeight, float a
 glm::mat4 *
 Utility::buildPerspectiveMat(glm::mat4 *outMatrix, float halfHeight, float aspect, float near,
                              float far) {
-    // Initialize matrix to zero before setting perspective values
-    if(outMatrix == nullptr){
-        *outMatrix = glm::mat4(1.0f);
-    }
     float pov = 90;
     float tan = tanf(ToRadian(pov / 2));
-    float halfWidth = halfHeight * aspect;
     float d = 1/tan;
     float zRange = (near - far);
     float A = (-far - near) / zRange;
     float B = 2 * far * near / zRange;
+
+    initIdentity(outMatrix);
+
     (*outMatrix)[0][0] = d/aspect;
     (*outMatrix)[1][1] = d;
     (*outMatrix)[2][2] = A;

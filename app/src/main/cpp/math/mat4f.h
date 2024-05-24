@@ -13,14 +13,19 @@
 #include "geometric.hpp"
 #include "glm.hpp"
 #include "math.h"
+#include "AndroidOut.h"
 
-inline void init_identity(glm::mat4 &m) {
-    m = glm::mat4(1.0);
+// Initialize identity matrix
+inline void initIdentity(glm::mat4 *m) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            (*m)[i][j] = (i == j) ? 1.0f : 0.0f;
+        }
+    }
 }
 
 // Initialize scale matrix
 inline void InitScaleMatrix(glm::mat4 &m, float scaleX, float scaleY, float scaleZ) {
-    init_identity(m);
     m[0][0] = scaleX;
     m[0][1] = 0.0f;
     m[0][2] = 0.0f;
@@ -41,7 +46,6 @@ inline void InitScaleMatrix(glm::mat4 &m, float scaleX, float scaleY, float scal
 
 // Initialize rotation matrix around X axis
 inline void InitRotationX(glm::mat4 &m, float x) {
-    init_identity(m);
     m[1][1] = cosf(x);
     m[1][2] = sinf(x);
     m[2][1] = -sinf(x);
@@ -50,7 +54,6 @@ inline void InitRotationX(glm::mat4 &m, float x) {
 
 // Initialize rotation matrix around Y axis
 inline void InitRotationY(glm::mat4 &m, float y) {
-    init_identity(m);
     m[0][0] = cosf(y);
     m[0][2] = -sinf(y);
     m[2][0] = sinf(y);
@@ -59,7 +62,6 @@ inline void InitRotationY(glm::mat4 &m, float y) {
 
 // Initialize rotation matrix around Z axis
 inline void InitRotationZ(glm::mat4 &m, float z) {
-    init_identity(m);
     m[0][0] = cosf(z);
     m[0][1] = sinf(z);
     m[1][0] = -sinf(z);
@@ -68,10 +70,10 @@ inline void InitRotationZ(glm::mat4 &m, float z) {
 
 // Initialize rotation matrix for combined rotations
 inline void InitRotationMatrix(glm::mat4 &m, float rotationX, float rotationY, float rotationZ) {
-    glm::mat4 rx, ry, rz;
-    init_identity(rx);
-    init_identity(ry);
-    init_identity(rz);
+    glm::mat4 rx = glm::mat4 (1.0);
+    glm::mat4 ry = glm::mat4 (1.0);
+    glm::mat4 rz = glm::mat4 (1.0);
+
 
     float x = ToRadian(rotationX);
     float y = ToRadian(rotationY);
@@ -123,15 +125,19 @@ inline void InitCameraTransform(glm::mat4 &m, glm::vec3 Target, glm::vec3 Up) {
 
 // Initialize camera matrix with position and target
 inline void InitCamera(glm::mat4 &m, glm::vec3 target, glm::vec3 pos, glm::vec3 up) {
-    glm::mat4 translation;
-    init_identity(translation);
+    glm::mat4 translation = glm::mat4(1.0);;
     InitTranslation(translation, -pos.x, -pos.y, -pos.z);
 
-    glm::mat4 camMat;
-    init_identity(camMat);
+    glm::mat4 camMat = glm::mat4(1.0);
     InitCameraTransform(camMat, target, up);
-
     m = camMat * translation;
 }
-
+inline void printMat4(const glm::mat4& matrix) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            aout << matrix[i][j] << " ";
+        }
+        aout << std::endl;
+    }
+}
 #endif //LEARNOPENGL_MAT4F_H

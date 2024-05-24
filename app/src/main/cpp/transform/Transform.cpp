@@ -39,7 +39,7 @@ glm::mat4 Transform::matrix() {
     InitTranslation(transMat, position_.x, position_.y, position_.z);
 
     auto scaleMat = glm::mat4(1.0);;
-    InitScaleMatrix(scaleMat, scale_.x, scale_.y, scale_.z);
+   // InitScaleMatrix(scaleMat, scale_.x, scale_.y, scale_.z);
 
     return transMat * rotMat * scaleMat;
 }
