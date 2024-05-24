@@ -24,6 +24,7 @@ bool Utility::checkAndLogGlError(bool alwaysLog) {
             default:
                 aout << "Unknown GL error: " << error << std::endl;
         }
+        aout << "OpenGL Error: " << error << " - " <<  std::endl;
         return false;
     }
 }
