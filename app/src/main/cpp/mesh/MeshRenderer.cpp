@@ -23,7 +23,7 @@ void MeshRenderer::render(glm::mat4 *projectionMatrix, Light *light) {
 
         material->bindTexture();
 
-        DirectionalLight* pDirectionalLight = dynamic_cast<DirectionalLight*>(light);
+        auto* pDirectionalLight = dynamic_cast<DirectionalLight*>(light);
         if(pDirectionalLight){
             pDirectionalLight->CalLocalDirection(this->transform->matrix());
         }
