@@ -1,0 +1,10 @@
+//
+// Created by Dark Matter on 5/22/24.
+//
+
+#ifndef LEARNOPENGL_SHADERS_H
+#define LEARNOPENGL_SHADERS_H
+
+const char* vertexShaderSource = "@VERT_SHADER_SOURCE@";
+const char* fragmentShaderSource = "@FRAG_SHADER_SOURCE@";
+#endif //LEARNOPENGL_SHADERS_H

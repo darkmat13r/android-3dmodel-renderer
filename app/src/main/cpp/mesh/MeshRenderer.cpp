@@ -4,6 +4,7 @@
 
 #include "MeshRenderer.h"
 #include "AndroidOut.h"
+#include "core/Behaviour.h"
 
 MeshRenderer::MeshRenderer() {
     transform->SetRotation(0, 0, 0);
@@ -12,16 +13,24 @@ MeshRenderer::MeshRenderer() {
 }
 
 
-
-void MeshRenderer::render(Mat4f *projectionMatrix) {
+void MeshRenderer::render(Mat4f *projectionMatrix, Light *light) {
+    unsigned int textureN = 0;
     for (const auto &mesh: meshes_) {
-        Material* material = mesh->getMaterial();
-        Shader* shader  = material->getShader();
+        Material *material = mesh->getMaterial();
+        Shader *shader = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
         shader->bind();
+
+        material->bindTexture();
+
+        light->bind(shader);
+
         glBindVertexArray(mesh->getVAO());
-        glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *)0);
+        glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);
         glBindVertexArray(0);
+        material->unbindTexture();
+        textureN++;
+       // shader->unbind();
     }
 }
 
@@ -67,11 +76,7 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
                  sizeof(Index) * mesh->getIndexCount(),
                  mesh->getIndexData(), GL_STATIC_DRAW);
 
-    mesh->getMaterial()->bindTexture();
-
-
     glBindVertexArray(vao);
-
 
     mesh->setVAO(vao);
     mesh->setVBO(vbo);
@@ -85,9 +90,9 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
 }
 
 void MeshRenderer::onAttach() {
-    for (const auto &mesh : meshes_) {
-        Material* material = mesh->getMaterial();
-        Shader* shader  = material->getShader();
+    for (const auto &mesh: meshes_) {
+        Material *material = mesh->getMaterial();
+        Shader *shader = material->getShader();
 
     }
 }
@@ -97,13 +102,12 @@ void MeshRenderer::onCreate() {
 }
 
 
-
 void MeshRenderer::update() {
     rotation = 0.2;
 
 }
 
-void MeshRenderer::addMesh(const std::shared_ptr<Mesh>& mesh) {
+void MeshRenderer::addMesh(const std::shared_ptr<Mesh> &mesh) {
     meshes_.push_back(mesh);
     mesh->getMaterial()->getShader()->bind();
     initMesh(mesh.get());
@@ -116,9 +120,9 @@ MeshRenderer::~MeshRenderer() {
 
 void MeshRenderer::onDestroy() {
     Component::onDestroy();
-    for (const auto &mesh : meshes_) {
-        Material* material = mesh->getMaterial();
-        Shader* shader  = material->getShader();
+    for (const auto &mesh: meshes_) {
+        Material *material = mesh->getMaterial();
+        Shader *shader = material->getShader();
         shader->unbind();
     }
 }
