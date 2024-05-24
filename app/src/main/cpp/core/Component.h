@@ -13,11 +13,11 @@ public:
     Component() ;
     ~ Component();
     std::shared_ptr<Transform> transform;
-    virtual void onAttach();
-    virtual void onCreate();
     virtual void render(glm::mat4* f);
     virtual void update();
     virtual void onDestroy();
+    virtual void onAttach();
+    virtual void onCreate();
 
 };
 

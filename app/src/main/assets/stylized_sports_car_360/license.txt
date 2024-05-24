@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized sports car 360
+* source:	https://sketchfab.com/3d-models/stylized-sports-car-360-d2dee31cdfd04f0b83397597403b6c31
+* author:	NINSAR (https://sketchfab.com/ninsar)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized sports car 360" (https://sketchfab.com/3d-models/stylized-sports-car-360-d2dee31cdfd04f0b83397597403b6c31) by NINSAR (https://sketchfab.com/ninsar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -18,8 +18,7 @@ private:
 public:
     ModelImporter(AAssetManager *aAssetManager);
 
-    std::shared_ptr<MeshRenderer>
-    import(Assimp::Importer *importer);
+    std::shared_ptr<MeshRenderer> import(Assimp::Importer *importer, const char *modelPath);
 
     void loadMesh(std::shared_ptr<MeshRenderer> &meshRenderer,
                   const aiScene *aiScene, const char *modelPath);
@@ -28,6 +27,7 @@ public:
                         std::vector<Index> &indices);
 
     std::shared_ptr<Material> loadMaterial(const aiScene *pScene,
+                                           const aiMesh *aiMesh,
                                            std::string path);
 
     static std::string getStringAfterAssets(const std::string &filePath);

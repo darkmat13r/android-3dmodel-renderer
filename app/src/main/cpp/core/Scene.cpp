@@ -8,6 +8,8 @@
 #include "Utility.h"
 #include "AndroidOut.h"
 #include "mesh/MeshRenderer.h"
+#include "Behaviour.h"
+#include "light/Light.h"
 
 /*!
  * Half the height of the projection matrix. This gives you a renderable area of height 4 ranging
@@ -28,7 +30,7 @@ static constexpr float kProjectionNearPlane = 0.01;
  */
 static constexpr float kProjectionFarPlane = 10.f;
 
-void Scene::addObject(const std::shared_ptr<Component>& gameObject) {
+void Scene::addObject(const std::shared_ptr<Component> &gameObject) {
     this->components_.push_back(gameObject);
     gameObject->onAttach();
 }
@@ -41,20 +43,30 @@ void Scene::render() {
     mainCamera_->OnRender();
 
     glm::mat4 View = mainCamera_->Matrix();
-
-    for ( const auto& component : components_) {
-        if (component->transform) {
+    std::vector<MeshRenderer *> meshRenderers;
+    std::vector<Light *> lights;
+    for (const auto &component: components_) {
+        auto *pMeshRenderer = dynamic_cast<MeshRenderer *>(component.get());
+        auto *light = dynamic_cast<Light *>(component.get());
+        if (pMeshRenderer != nullptr) {
+            if (component->transform) {
+                meshRenderers.push_back(pMeshRenderer);
+            } else {
+                aout << "Render::Component transform is gone " << component->transform << std::endl;
+            }
+        } else if (light != nullptr) {
+            lights.push_back(light);
+        }
+    }
+    for (const auto &pLight: lights) {
+        for (const auto &component: meshRenderers) {
             component->transform->rotate(0, rotation_, 0);
             glm::mat4 model = component->transform->matrix();
             glm::mat4 finalProjectionMatrix = (*projectionMatrix_) * View * model;
-            component->render(&finalProjectionMatrix);
-
-        } else {
-            aout << "Render::Component transform is gone " << component->transform << std::endl;
+            component->render(&finalProjectionMatrix, pLight);
         }
     }
 }
-
 
 
 void Scene::update() {
@@ -87,7 +99,7 @@ Scene::Scene(float width, float height) {
     glm::vec3 CameraTarget(0.0f, 0.0f, 1.0f);
     glm::vec3 CameraUp(0.0f, 1.0f, 0.0f);
 
-    mainCamera_ = std::make_shared<Camera>( CameraPos, CameraTarget, CameraUp);
+    mainCamera_ = std::make_shared<Camera>(CameraPos, CameraTarget, CameraUp);
 }
 
 void Scene::setSize(float width, float height) {

@@ -15,9 +15,10 @@
 class Scene {
 public:
     Scene(float width, float height);
+
     void setSize(float width, float height);
 
-    void addObject(const std::shared_ptr<Component>& gameObject);
+    void addObject(const std::shared_ptr<Component> &gameObject);
 
     void removeObject(Component *gameObject);
 

@@ -8,7 +8,7 @@
 #include "unused/ShaderBase.h"
 #include "math/mat4f.h"
 #include "camera/Camera.h"
-#include "mesh/shader/Shader.h"
+#include "shader/Shader.h"
 #include "core/Scene.h"
 
 struct android_app;
