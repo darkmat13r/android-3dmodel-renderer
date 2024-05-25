@@ -2,6 +2,7 @@
 #include "math.h"
 #include "glm/vec3.hpp"
 #include "glm/geometric.hpp"
+#include "glm.hpp"
 
 // Default constructor initializing to identity matrix
 Mat4f::Mat4f() {
@@ -17,40 +18,70 @@ Mat4f::Mat4f(float a00, float a01, float a02, float a03,
              float a10, float a11, float a12, float a13,
              float a20, float a21, float a22, float a23,
              float a30, float a31, float a32, float a33) {
-    m[0][0] = a00; m[0][1] = a01; m[0][2] = a02; m[0][3] = a03;
-    m[1][0] = a10; m[1][1] = a11; m[1][2] = a12; m[1][3] = a13;
-    m[2][0] = a20; m[2][1] = a21; m[2][2] = a22; m[2][3] = a23;
-    m[3][0] = a30; m[3][1] = a31; m[3][2] = a32; m[3][3] = a33;
+    m[0][0] = a00;
+    m[0][1] = a01;
+    m[0][2] = a02;
+    m[0][3] = a03;
+    m[1][0] = a10;
+    m[1][1] = a11;
+    m[1][2] = a12;
+    m[1][3] = a13;
+    m[2][0] = a20;
+    m[2][1] = a21;
+    m[2][2] = a22;
+    m[2][3] = a23;
+    m[3][0] = a30;
+    m[3][1] = a31;
+    m[3][2] = a32;
+    m[3][3] = a33;
 }
 
 // Initialize scale matrix
 void Mat4f::InitScaleMatrix(float scaleX, float scaleY, float scaleZ) {
     InitIdentity();
-    m[0][0] = scaleX; m[0][1] = 0.0f;   m[0][2] = 0.0f;   m[0][3] = 0.0f;
-    m[1][0] = 0.0f;   m[1][1] = scaleY; m[1][2] = 0.0f;   m[1][3] = 0.0f;
-    m[2][0] = 0.0f;   m[2][1] = 0.0f;   m[2][2] = scaleZ; m[2][3] = 0.0f;
-    m[3][0] = 0.0f;   m[3][1] = 0.0f;   m[3][2] = 0.0f;   m[3][3] = 1.0f;
+    m[0][0] = scaleX;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[0][3] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = scaleY;
+    m[1][2] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = scaleZ;
+    m[2][3] = 0.0f;
+    m[3][0] = 0.0f;
+    m[3][1] = 0.0f;
+    m[3][2] = 0.0f;
+    m[3][3] = 1.0f;
 }
 
 // Initialize rotation matrix around X axis
 void Mat4f::InitRotationX(float x) {
     InitIdentity();
-    m[1][1] = cosf(x); m[1][2] = sinf(x);
-    m[2][1] = -sinf(x); m[2][2] = cosf(x);
+    m[1][1] = cosf(x);
+    m[1][2] = sinf(x);
+    m[2][1] = -sinf(x);
+    m[2][2] = cosf(x);
 }
 
 // Initialize rotation matrix around Y axis
 void Mat4f::InitRotationY(float y) {
     InitIdentity();
-    m[0][0] = cosf(y); m[0][2] = -sinf(y);
-    m[2][0] = sinf(y); m[2][2] = cosf(y);
+    m[0][0] = cosf(y);
+    m[0][2] = -sinf(y);
+    m[2][0] = sinf(y);
+    m[2][2] = cosf(y);
 }
 
 // Initialize rotation matrix around Z axis
 void Mat4f::InitRotationZ(float z) {
     InitIdentity();
-    m[0][0] = cosf(z); m[0][1] = sinf(z);
-    m[1][0] = -sinf(z); m[1][1] = cosf(z);
+    m[0][0] = cosf(z);
+    m[0][1] = sinf(z);
+    m[1][0] = -sinf(z);
+    m[1][1] = cosf(z);
 }
 
 // Initialize rotation matrix for combined rotations
@@ -88,10 +119,22 @@ void Mat4f::InitCameraTransform(glm::vec3 Target, glm::vec3 Up) {
 
     glm::vec3 V = glm::cross(N, U);
 
-    m[0][0] = U.x; m[0][1] = U.y; m[0][2] = U.z; m[0][3] = 0.0f;
-    m[1][0] = V.x; m[1][1] = V.y; m[1][2] = V.z; m[1][3] = 0.0f;
-    m[2][0] = N.x; m[2][1] = N.y; m[2][2] = N.z; m[2][3] = 0.0f;
-    m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
+    m[0][0] = U.x;
+    m[0][1] = U.y;
+    m[0][2] = U.z;
+    m[0][3] = 0.0f;
+    m[1][0] = V.x;
+    m[1][1] = V.y;
+    m[1][2] = V.z;
+    m[1][3] = 0.0f;
+    m[2][0] = N.x;
+    m[2][1] = N.y;
+    m[2][2] = N.z;
+    m[2][3] = 0.0f;
+    m[3][0] = 0.0f;
+    m[3][1] = 0.0f;
+    m[3][2] = 0.0f;
+    m[3][3] = 1.0f;
 }
 
 // Initialize camera matrix with position and target
@@ -133,4 +176,34 @@ Mat4f Mat4f::operator*(const Mat4f &other) const {
         }
     }
     return ret;
+}
+
+// Matrix multiplication
+glm::vec3 Mat4f::operator*(const glm::vec3 &other) const {
+    glm::vec3 ret;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            ret[j] = m[i][0] * other[0] +
+                          m[i][1] * other[1] +
+                          m[i][2] * other[2] +
+                          m[i][3] * other[3];
+        }
+    }
+    return ret;
+}
+Mat4f Mat4f::inverse() {
+    Mat4f invMat;
+    glm::mat4 mat = glm::mat4(1.0);
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            mat[i][j] = this->m[i][j];
+        }
+    }
+    mat = glm::inverse(mat);
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            invMat.m[i][j] = mat[i][j];
+        }
+    }
+    return invMat;
 }

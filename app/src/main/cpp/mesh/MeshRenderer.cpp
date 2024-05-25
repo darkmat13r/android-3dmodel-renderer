@@ -5,11 +5,12 @@
 #include "MeshRenderer.h"
 #include "AndroidOut.h"
 #include "core/Behaviour.h"
+#include "light/DirectionalLight.h"
 
 MeshRenderer::MeshRenderer() {
-    transform->SetRotation(0, 0, 0);
-    transform->SetPosition(0, -2, 4);
-    transform->SetScale(1, 1, 1);
+    transform->setRotation(0, 0, 0);
+    transform->setPosition(0, -2, 4);
+    transform->setScale(1, 1, 1);
 }
 
 
@@ -22,6 +23,11 @@ void MeshRenderer::render(Mat4f *projectionMatrix, Light *light) {
         shader->bind();
 
         material->bindTexture();
+
+        auto* pDirectionalLight = dynamic_cast<DirectionalLight*>(light);
+        if(pDirectionalLight){
+            pDirectionalLight->CalLocalDirection(this->transform->matrix());
+        }
 
         light->bind(shader);
 
@@ -67,6 +73,17 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
             GL_FALSE,
             sizeof(Vertex),
             (void *) offsetof(Vertex, uv)
+    );
+
+    GLint normalAttribute = mesh->getMaterial()->getShader()->normalAttribute;
+    glEnableVertexAttribArray(normalAttribute);
+    glVertexAttribPointer(
+            normalAttribute,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void *) offsetof(Vertex, normal)
     );
 
 

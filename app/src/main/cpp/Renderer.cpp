@@ -16,6 +16,7 @@
 #include "assimp/Importer.hpp"
 #include "importer/ModelImporter.h"
 #include "assimp/port/AndroidJNI/AndroidJNIIOSystem.h"
+#include "light/DirectionalLight.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -78,9 +79,7 @@ void Renderer::render() {
     scene_->render();
 
     GLenum err;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        aout << "OpenGL error in Renderer::render():" << err;
-    }
+    Utility::checkAndLogGlError();
 
     scene_->update();
 
@@ -214,14 +213,16 @@ void Renderer::createModels() {
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
                                                                       "soul_stealer_bard_fan_art/scene.gltf");
-    environment->transform->SetPosition(0, -1, 4);
-    environment->transform->SetScale(0.01, 0.01, 0.01);
-    environment->transform->SetRotation(90, 0, 0);
+    environment->transform->setPosition(0, -1, 4);
+    environment->transform->setScale(0.01, 0.01, 0.01);
+    environment->transform->setRotation(90, 0, 0);
 
     scene_->addObject(environment);
 
-    std::shared_ptr<Light> light = std::make_shared<Light>();
-
+    std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
+    light->ambientIntensity = 0.5f;
+    light->direction  = { 1.0, 2.0, 0.0};
+    light->intensity = 1.0f;
     scene_->addObject(light);
 
 }

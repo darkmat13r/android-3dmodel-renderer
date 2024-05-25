@@ -48,13 +48,13 @@ namespace glm
 	template<length_t L, typename T, qualifier Q>
 	GLM_FUNC_DECL vec<L, T, Q> mask(vec<L, T, Q> const& v);
 
-	/// Rotate all bits to the right. All the bits dropped in the right side are inserted back on the left side.
+	/// rotate all bits to the right. All the bits dropped in the right side are inserted back on the left side.
 	///
 	/// @see gtc_bitfield
 	template<typename genIUType>
 	GLM_FUNC_DECL genIUType bitfieldRotateRight(genIUType In, int Shift);
 
-	/// Rotate all bits to the right. All the bits dropped in the right side are inserted back on the left side.
+	/// rotate all bits to the right. All the bits dropped in the right side are inserted back on the left side.
 	///
 	/// @tparam L Integer between 1 and 4 included that qualify the dimension of the vector
 	/// @tparam T Signed and unsigned integer scalar types
@@ -64,13 +64,13 @@ namespace glm
 	template<length_t L, typename T, qualifier Q>
 	GLM_FUNC_DECL vec<L, T, Q> bitfieldRotateRight(vec<L, T, Q> const& In, int Shift);
 
-	/// Rotate all bits to the left. All the bits dropped in the left side are inserted back on the right side.
+	/// rotate all bits to the left. All the bits dropped in the left side are inserted back on the right side.
 	///
 	/// @see gtc_bitfield
 	template<typename genIUType>
 	GLM_FUNC_DECL genIUType bitfieldRotateLeft(genIUType In, int Shift);
 
-	/// Rotate all bits to the left. All the bits dropped in the left side are inserted back on the right side.
+	/// rotate all bits to the left. All the bits dropped in the left side are inserted back on the right side.
 	///
 	/// @tparam L Integer between 1 and 4 included that qualify the dimension of the vector
 	/// @tparam T Signed and unsigned integer scalar types

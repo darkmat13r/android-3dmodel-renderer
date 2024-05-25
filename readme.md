@@ -59,7 +59,7 @@ Welcome to the 3D Model Viewer for Android! This project aims to provide a light
    Put 3d model in assets folder. Update the path in ModelImporter.
 
 2. **View Controls:**
-    - ~~**Rotate:** Use one finger to rotate the model.~~
+    - ~~**rotate:** Use one finger to rotate the model.~~
     - ~~**Zoom:** Pinch with two fingers to zoom in and out.~~
     - ~~**Pan:** Use two fingers to move the model around the screen.~~
 

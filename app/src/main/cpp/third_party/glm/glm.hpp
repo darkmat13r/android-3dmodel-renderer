@@ -43,17 +43,17 @@
 /// @ingroup core
 ///
 ///
-/// @defgroup core_matrix Matrix types
+/// @defgroup core_matrix matrix types
 ///
-/// Matrix types of with C columns and R rows where C and R are values between 2 to 4 included.
+/// matrix types of with C columns and R rows where C and R are values between 2 to 4 included.
 /// These types have exhaustive sets of operators.
 ///
 /// @ingroup core
 ///
 ///
-/// @defgroup core_matrix_precision Matrix types with precision qualifiers
+/// @defgroup core_matrix_precision matrix types with precision qualifiers
 ///
-/// @brief Matrix types with precision qualifiers which may result in various precision in term of ULPs
+/// @brief matrix types with precision qualifiers which may result in various precision in term of ULPs
 ///
 /// GLSL allows defining qualifiers for particular variables.
 /// With OpenGL's GLSL, these qualifiers have no effect; they are there for compatibility,

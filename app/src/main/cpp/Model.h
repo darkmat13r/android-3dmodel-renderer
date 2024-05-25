@@ -19,9 +19,9 @@ public:
             : vertices_(std::move(vertices)),
               indices_(std::move(indices)),
               spTexture_(std::move(spTexture)){
-        transform->SetRotation(0,0,0);
-        transform->SetPosition(0,0,2);
-        transform->SetScale(1,1,1);
+        transform->setRotation(0, 0, 0);
+        transform->setPosition(0, 0, 2);
+        transform->setScale(1, 1, 1);
     }
 
     inline const Vertex *getVertexData() const {

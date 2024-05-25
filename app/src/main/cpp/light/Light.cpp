@@ -10,6 +10,7 @@ void Light::bind(Shader *shader) {
 
     if (shader->getAmbientIntensityLocation() != -1)
         glUniform1f(shader->getAmbientIntensityLocation(), ambientIntensity);
+    glUniform1i(shader->lightTypeLocation, 0);
 }
 
 Light::Light() {
