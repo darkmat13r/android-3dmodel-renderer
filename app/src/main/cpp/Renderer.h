@@ -80,6 +80,7 @@ private:
     float isMoving = false;
     float lastX = 0;
     float lastY = 0;
+    float initialDistance = 0.0f;
 
     bool shaderNeedsNewProjectionMatrix_;
 

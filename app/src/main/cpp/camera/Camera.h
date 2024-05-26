@@ -22,7 +22,8 @@ public:
     void OnDown();
     void OnLeft();
     void OnRight();
-    void OnMove(int DeltaX, int deltaY);
+    void OnMove(int deltaX, int deltaY);
+    void MoveForward(float distance);
     void OnMove();
     void OnZoomIn();
     void OnRender();
