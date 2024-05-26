@@ -5,31 +5,31 @@
 #include "Transform.h"
 #include "AndroidOut.h"
 
-void Transform::SetScale(float scaleX, float scaleY, float scaleZ) {
+void Transform::setScale(float scaleX, float scaleY, float scaleZ) {
     this->scale_.x = scaleX;
     this->scale_.y = scaleY;
     this->scale_.z = scaleZ;
 }
 
-void Transform::SetPosition(float x, float y, float z) {
+void Transform::setPosition(float x, float y, float z) {
     this->position_.x = x;
     this->position_.y = y;
     this->position_.z = z;
 }
 
-void Transform::SetRotation(float x, float y, float z) {
+void Transform::setRotation(float x, float y, float z) {
     this->rotation_.x = x;
     this->rotation_.y = y;
     this->rotation_.z = z;
 }
 
-void Transform::Rotate(float x, float y, float z) {
+void Transform::rotate(float x, float y, float z) {
     this->rotation_.x += x;
     this->rotation_.y += y;
     this->rotation_.z += z;
 }
 
-Mat4f Transform::Matrix() {
+Mat4f Transform::matrix() {
     Mat4f rotMat;
 
     rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);

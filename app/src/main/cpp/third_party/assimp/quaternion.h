@@ -105,7 +105,7 @@ public:
     aiQuaterniont& Conjugate();
 
     /**
-     *  @brief  Rotate a point by this quaternion
+     *  @brief  rotate a point by this quaternion
      */
     aiVector3t<TReal> Rotate(const aiVector3t<TReal>& in) const;
 

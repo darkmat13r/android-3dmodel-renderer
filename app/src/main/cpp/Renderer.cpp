@@ -16,6 +16,8 @@
 #include "assimp/Importer.hpp"
 #include "importer/ModelImporter.h"
 #include "assimp/port/AndroidJNI/AndroidJNIIOSystem.h"
+#include "light/DirectionalLight.h"
+#include "mesh/primitives/Sphere.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -78,9 +80,7 @@ void Renderer::render() {
     scene_->render();
 
     GLenum err;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        aout << "OpenGL error in Renderer::render():" << err;
-    }
+    Utility::checkAndLogGlError();
 
     scene_->update();
 
@@ -213,15 +213,24 @@ void Renderer::createModels() {
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
-                                                                      "soul_stealer_bard_fan_art/scene.gltf");
-    environment->transform->SetPosition(0, -1, 4);
-    environment->transform->SetScale(0.01, 0.01, 0.01);
-    environment->transform->SetRotation(90, 0, 0);
+                                                                      "stylized_sports_car_360/scene.gltf");
+    environment->transform->setPosition(0, -1, 4);
+    environment->transform->setScale(0.5, 0.5, 0.5);
+    environment->transform->setRotation(90, 0, 0);
+
+
+
+    std::shared_ptr<MeshRenderer> sphereRenderer = std::make_shared<MeshRenderer>();
+    std::shared_ptr<Mesh> sphere = std::make_shared<Sphere>(2, 20, 20);
+    sphereRenderer->addMesh(sphere);
 
     scene_->addObject(environment);
 
-    std::shared_ptr<Light> light = std::make_shared<Light>();
-
+    std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
+    light->ambientIntensity = 0.8f;
+    light->direction  = { 10.0, -10.0, -10.0};
+    light->intensity = 1.0f;
+    light->color = {1, 1, 1, 1};
     scene_->addObject(light);
 
 }
@@ -270,6 +279,7 @@ void Renderer::handleInput() {
                 aout << "(" << pointer.id << ", " << x << ", " << y << ") "
                      << "Pointer Up";
                 isMoving = false;
+                initialDistance = 0;
                 break;
 
             case AMOTION_EVENT_ACTION_MOVE:
@@ -285,9 +295,40 @@ void Renderer::handleInput() {
                     aout << "deltaX : " << deltaX;
                     aout << "deltaY : " << deltaY;
                     scene_->getMainCamera()->OnMove(deltaX, deltaY);
-                    lastX = x;
-                    lastY = y;
+
                 }
+
+                if(motionEvent.pointerCount == 2){
+                    pointer = motionEvent.pointers[0];
+                    auto pointer2 = motionEvent.pointers[1];
+                    float x1 = GameActivityPointerAxes_getX(&pointer);
+                    float y1 = GameActivityPointerAxes_getY(&pointer);
+                    float x2 = GameActivityPointerAxes_getX(&pointer2);
+                    float y2 = GameActivityPointerAxes_getY(&pointer2);
+
+                    float deltaX = (x2 - x1) / width_;
+                    float deltaY = (y2 - y1) / height_;
+                    float currentDistance = 0;
+                    currentDistance = sqrtf(deltaX * deltaX + deltaY * deltaY);
+                    aout << "deltaX : " << deltaX;
+                    aout << "deltaY : " << deltaY;
+                    float distanceMoved = currentDistance - initialDistance;
+
+                    if(abs(distanceMoved) < 0.001 && abs(initialDistance ) > 0){
+                        float movedX = (x1 - lastX) / width_;
+                        float movedY = (y1 - lastY) / height_;
+                        // Move the camera left or right based on the x movement
+                        scene_->getMainCamera()->MoveLeft(movedX); // Scale the movement for smoother panning
+                        scene_->getMainCamera()->MoveUp( - movedY);   // Scale the movement for smoother panning
+                    }else if(abs(initialDistance) > 0){
+                        scene_->getMainCamera()->MoveForward(distanceMoved);
+                    }
+
+                    initialDistance = currentDistance;
+
+                }
+                lastX = x;
+                lastY = y;
                 for (auto index = 0; index < motionEvent.pointerCount; index++) {
                     pointer = motionEvent.pointers[index];
                     x = GameActivityPointerAxes_getX(&pointer);

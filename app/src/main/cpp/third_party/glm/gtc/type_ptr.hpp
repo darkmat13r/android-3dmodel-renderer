@@ -12,7 +12,7 @@
 /// Handles the interaction between pointers and vector, matrix types.
 ///
 /// This extension defines an overloaded function, glm::value_ptr. It returns
-/// a pointer to the memory layout of the object. Matrix types store their values
+/// a pointer to the memory layout of the object. matrix types store their values
 /// in column-major order.
 ///
 /// This is useful for uploading data to matrices or copying data to buffer objects.

@@ -252,7 +252,7 @@ public:
      * Input : from[3], to[3] which both must be *normalized* non-zero vectors
      * Output: mtx[3][3] -- a 3x3 matrix in column-major form
      * Authors: Tomas Mueller, John Hughes
-     *          "Efficiently Building a Matrix to Rotate One Vector to Another"
+     *          "Efficiently Building a matrix to rotate One Vector to Another"
      *          Journal of Graphics Tools, 4(4):1-4, 1999
      */
     static aiMatrix4x4t& FromToMatrix(const aiVector3t<TReal>& from,

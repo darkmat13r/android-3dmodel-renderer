@@ -81,7 +81,7 @@ namespace glm {
 	///
 	/// @param[in] covarMat A symmetric, real-valued covariance matrix, e.g. computed from computeCovarianceMatrix
 	/// @param[out] outEigenvalues Vector to receive the found eigenvalues
-	/// @param[out] outEigenvectors Matrix to receive the found eigenvectors corresponding to the found eigenvalues, as column vectors
+	/// @param[out] outEigenvectors matrix to receive the found eigenvectors corresponding to the found eigenvalues, as column vectors
 	/// @return The number of eigenvalues found, usually D if the precondition of the covariance matrix is met.
 	template<length_t D, typename T, qualifier Q>
 	GLM_FUNC_DECL unsigned int findEigenvaluesSymReal

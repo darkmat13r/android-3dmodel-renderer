@@ -468,7 +468,7 @@ public:
      */
     bool HasPropertyString(const char *szName) const;
 
-    /** Determine a Matrix configuration property has been set.
+    /** Determine a matrix configuration property has been set.
     * @see HasPropertyMatrix()
      */
     bool HasPropertyMatrix(const char *szName) const;
@@ -484,7 +484,7 @@ public:
     /** List of string properties */
     StringPropertyMap mStringProperties;
 
-    /** List of Matrix properties */
+    /** List of matrix properties */
     MatrixPropertyMap mMatrixProperties;
 
     CallbackPropertyMap mCallbackProperties;

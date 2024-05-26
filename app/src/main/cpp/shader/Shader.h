@@ -13,6 +13,12 @@
 
 class Shader {
 public:
+    GLint diffuseIntensityLocation = 0;
+    GLint lightDirectionLocation = 0;
+    GLint lightTypeLocation = 0;
+    GLint normalAttribute = 0;
+
+
     Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath);
 
     void bind() const;

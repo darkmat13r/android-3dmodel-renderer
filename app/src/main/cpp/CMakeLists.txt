@@ -22,6 +22,7 @@ file(GLOB_RECURSE SOURCES
         "${CMAKE_SOURCE_DIR}/math/*.cpp"
         "${CMAKE_SOURCE_DIR}/light/*.cpp"
         "${CMAKE_SOURCE_DIR}/mesh/*.cpp"
+        "${CMAKE_SOURCE_DIR}/mesh/primitives/*.cpp"
         "${CMAKE_SOURCE_DIR}/shaders/*.cpp"
         "${CMAKE_SOURCE_DIR}/mesh/shader/*.cpp"
         "${CMAKE_SOURCE_DIR}/transform/*.cpp"

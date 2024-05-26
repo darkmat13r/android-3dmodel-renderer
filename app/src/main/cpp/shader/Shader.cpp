@@ -4,6 +4,7 @@
 
 #include "Shader.h"
 #include "AndroidOut.h"
+#include "gtc/type_ptr.hpp"
 #include <shader/Shaders.h>
 #include <fstream>
 #include <sstream>
@@ -41,7 +42,11 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
         ambientColorLocation_ = glGetUniformLocation(program_, "uMaterial.ambientColor");
         lightColorLocation_ = glGetUniformLocation(program_, "uLight.color");
         lightAmbientIntensityLocation_ = glGetUniformLocation(program_, "uLight.ambientIntensity");
+        diffuseIntensityLocation = glGetUniformLocation(program_, "uLight.diffuseIntensity");
+        lightDirectionLocation = glGetUniformLocation(program_, "uLight.direction");
+        lightTypeLocation = glGetUniformLocation(program_, "uLight.type");
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
+        normalAttribute = glGetAttribLocation(program_, "inNormal");
         uvAttribute_ = glGetAttribLocation(program_, "inUV");
         if (projectionMatrixLocation_ == -1
             || positionAttribute_ == -1
@@ -96,7 +101,7 @@ void Shader::bind() const {
     glUseProgram(program_);
 }
 
-void Shader::unbind() const{
+void Shader::unbind() const {
     glUseProgram(0);
 }
 
@@ -107,6 +112,7 @@ void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const{
 GLint Shader::getDiffColorLocation() const {
     return diffuseColorLocation_;
 }
+
 GLint Shader::getAmbientColorLocation() const {
     return ambientColorLocation_;
 }

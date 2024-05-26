@@ -87,9 +87,19 @@ void Camera::Init() {
     m_AngleV = -ToDegree(asinf(target_.y));
 }
 
-void Camera::OnMove(int DeltaX, int deltaY) {
-    m_AngleH += (float) DeltaX / 20;
+void Camera::OnMove(int deltaX, int deltaY) {
+    m_AngleH += (float) deltaX / 20;
     m_AngleV += (float) deltaY / 20;
+}
+
+void Camera::MoveForward(float distance) {
+    pos_.z += distance * speed_;
+}
+void Camera::MoveLeft(float distance) {
+    pos_.x += distance * speed_;
+}
+void Camera::MoveUp(float distance) {
+    pos_.y += distance * speed_;
 }
 
 void Camera::Update() {

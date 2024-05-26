@@ -22,7 +22,10 @@ public:
     void OnDown();
     void OnLeft();
     void OnRight();
-    void OnMove(int DeltaX, int deltaY);
+    void OnMove(int deltaX, int deltaY);
+    void MoveForward(float distance);
+    void MoveLeft(float distance);
+    void MoveUp(float distance);
     void OnMove();
     void OnZoomIn();
     void OnRender();
@@ -37,7 +40,7 @@ private :
     glm::vec3 target_{};
     glm::vec3 pos_{};
     glm::vec3 up_{};
-    float speed_ = 0.2f;
+    float speed_ = 3;
     float m_AngleH{};
     float m_AngleV{};
 

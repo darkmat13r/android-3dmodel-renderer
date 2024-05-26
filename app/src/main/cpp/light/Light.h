@@ -11,7 +11,7 @@
 #include "core/Behaviour.h"
 
 enum LightType {
-    POINT, DIRECTIONAL
+    BASE, DIRECTIONAL
 };
 
 class Light : public Behaviour {
