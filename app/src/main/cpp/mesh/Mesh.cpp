@@ -50,3 +50,5 @@ return material_.get();
 Mesh::~Mesh() {
     aout << "Mesh is destroyed : " << this << std::endl;
 }
+
+Mesh::Mesh() {}

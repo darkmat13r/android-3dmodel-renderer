@@ -18,6 +18,8 @@ public:
             std::vector<Index> indices,
             const std::shared_ptr<Material> &material);
 
+    Mesh();
+
     ~Mesh();
 
     GLuint getVAO() const;
@@ -42,7 +44,7 @@ public:
 
     Material *getMaterial() const;
 
-private :
+protected :
     std::vector<Vertex> vertices_;
     std::vector<Index> indices_;
     std::shared_ptr<Material> material_;

@@ -16,7 +16,7 @@ void DirectionalLight::CalLocalDirection(Mat4f worldMat) {
 
 void DirectionalLight::bind(Shader *shader) {
     Light::bind(shader);
-    glUniform1i(shader->lightTypeLocation, 1);
+    glUniform1f(shader->lightTypeLocation, 1);
 
     if (shader->lightDirectionLocation != -1)
         glUniform3f(shader->lightDirectionLocation, localDirection.x, localDirection.y,
@@ -24,5 +24,7 @@ void DirectionalLight::bind(Shader *shader) {
 
     if (shader->diffuseIntensityLocation != -1)
         glUniform1f(shader->diffuseIntensityLocation, intensity);
+
+
 }
 

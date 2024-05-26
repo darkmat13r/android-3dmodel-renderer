@@ -17,6 +17,7 @@
 #include "importer/ModelImporter.h"
 #include "assimp/port/AndroidJNI/AndroidJNIIOSystem.h"
 #include "light/DirectionalLight.h"
+#include "mesh/primitives/Sphere.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -217,12 +218,19 @@ void Renderer::createModels() {
     environment->transform->setScale(0.01, 0.01, 0.01);
     environment->transform->setRotation(90, 0, 0);
 
-    scene_->addObject(environment);
+
+
+    std::shared_ptr<MeshRenderer> sphereRenderer = std::make_shared<MeshRenderer>();
+    std::shared_ptr<Mesh> sphere = std::make_shared<Sphere>(2, 20, 20);
+    sphereRenderer->addMesh(sphere);
+
+    scene_->addObject(sphereRenderer);
 
     std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
-    light->ambientIntensity = 0.5f;
-    light->direction  = { 1.0, 2.0, 0.0};
+    light->ambientIntensity = 0.6f;
+    light->direction  = { 10.0, -10.0, -10.0};
     light->intensity = 1.0f;
+    light->color = {1, 1, 1, 1};
     scene_->addObject(light);
 
 }

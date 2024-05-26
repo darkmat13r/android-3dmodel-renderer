@@ -24,7 +24,7 @@ void Material::loadShader() {
 }
 
 
-Material::Material(glm::vec4 diffuseColor) : diffuseColor(diffuseColor) {
+Material::Material(glm::vec3 diffuseColor) : diffuseColor(diffuseColor) {
     loadShader();
 }
 
@@ -46,15 +46,15 @@ Material::Material() {
 
 void Material::bindTexture() const {
     glActiveTexture(GL_TEXTURE0);
+
     if (diffuseTexture_) {
         glBindTexture(GL_TEXTURE_2D, diffuseTexture_->getTextureID());
         glUniform1i(shader_->getUseDiffTextureLocation(), GL_TRUE);
-    }else {
-        glUniform1i(shader_->getUseDiffTextureLocation(), GL_FALSE);
-        //Push Color to fragment shader
-        glUniform3fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor.x);
     }
+
     glUniform3fv(shader_->getAmbientColorLocation(), 1, (const GLfloat *) &ambientColor.x);
+    //Push Color to fragment shader
+    glUniform3fv(shader_->getDiffColorLocation(), 1, (const GLfloat *) &diffuseColor.x);
 }
 
 
