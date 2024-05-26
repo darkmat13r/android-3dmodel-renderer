@@ -93,7 +93,13 @@ void Camera::OnMove(int deltaX, int deltaY) {
 }
 
 void Camera::MoveForward(float distance) {
-    pos_.z += distance;
+    pos_.z += distance * speed_;
+}
+void Camera::MoveLeft(float distance) {
+    pos_.x += distance * speed_;
+}
+void Camera::MoveUp(float distance) {
+    pos_.y += distance * speed_;
 }
 
 void Camera::Update() {

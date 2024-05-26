@@ -313,7 +313,14 @@ void Renderer::handleInput() {
                     aout << "deltaX : " << deltaX;
                     aout << "deltaY : " << deltaY;
                     float distanceMoved = currentDistance - initialDistance;
-                    if(initialDistance != 0){
+
+                    if(abs(distanceMoved) < 0.001 && abs(initialDistance ) > 0){
+                        float movedX = (x1 - lastX) / width_;
+                        float movedY = (y1 - lastY) / height_;
+                        // Move the camera left or right based on the x movement
+                        scene_->getMainCamera()->MoveLeft(movedX); // Scale the movement for smoother panning
+                        scene_->getMainCamera()->MoveUp( - movedY);   // Scale the movement for smoother panning
+                    }else if(abs(initialDistance) > 0){
                         scene_->getMainCamera()->MoveForward(distanceMoved);
                     }
 

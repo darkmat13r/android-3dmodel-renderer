@@ -60,7 +60,7 @@ Welcome to the 3D Model Viewer for Android! This project aims to provide a light
 
 2. **View Controls:**
     - ~~**rotate:** Use one finger to rotate the model.~~
-    - ~~**Zoom:** Pinch with two fingers to zoom in and out.~~
+    - **Zoom:** Pinch with two fingers to zoom in and out.
     - ~~**Pan:** Use two fingers to move the model around the screen.~~
 
 
