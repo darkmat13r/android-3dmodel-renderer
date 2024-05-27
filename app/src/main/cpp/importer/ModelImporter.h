@@ -6,6 +6,7 @@
 #define LEARNOPENGL_MODELIMPORTER_H
 
 
+#include <__fwd/string.h>
 #include "../Model.h"
 #include "assimp/Importer.hpp"
 #include "mesh/MeshRenderer.h"
@@ -15,6 +16,7 @@
 class ModelImporter {
 private:
     AAssetManager *assetManager;
+    std::unordered_map<std::string, std::shared_ptr<TextureAsset>> textures_;
 public:
     ModelImporter(AAssetManager *aAssetManager);
 
@@ -33,7 +35,7 @@ public:
     static std::string getStringAfterAssets(const std::string &filePath);
 
     std::shared_ptr<Material> getDiffuseTexture(const aiMaterial *aiMaterial,
-                                                std::string path) const;
+                                                std::string path) ;
 };
 
 

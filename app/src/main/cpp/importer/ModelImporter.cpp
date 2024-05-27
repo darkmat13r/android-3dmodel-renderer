@@ -9,6 +9,7 @@
 #include "AndroidOut.h"
 #include "mesh/Mesh.h"
 #include "mesh/MeshRenderer.h"
+#include <unordered_map>
 
 std::shared_ptr<MeshRenderer>
 ModelImporter::import(Assimp::Importer *importer, const char *modelPath) {
@@ -83,7 +84,7 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
 }
 
 std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiMaterial,
-                                                           std::string path) const {
+                                                           std::string path)  {
     aiString materialMath;
     std::string::size_type slashIndex = path.find_last_of("/");
     std::string dir;
@@ -111,8 +112,17 @@ std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiM
             fullPath = getStringAfterAssets(p);
         }
 
-        auto texture = TextureAsset::loadAsset(assetManager, fullPath);
-        auto material = std::make_shared<Material>(texture);
+        std::shared_ptr<TextureAsset> textureId;
+
+        if (textures_.find(fullPath) == textures_.end()) {
+            auto texture = TextureAsset::loadAsset(assetManager, fullPath);
+            textures_.insert(std::make_pair(fullPath, texture));
+            textureId = texture;
+        }else{
+            textureId = textures_.at(fullPath);
+            aout << "Texture already loaded " << textureId << std::endl;
+        }
+        auto material = std::make_shared<Material>(textureId);
         material->materialName = fullPath;
         return material;
     }
