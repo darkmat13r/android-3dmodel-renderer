@@ -4,6 +4,7 @@
 
 #include "Behaviour.h"
 
-void Behaviour::bind(Shader *shader) {
-    //DO NOTHING
+
+void Behaviour::bind(Shader *shader, const glm::vec3 &cameraLocalPos) {
+
 }

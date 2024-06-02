@@ -14,8 +14,8 @@ void DirectionalLight::CalLocalDirection(Mat4f worldMat) {
     localDirection = -glm::normalize( world3Mat.Transpose() * direction);
 }
 
-void DirectionalLight::bind(Shader *shader) {
-    Light::bind(shader);
+void DirectionalLight::bind(Shader *shader, const glm::vec3 & cameraLocalPos) {
+    Light::bind(shader, cameraLocalPos);
     glUniform1f(shader->lightTypeLocation, 1);
 
     if (shader->lightDirectionLocation != -1)

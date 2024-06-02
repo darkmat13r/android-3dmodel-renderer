@@ -29,6 +29,18 @@ void Transform::rotate(float x, float y, float z) {
     this->rotation_.z += z;
 }
 
+Mat4f Transform::getReversedTranslation() const {
+    Mat4f reversedTranslation;
+    reversedTranslation.InitTranslation(-position_.x, - position_.y, -position_.z );
+    return reversedTranslation;
+}
+
+Mat4f Transform::getReversedRotation() const{
+    Mat4f reversedTranslation;
+    reversedTranslation.InitRotationMatrix(-rotation_.x, - rotation_.y, -rotation_.z );
+    return reversedTranslation;
+}
+
 Mat4f Transform::matrix() {
     Mat4f rotMat;
 

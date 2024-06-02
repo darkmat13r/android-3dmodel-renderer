@@ -5,6 +5,7 @@
 
 #include "../core/Component.h"
 #include "math/quaternion.h"
+#include "vec4.hpp"
 
 #ifndef LEARNOPENGL_CAMERA_H
 #define LEARNOPENGL_CAMERA_H
@@ -35,6 +36,8 @@ public:
     Mat4f Matrix();
 
     static void Rotate(float Angle, const glm::vec3& V,  glm::vec3& target);
+
+    glm::vec3& getPos();
 
 private :
     glm::vec3 target_{};

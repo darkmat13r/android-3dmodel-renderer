@@ -6,6 +6,7 @@
 #include "AndroidOut.h"
 #include "core/Behaviour.h"
 #include "light/DirectionalLight.h"
+#include "camera/Camera.h"
 
 MeshRenderer::MeshRenderer() {
     transform->setRotation(0, 0, 0);
@@ -14,7 +15,7 @@ MeshRenderer::MeshRenderer() {
 }
 
 
-void MeshRenderer::render(Mat4f *projectionMatrix, Light *light) {
+void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) {
     unsigned int textureN = 0;
     for (const auto &mesh: meshes_) {
         Material *material = mesh->getMaterial();
@@ -29,7 +30,15 @@ void MeshRenderer::render(Mat4f *projectionMatrix, Light *light) {
             pDirectionalLight->CalLocalDirection(this->transform->matrix());
         }
 
-        light->bind(shader);
+        Mat4f cameraToLocalTranslation = transform->getReversedTranslation();
+        Mat4f cameraToLocalRotation = transform->getReversedRotation();
+        Mat4f cameraToLocalTransformation = cameraToLocalRotation * cameraToLocalTranslation;
+        glm::vec4 cameraWorldPos = glm::vec4 (camera->getPos(), 1.0);
+        glm::vec4 cameraLocalPos = cameraToLocalTransformation * cameraWorldPos;
+        auto cameraLocalPos3f = glm::vec3 (cameraWorldPos);
+
+
+        light->bind(shader, cameraLocalPos3f);
 
         glBindVertexArray(mesh->getVAO());
         glDrawElements(GL_TRIANGLES, mesh->getIndexCount(), GL_UNSIGNED_SHORT, (void *) 0);

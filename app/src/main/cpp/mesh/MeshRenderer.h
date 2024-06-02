@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "core/Component.h"
 #include "light/Light.h"
+#include "camera/Camera.h"
 
 class MeshRenderer : public Component {
 public :
@@ -20,7 +21,7 @@ public :
 
     void onCreate() override;
 
-    void render(Mat4f *projectionMatrix, Light *light);
+    void render(Mat4f *projectionMatrix,Camera* camera, Light *light);
 
     void update() override;
 

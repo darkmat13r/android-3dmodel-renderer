@@ -48,6 +48,9 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
         normalAttribute = glGetAttribLocation(program_, "inNormal");
         uvAttribute_ = glGetAttribLocation(program_, "inUV");
+        samplerSpecularExponentLocation = glGetUniformLocation(program_, "uSpecTexture");
+        specularColorLocation = glGetUniformLocation(program_, "uMaterial.specularColor");
+        cameraLocalPosLocation = glGetUniformLocation(program_, "uCameraLocalPos");
         if (projectionMatrixLocation_ == -1
             || positionAttribute_ == -1
             || useDiffText_ == -1
@@ -128,4 +131,18 @@ GLint Shader::getLightColorLocation() const {
 GLint Shader::getAmbientIntensityLocation() const {
     return lightAmbientIntensityLocation_;
 }
+
+GLint Shader::getSpecularExponentLocation() const {
+    return samplerSpecularExponentLocation;
+}
+
+GLint Shader::getSpecularColorLocation() const {
+    return specularColorLocation;
+}
+
+GLint Shader::getCameraLocalPosLocation() const {
+    return cameraLocalPosLocation;
+}
+
+
 

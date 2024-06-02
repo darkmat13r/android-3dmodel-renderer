@@ -213,7 +213,7 @@ void Renderer::createModels() {
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
-                                                                      "stylized_sports_car_360/scene.gltf");
+                                                                      "ceres/scene.gltf");
     environment->transform->setPosition(0, -1, 4);
     environment->transform->setScale(0.5, 0.5, 0.5);
     environment->transform->setRotation(90, 0, 0);
@@ -228,7 +228,7 @@ void Renderer::createModels() {
 
     std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
     light->ambientIntensity = 0.8f;
-    light->direction  = { 10.0, -10.0, -10.0};
+    light->direction  = { 4, 2, 6};
     light->intensity = 1.0f;
     light->color = {1, 1, 1, 1};
     scene_->addObject(light);

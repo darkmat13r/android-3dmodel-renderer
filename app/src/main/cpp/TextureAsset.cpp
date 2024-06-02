@@ -4,7 +4,7 @@
 #include "Utility.h"
 
 std::shared_ptr<TextureAsset>
-TextureAsset::loadAsset(AAssetManager *assetManager, const std::string &assetPath) {
+TextureAsset::loadAsset(AAssetManager *assetManager, const std::string &assetPath,  GLint format = GL_RGBA) {
     aout << "LoadAsset :" << assetPath << std::endl;
     // Get the image from asset manager
     auto pAndroidRobotPng = AAssetManager_open(
@@ -54,11 +54,11 @@ TextureAsset::loadAsset(AAssetManager *assetManager, const std::string &assetPat
     glTexImage2D(
             GL_TEXTURE_2D, // target
             0, // mip level
-            GL_RGBA, // internal format, often advisable to use BGR
+            format, // internal format, often advisable to use BGR
             width, // width of the texture
             height, // height of the texture
             0, // border (always 0)
-            GL_RGBA, // format
+            format, // format
             GL_UNSIGNED_BYTE, // type
             upAndroidImageData->data() // Data to upload
     );
@@ -78,4 +78,6 @@ TextureAsset::~TextureAsset() {
     // return texture resources
     glDeleteTextures(1, &textureID_);
     textureID_ = 0;
+
+    aout << "Texture is destroying";
 }
