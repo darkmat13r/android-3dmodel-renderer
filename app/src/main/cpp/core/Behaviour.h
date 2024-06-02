@@ -11,7 +11,7 @@
 
 class Behaviour : public Component{
 public:
-    virtual void bind(Shader* shader);
+    virtual void bind(Shader* shader, const glm::vec3 & cameraLocalPos);
 };
 
 

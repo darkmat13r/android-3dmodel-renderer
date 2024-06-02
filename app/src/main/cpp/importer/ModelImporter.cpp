@@ -10,6 +10,7 @@
 #include "mesh/Mesh.h"
 #include "mesh/MeshRenderer.h"
 #include <unordered_map>
+#include <utility>
 
 std::shared_ptr<MeshRenderer>
 ModelImporter::import(Assimp::Importer *importer, const char *modelPath) {
@@ -65,28 +66,46 @@ void ModelImporter::loadSingleMesh(const aiMesh *aiMesh, std::vector<Vertex> &ve
 
 std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
                                                       const aiMesh *aiMesh,
-                                                      std::string path) {
+                                                      const std::string& path) {
 
-
+    auto material = std::make_shared<Material>();
     if (pScene->mMaterials) {
         auto aiMaterial = pScene->mMaterials[aiMesh->mMaterialIndex];
 
-        if (aiMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-            return getDiffuseTexture(aiMaterial, path);
-        } else if (aiMaterial->mNumProperties > 0) {
-            aiColor3D color(0.f, 0.f, 0.f);
-            aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-            return std::make_shared<Material>();
+        auto diffuseTexture =  getDiffuseTexture(aiMaterial, path, aiTextureType_DIFFUSE);
+        if(diffuseTexture){
+            material->diffuseTexture = diffuseTexture;
+        }
+        auto specularTexture =  getDiffuseTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
+        if(specularTexture){
+            material->specularTexture = specularTexture;
+        }
+
+        if (aiMaterial->mNumProperties > 0) {
+            aiColor3D diffuseColor(1.f, 1.f, 1.f);
+            if(aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS){
+                material->diffuseColor = {diffuseColor.r, diffuseColor.g, diffuseColor.b};
+            }
+
+            aiColor3D specularColor(1.f, 1.f, 1.f);
+            if(aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS){
+                material->specularColor = {specularColor.r, specularColor.g, specularColor.b};
+            }
         }
 
     }
-    return std::make_shared<Material>();
+    return material;
 }
 
-std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiMaterial,
-                                                           std::string path)  {
+std::shared_ptr<TextureAsset> ModelImporter::getDiffuseTexture(const aiMaterial *aiMaterial,
+                                                           const std::string& path,  aiTextureType type, GLint format )  {
+
+    if (aiMaterial->GetTextureCount(type) == 0) {
+        return nullptr;
+    }
+
     aiString materialMath;
-    std::string::size_type slashIndex = path.find_last_of("/");
+    std::string::size_type slashIndex = path.find_last_of('/');
     std::string dir;
     if (slashIndex == std::string::npos) {
         dir = "";
@@ -96,8 +115,8 @@ std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiM
         dir = path.substr(0, slashIndex);
     }
 
-    if (aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &materialMath, NULL, NULL, NULL,
-                               NULL, NULL) == AI_SUCCESS) {
+    if (aiMaterial->GetTexture(type, 0, &materialMath, nullptr, nullptr, nullptr,
+                               nullptr, nullptr) == AI_SUCCESS) {
         std::string p(materialMath.data);
 
         if (p.substr(0, 2) == ".\\") {
@@ -115,18 +134,16 @@ std::shared_ptr<Material> ModelImporter::getDiffuseTexture(const aiMaterial *aiM
         std::shared_ptr<TextureAsset> textureId;
 
         if (textures_.find(fullPath) == textures_.end()) {
-            auto texture = TextureAsset::loadAsset(assetManager, fullPath);
+            auto texture = TextureAsset::loadAsset(assetManager, fullPath, format);
             textures_.insert(std::make_pair(fullPath, texture));
             textureId = texture;
         }else{
             textureId = textures_.at(fullPath);
             aout << "Texture already loaded " << textureId << std::endl;
         }
-        auto material = std::make_shared<Material>(textureId);
-        material->materialName = fullPath;
-        return material;
+      return textureId;
     }
-    return std::make_shared<Material>();
+   return nullptr;
 }
 
 std::string ModelImporter::getStringAfterAssets(const std::string &filePath) {

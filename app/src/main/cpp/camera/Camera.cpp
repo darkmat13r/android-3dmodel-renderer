@@ -147,5 +147,9 @@ Camera::Camera(const glm::vec3 &Pos, const glm::vec3 &Target, const glm::vec3 &U
     Init();
 }
 
+glm::vec3 &Camera::getPos() {
+    return pos_;
+}
+
 
 

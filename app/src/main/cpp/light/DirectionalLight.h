@@ -16,7 +16,7 @@ public :
     float intensity = 1.0;
 
     void CalLocalDirection(Mat4f worldMat);
-    void bind(Shader *shader) override;
+    void bind(Shader *shader, const glm::vec3 & cameraLocalPos) override;
 
     const glm::vec3 &GetLocalDirection();
 };

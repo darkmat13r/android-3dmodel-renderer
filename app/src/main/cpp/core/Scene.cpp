@@ -63,7 +63,7 @@ void Scene::render() {
             component->transform->rotate(0, rotation_, 0);
             Mat4f model = component->transform->matrix();
             Mat4f finalProjectionMatrix = (*projectionMatrix_) * View * model;
-            component->render(&finalProjectionMatrix, pLight);
+            component->render(&finalProjectionMatrix, getMainCamera(), pLight);
         }
     }
 }

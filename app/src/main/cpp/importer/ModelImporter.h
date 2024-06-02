@@ -30,12 +30,12 @@ public:
 
     std::shared_ptr<Material> loadMaterial(const aiScene *pScene,
                                            const aiMesh *aiMesh,
-                                           std::string path);
+                                           const std::string& path);
 
     static std::string getStringAfterAssets(const std::string &filePath);
 
-    std::shared_ptr<Material> getDiffuseTexture(const aiMaterial *aiMaterial,
-                                                std::string path) ;
+    std::shared_ptr<TextureAsset>
+    getDiffuseTexture(const aiMaterial *aiMaterial, const std::string& path, aiTextureType type, GLint format = GL_RGBA);
 };
 
 

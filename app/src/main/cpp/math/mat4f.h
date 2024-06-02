@@ -11,6 +11,7 @@
 #include "glm/detail/type_vec3.hpp"
 #include "glm/vec3.hpp"
 #include "quaternion.h"
+#include "vec4.hpp"
 
 struct Mat4f {
     float m[4][4];
@@ -38,7 +39,7 @@ struct Mat4f {
 
     // Overloaded operators
     Mat4f operator*(const Mat4f &other) const;
-    glm::vec3 operator*(const glm::vec3 &other) const;
+    glm::vec4 operator*(const glm::vec4 &other) const;
 
     Mat4f inverse();
 };

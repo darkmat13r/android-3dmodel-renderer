@@ -179,8 +179,8 @@ Mat4f Mat4f::operator*(const Mat4f &other) const {
 }
 
 // Matrix multiplication
-glm::vec3 Mat4f::operator*(const glm::vec3 &other) const {
-    glm::vec3 ret;
+glm::vec4 Mat4f::operator*(const glm::vec4 &other) const {
+    glm::vec4 ret;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             ret[j] = m[i][0] * other[0] +
