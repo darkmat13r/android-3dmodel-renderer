@@ -40,8 +40,8 @@ Welcome to the 3D Model Viewer for Android! This project aims to provide a light
 
 1. **Clone the Repository:**
    ```sh
-   git clone https://github.com/darkmat13r/learnopengl.git
-   cd learnopengl
+   git clone https://github.com/darkmat13r/android-3dmodel-viewer.git
+   cd android-3dmodel-viewer
    ```
 
 2. **Open in Android Studio:**
