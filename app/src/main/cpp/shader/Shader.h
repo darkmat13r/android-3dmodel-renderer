@@ -11,10 +11,11 @@
 #include "detail/type_mat4x4.hpp"
 #include "math/mat4f.h"
 
+const int MAX_POINT_LIGHTS = 10;
+
 class Shader {
 public:
-    GLint diffuseIntensityLocation = 0;
-    GLint lightDirectionLocation = 0;
+
     GLint lightTypeLocation = 0;
     GLint normalAttribute = 0;
 
@@ -46,20 +47,43 @@ public:
     GLint getSpecularColorLocation() const;
 
     GLint getCameraLocalPosLocation() const;
+    GLint getLightDirectionLocation() const;
+    GLint getDiffuseIntensityLocation() const;
 
 private:
     GLuint program_ = 0;
     GLint projectionMatrixLocation_ = 0;
     GLint positionAttribute_ = 0;
     GLint uvAttribute_ = 0;
-    GLint diffuseColorLocation_ = 0;
-    GLint useDiffText_ = 0;
-    GLint ambientColorLocation_ = 0;
-    GLint lightColorLocation_ = 0;
-    GLint lightAmbientIntensityLocation_ = 0;
-    GLint samplerSpecularExponentLocation = 0;
-    GLint specularColorLocation = 0;
-    GLint cameraLocalPosLocation = 0;
+    GLint cameraLocalPosLocation_ = 0;
+    GLint numberOfPointLightLocation_ = 0;
+
+    struct {
+        GLint diffuseColor = 0;
+        GLint useDiffText_ = 0;
+        GLint ambientColor = 0;
+        GLint samplerSpecularExponentLocation = 0;
+        GLint specularColor = 0;
+    } materialLoc;
+
+    struct{
+        GLint color = 0;
+        GLint ambientIntensity = 0;
+        GLint diffuseIntensity = 0;
+        GLint direction = 0;
+    } lightLoc;
+
+    struct{
+        GLint color = 0;
+        GLint ambientIntensity = 0;
+        GLint diffuseIntensity = 0;
+        GLint direction = 0;
+        struct {
+            GLuint constant = 1.0;
+            GLuint linear = 0.0;
+            GLuint exp = 0.0;
+        } attenuation;
+    } pointLightLocation[MAX_POINT_LIGHTS];
 
     std::string readFile(std::string &fileName) const;
 

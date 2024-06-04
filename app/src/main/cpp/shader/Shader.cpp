@@ -37,24 +37,26 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
         glDeleteProgram(program_);
     } else {
         projectionMatrixLocation_ = glGetUniformLocation(program_, "uProjection");
-        diffuseColorLocation_ = glGetUniformLocation(program_, "uMaterial.diffuseColor");
-        useDiffText_ = glGetUniformLocation(program_, "uMaterial.useTexture");
-        ambientColorLocation_ = glGetUniformLocation(program_, "uMaterial.ambientColor");
-        lightColorLocation_ = glGetUniformLocation(program_, "uLight.color");
-        lightAmbientIntensityLocation_ = glGetUniformLocation(program_, "uLight.ambientIntensity");
-        diffuseIntensityLocation = glGetUniformLocation(program_, "uLight.diffuseIntensity");
-        lightDirectionLocation = glGetUniformLocation(program_, "uLight.direction");
-        lightTypeLocation = glGetUniformLocation(program_, "uLight.type");
+        materialLoc.diffuseColor = glGetUniformLocation(program_, "uMaterial.diffuseColor");
+        materialLoc.useDiffText_ = glGetUniformLocation(program_, "uMaterial.useTexture");
+        materialLoc.ambientColor = glGetUniformLocation(program_, "uMaterial.ambientColor");
+        lightLoc.color = glGetUniformLocation(program_, "uLight.light.color");
+        lightLoc.ambientIntensity = glGetUniformLocation(program_, "uLight.light.ambientIntensity");
+        lightLoc.diffuseIntensity = glGetUniformLocation(program_, "uLight.light.diffuseIntensity");
+        lightLoc.direction = glGetUniformLocation(program_, "uLight.direction");
+        lightTypeLocation = glGetUniformLocation(program_, "uLight.light.type");
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
         normalAttribute = glGetAttribLocation(program_, "inNormal");
         uvAttribute_ = glGetAttribLocation(program_, "inUV");
-        samplerSpecularExponentLocation = glGetUniformLocation(program_, "uSpecTexture");
-        specularColorLocation = glGetUniformLocation(program_, "uMaterial.specularColor");
-        cameraLocalPosLocation = glGetUniformLocation(program_, "uCameraLocalPos");
+        materialLoc.samplerSpecularExponentLocation = glGetUniformLocation(program_, "uSpecTexture");
+        materialLoc.specularColor = glGetUniformLocation(program_, "uMaterial.specularColor");
+        cameraLocalPosLocation_ = glGetUniformLocation(program_, "uCameraLocalPos");
+        numberOfPointLightLocation_ = glGetUniformLocation(program_, "uNumOfLights");
+
         if (projectionMatrixLocation_ == -1
             || positionAttribute_ == -1
-            || useDiffText_ == -1
-            || diffuseColorLocation_ == -1
+            || materialLoc.useDiffText_ == -1
+            || materialLoc.diffuseColor == -1
             || uvAttribute_ == -1) {
             glDeleteProgram(program_);
         }
@@ -113,35 +115,43 @@ void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const{
 }
 
 GLint Shader::getDiffColorLocation() const {
-    return diffuseColorLocation_;
+    return materialLoc.diffuseColor;
 }
 
 GLint Shader::getAmbientColorLocation() const {
-    return ambientColorLocation_;
+    return materialLoc.ambientColor;
 }
 
 GLint Shader::getUseDiffTextureLocation() const {
-    return useDiffText_;
+    return materialLoc.useDiffText_;
 }
 
 GLint Shader::getLightColorLocation() const {
-    return lightColorLocation_;
+    return lightLoc.color;
 }
 
 GLint Shader::getAmbientIntensityLocation() const {
-    return lightAmbientIntensityLocation_;
+    return lightLoc.ambientIntensity;
 }
 
 GLint Shader::getSpecularExponentLocation() const {
-    return samplerSpecularExponentLocation;
+    return materialLoc.samplerSpecularExponentLocation;
 }
 
 GLint Shader::getSpecularColorLocation() const {
-    return specularColorLocation;
+    return materialLoc.specularColor;
 }
 
 GLint Shader::getCameraLocalPosLocation() const {
-    return cameraLocalPosLocation;
+    return cameraLocalPosLocation_;
+}
+
+GLint Shader::getLightDirectionLocation() const {
+    return lightLoc.direction;
+}
+
+GLint Shader::getDiffuseIntensityLocation() const {
+    return lightLoc.diffuseIntensity;
 }
 
 

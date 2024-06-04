@@ -18,12 +18,12 @@ void DirectionalLight::bind(Shader *shader, const glm::vec3 & cameraLocalPos) {
     Light::bind(shader, cameraLocalPos);
     glUniform1f(shader->lightTypeLocation, 1);
 
-    if (shader->lightDirectionLocation != -1)
-        glUniform3f(shader->lightDirectionLocation, localDirection.x, localDirection.y,
+    if (shader->getLightDirectionLocation() != -1)
+        glUniform3f(shader->getLightDirectionLocation(), localDirection.x, localDirection.y,
                     localDirection.z);
 
-    if (shader->diffuseIntensityLocation != -1)
-        glUniform1f(shader->diffuseIntensityLocation, intensity);
+    if (shader->getDiffuseIntensityLocation() != -1)
+        glUniform1f(shader->getDiffuseIntensityLocation(), intensity);
 
 
 }
