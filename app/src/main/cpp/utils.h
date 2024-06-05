@@ -15,4 +15,13 @@
 #define SPECULAR_EXPONENT_UNIT  GL_TEXTURE6
 #define SPECULAR_EXPONENT_UNIT_INDEX  6
 
+
+#define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
+
+#define INVALID_UNIFORM_LOCATION -1
+
+#ifdef ANDROID
+#define SNPRINTF snprintf
+#endif
+
 #endif //LEARNOPENGL_UTILS_H

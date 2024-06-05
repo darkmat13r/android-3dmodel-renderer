@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "AndroidOut.h"
 #include "gtc/type_ptr.hpp"
+#include "utils.h"
 #include <shader/Shaders.h>
 #include <fstream>
 #include <sstream>
@@ -48,16 +49,53 @@ Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
         normalAttribute = glGetAttribLocation(program_, "inNormal");
         uvAttribute_ = glGetAttribLocation(program_, "inUV");
-        materialLoc.samplerSpecularExponentLocation = glGetUniformLocation(program_, "uSpecTexture");
+        materialLoc.samplerSpecularExponentLocation = glGetUniformLocation(program_,
+                                                                           "uSpecTexture");
         materialLoc.specularColor = glGetUniformLocation(program_, "uMaterial.specularColor");
         cameraLocalPosLocation_ = glGetUniformLocation(program_, "uCameraLocalPos");
         numberOfPointLightLocation_ = glGetUniformLocation(program_, "uNumOfLights");
 
-        if (projectionMatrixLocation_ == -1
-            || positionAttribute_ == -1
-            || materialLoc.useDiffText_ == -1
-            || materialLoc.diffuseColor == -1
-            || uvAttribute_ == -1) {
+        for (int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(pointLightLocation); ++i) {
+            char name[128];
+            memset(name, 0, sizeof(name));
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].light.color", i);
+            pointLightLocation[i].color = glGetUniformLocation(program_, name);
+
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].light.ambientIntensity", i);
+            pointLightLocation[i].ambientIntensity = glGetUniformLocation(program_, name);
+
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].localPos", i);
+            pointLightLocation[i].localPosition = glGetUniformLocation(program_, name);
+
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].light.diffuseIntensity", i);
+            pointLightLocation[i].diffuseIntensity = glGetUniformLocation(program_, name);
+
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.constant", i);
+            pointLightLocation[i].attenuation.constant = glGetUniformLocation(program_, name);
+
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.linear", i);
+            pointLightLocation[i].attenuation.linear = glGetUniformLocation(program_, name);
+
+            SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.exp", i);
+            pointLightLocation[i].attenuation.exp = glGetUniformLocation(program_, name);
+
+            if (
+                    pointLightLocation[i].color == INVALID_UNIFORM_LOCATION ||
+                    pointLightLocation[i].ambientIntensity == INVALID_UNIFORM_LOCATION ||
+                    pointLightLocation[i].localPosition == INVALID_UNIFORM_LOCATION ||
+                    pointLightLocation[i].diffuseIntensity == INVALID_UNIFORM_LOCATION ||
+                    pointLightLocation[i].attenuation.constant == INVALID_UNIFORM_LOCATION ||
+                    pointLightLocation[i].attenuation.linear == INVALID_UNIFORM_LOCATION ||
+                    pointLightLocation[i].attenuation.exp == INVALID_UNIFORM_LOCATION
+                    ) {
+                glDeleteProgram(program_);
+            }
+        }
+        if (projectionMatrixLocation_ == INVALID_UNIFORM_LOCATION
+            || positionAttribute_ == INVALID_UNIFORM_LOCATION
+            || materialLoc.useDiffText_ == INVALID_UNIFORM_LOCATION
+            || materialLoc.diffuseColor == INVALID_UNIFORM_LOCATION
+            || uvAttribute_ == INVALID_UNIFORM_LOCATION) {
             glDeleteProgram(program_);
         }
     }
@@ -110,7 +148,7 @@ void Shader::unbind() const {
     glUseProgram(0);
 }
 
-void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const{
+void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const {
     glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
 }
 

@@ -1,6 +1,6 @@
 #version 300 es
 precision mediump float;
-const int MAX_POINT_LIGHTS = 2;
+const int MAX_POINT_LIGHTS = 10;
 in vec2 fragUV;
 in vec3 normal0;
 in vec3 localPos0;
@@ -42,15 +42,11 @@ uniform sampler2D uSpecTexture;
 uniform Material uMaterial;
 uniform DirectionalLight uLight;
 uniform int uNumOfLights;
-uniform PointLight uPointLight[MAX_POINT_LIGHTS];
+uniform PointLight uPointLights[MAX_POINT_LIGHTS];
 uniform vec3 uCameraLocalPos;
 
 out vec4 outColor;
 
-vec4 calculateDirectionalLight(vec3 normal){
-    vec4 color =  calculateLightInternal(uLight.light, uLight.direction, normal);
-    return color;
-}
 
 vec4 calculateLightInternal(Light light, vec3 direction, vec3 normal){
 
@@ -76,12 +72,17 @@ vec4 calculateLightInternal(Light light, vec3 direction, vec3 normal){
     return color;
 }
 
+vec4 calculateDirectionalLight(vec3 normal){
+    vec4 color =  calculateLightInternal(uLight.light, uLight.direction, normal);
+    return color;
+}
+
 vec4 calculatePointLight(int index, vec3 normal){
-    vec3 direction = localPos0 - uPointLight[index].localPos;
+    vec3 direction = localPos0 - uPointLights[index].localPos;
     float distance = length(direction);
     direction = normalize(direction);
-    vec4 color = calculateLightInternal(uPointLight[index].light, direction, normal);
-    float attenuation = uPointLight[index].atten.constant + uPointLight[index].atten.linear * distance + uPointLight[index].atten.exp * distance * distance;
+    vec4 color = calculateLightInternal(uPointLights[index].light, direction, normal);
+    float attenuation = uPointLights[index].atten.constant + uPointLights[index].atten.linear * distance + uPointLights[index].atten.exp * distance * distance;
 
     return color/attenuation;
 }

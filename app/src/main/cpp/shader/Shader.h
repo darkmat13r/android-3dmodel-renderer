@@ -47,7 +47,9 @@ public:
     GLint getSpecularColorLocation() const;
 
     GLint getCameraLocalPosLocation() const;
+
     GLint getLightDirectionLocation() const;
+
     GLint getDiffuseIntensityLocation() const;
 
 private:
@@ -66,18 +68,19 @@ private:
         GLint specularColor = 0;
     } materialLoc;
 
-    struct{
+    struct {
         GLint color = 0;
         GLint ambientIntensity = 0;
         GLint diffuseIntensity = 0;
         GLint direction = 0;
     } lightLoc;
 
-    struct{
+    struct {
         GLint color = 0;
         GLint ambientIntensity = 0;
         GLint diffuseIntensity = 0;
         GLint direction = 0;
+        GLint localPosition = 0;
         struct {
             GLuint constant = 1.0;
             GLuint linear = 0.0;
