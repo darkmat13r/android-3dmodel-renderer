@@ -12,10 +12,11 @@ void Transform::setScale(float scaleX, float scaleY, float scaleZ) {
 }
 
 void Transform::setPosition(float x, float y, float z) {
-    this->position_.x = x;
-    this->position_.y = y;
-    this->position_.z = z;
+    this->position.x = x;
+    this->position.y = y;
+    this->position.z = z;
 }
+
 
 void Transform::setRotation(float x, float y, float z) {
     this->rotation_.x = x;
@@ -31,8 +32,17 @@ void Transform::rotate(float x, float y, float z) {
 
 Mat4f Transform::getReversedTranslation() const {
     Mat4f reversedTranslation;
-    reversedTranslation.InitTranslation(-position_.x, - position_.y, -position_.z );
+    reversedTranslation.InitTranslation(-position.x, - position.y, -position.z );
     return reversedTranslation;
+}
+
+glm::vec3 Transform::worldToLocal(glm::vec3 worldPosition) const{
+    Mat4f cameraToLocalTranslation = getReversedTranslation();
+    Mat4f cameraToLocalRotation = getReversedRotation();
+    Mat4f cameraToLocalTransformation = cameraToLocalRotation * cameraToLocalTranslation;
+    glm::vec4 cameraWorldPos = glm::vec4 (worldPosition, 1.0);
+    glm::vec4 cameraLocalPos = cameraToLocalTransformation * cameraWorldPos;
+    return cameraWorldPos;
 }
 
 Mat4f Transform::getReversedRotation() const{
@@ -47,7 +57,7 @@ Mat4f Transform::matrix() {
     rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
 
     Mat4f transMat;
-    transMat.InitTranslation(position_.x, position_.y, position_.z);
+    transMat.InitTranslation(position.x, position.y, position.z);
 
     Mat4f scaleMat;
     scaleMat.InitScaleMatrix(scale_.x, scale_.y, scale_.z);
@@ -56,7 +66,19 @@ Mat4f Transform::matrix() {
 }
 
 Transform::Transform() :
-        position_(0, 0, 0),
+        position(0, 0, 0),
         rotation_(0, 0, 0, 0),
         scale_(1, 1, 1) {
+}
+
+glm::vec3 Transform::getPosition() {
+    return position;
+}
+
+void Transform::setYPosition(float y) {
+    this->position.y = y;
+}
+
+float Transform::getPositionY() {
+    return position.y;
 }

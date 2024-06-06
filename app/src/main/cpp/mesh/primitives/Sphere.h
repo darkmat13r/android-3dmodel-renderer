@@ -11,7 +11,7 @@
 class Sphere : public Mesh {
 public :
     Sphere(float radius, int latitudeSegments,
-           int longitudeSegments);
+           int longitudeSegments, ShaderLoader* shaderLoader);
 
 private:
     float radius_;

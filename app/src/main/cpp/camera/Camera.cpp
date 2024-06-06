@@ -6,9 +6,9 @@
 #include "glm/geometric.hpp"
 
 void Camera::SetPosition(float x, float y, float z) {
-    pos_.x = x;
-    pos_.y = y;
-    pos_.z = z;
+    transform->position.x = x;
+    transform->position.y = y;
+    transform->position.z = z;
 }
 
 void Camera::OnUp() {
@@ -39,11 +39,11 @@ void Camera::OnRight() {
 }
 
 void Camera::PanUp() {
-    pos_.y += speed_;
+    transform->position.y += speed_;
 }
 
 void Camera::PanDown() {
-    pos_.y -= speed_;
+    transform->position.y -= speed_;
 }
 
 void Camera::OnMove() {
@@ -60,7 +60,7 @@ void Camera::OnZoomOut() {
 
 Mat4f Camera::Matrix() {
     Mat4f cameraMat;
-    cameraMat.InitCamera(target_, pos_, up_);
+    cameraMat.InitCamera(target_, transform->position, up_);
     return cameraMat;
 }
 
@@ -93,13 +93,13 @@ void Camera::OnMove(int deltaX, int deltaY) {
 }
 
 void Camera::MoveForward(float distance) {
-    pos_.z += distance * speed_;
+    transform->position.z += distance * speed_;
 }
 void Camera::MoveLeft(float distance) {
-    pos_.x += distance * speed_;
+    transform->position.x += distance * speed_;
 }
 void Camera::MoveUp(float distance) {
-    pos_.y += distance * speed_;
+    transform->position.y += distance * speed_;
 }
 
 void Camera::Update() {
@@ -139,17 +139,14 @@ void Camera::Rotate(float Angle, const glm::vec3 &V, glm::vec3 &target) {
     target.z = W.z;
 }
 
-Camera::Camera(const glm::vec3 &Pos, const glm::vec3 &Target, const glm::vec3 &Up) {
-    pos_ = Pos;
-    target_ = Target;
-    up_ = Up;
+Camera::Camera(const glm::vec3 &pos, const glm::vec3 &targe, const glm::vec3 &up) {
+    transform->setPosition(pos.x, pos.y, pos.z);
+    target_ = targe;
+    up_ = up;
 
     Init();
 }
 
-glm::vec3 &Camera::getPos() {
-    return pos_;
-}
 
 
 

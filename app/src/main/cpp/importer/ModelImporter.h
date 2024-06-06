@@ -16,9 +16,10 @@
 class ModelImporter {
 private:
     AAssetManager *assetManager;
+    ShaderLoader *shaderLoader_;
     std::unordered_map<std::string, std::shared_ptr<TextureAsset>> textures_;
 public:
-    ModelImporter(AAssetManager *aAssetManager);
+    ModelImporter(AAssetManager *aAssetManager, ShaderLoader* shaderLoader);
 
     std::shared_ptr<MeshRenderer> import(Assimp::Importer *importer, const char *modelPath);
 

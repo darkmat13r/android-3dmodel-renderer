@@ -68,7 +68,7 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
                                                       const aiMesh *aiMesh,
                                                       const std::string& path) {
 
-    auto material = std::make_shared<Material>();
+    auto material = std::make_shared<Material>(shaderLoader_);
     if (pScene->mMaterials) {
         auto aiMaterial = pScene->mMaterials[aiMesh->mMaterialIndex];
 
@@ -76,18 +76,18 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
         if(diffuseTexture){
             material->diffuseTexture = diffuseTexture;
         }
-        auto specularTexture =  getDiffuseTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
+        auto specularTexture = getDiffuseTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
         if(specularTexture){
             material->specularTexture = specularTexture;
         }
 
         if (aiMaterial->mNumProperties > 0) {
-            aiColor3D diffuseColor(1.f, 1.f, 1.f);
+            aiColor3D diffuseColor(0.f, 0.f, 0.f);
             if(aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS){
                 material->diffuseColor = {diffuseColor.r, diffuseColor.g, diffuseColor.b};
             }
 
-            aiColor3D specularColor(1.f, 1.f, 1.f);
+            aiColor3D specularColor(0.f, 0.f, 0.f);
             if(aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS){
                 material->specularColor = {specularColor.r, specularColor.g, specularColor.b};
             }
@@ -155,7 +155,7 @@ std::string ModelImporter::getStringAfterAssets(const std::string &filePath) {
     return ""; // Return an empty string if "assets" is not found
 }
 
-ModelImporter::ModelImporter(AAssetManager *aAssetManager) : assetManager(aAssetManager) {
+ModelImporter::ModelImporter(AAssetManager *aAssetManager, ShaderLoader* shaderLoader) : assetManager(aAssetManager), shaderLoader_(shaderLoader) {
 
 }
 

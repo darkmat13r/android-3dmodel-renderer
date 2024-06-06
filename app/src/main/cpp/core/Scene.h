@@ -35,6 +35,7 @@ private:
     std::shared_ptr<Camera> mainCamera_;
     std::shared_ptr<Mat4f> projectionMatrix_;
     float rotation_ = 0.2;
+    float deltaY = 0.2;
 
 };
 

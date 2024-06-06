@@ -8,20 +8,12 @@
 #include "utils.h"
 
 Shader *Material::getShader() const {
-    return shader_.get();
+    return shader_;
 }
 
 
 void Material::loadShader() {
-    std::string vertexShaderPath = "shaders/base_frag.vert";
-    std::string fragmentShaderPath = "shaders/base_frag.frag";
-
-    shader_ = std::__ndk1::make_shared<Shader>(vertexShaderPath, fragmentShaderPath);
-}
-
-
-Material::Material(glm::vec3 diffuseColor) : diffuseColor(diffuseColor) {
-    loadShader();
+    shader_ = shaderLoader_->load(shaderPath);
 }
 
 
@@ -34,7 +26,7 @@ void Material::unbindTexture() const {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Material::Material() {
+Material::Material(ShaderLoader *shaderLoader) : shaderLoader_(shaderLoader) {
     diffuseColor = glm::vec4(0, 0, 0, 1);
     loadShader();
 }

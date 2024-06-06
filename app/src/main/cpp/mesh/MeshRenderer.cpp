@@ -7,6 +7,7 @@
 #include "core/Behaviour.h"
 #include "light/DirectionalLight.h"
 #include "camera/Camera.h"
+#include "light/PointLight.h"
 
 MeshRenderer::MeshRenderer() {
     transform->setRotation(0, 0, 0);
@@ -27,16 +28,15 @@ void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) 
 
         auto* pDirectionalLight = dynamic_cast<DirectionalLight*>(light);
         if(pDirectionalLight){
-            pDirectionalLight->CalLocalDirection(this->transform->matrix());
+            pDirectionalLight->calLocalDirection(this->transform->matrix());
         }
 
-        Mat4f cameraToLocalTranslation = transform->getReversedTranslation();
-        Mat4f cameraToLocalRotation = transform->getReversedRotation();
-        Mat4f cameraToLocalTransformation = cameraToLocalRotation * cameraToLocalTranslation;
-        glm::vec4 cameraWorldPos = glm::vec4 (camera->getPos(), 1.0);
-        glm::vec4 cameraLocalPos = cameraToLocalTransformation * cameraWorldPos;
-        auto cameraLocalPos3f = glm::vec3 (cameraWorldPos);
+        auto* pPointLight = dynamic_cast<PointLight*>(light);
+        if(pPointLight){
+            pPointLight->calculateLocalPosition(*this->transform);
+        }
 
+        auto cameraLocalPos3f = transform->worldToLocal(camera->transform->position);
 
         light->bind(shader, cameraLocalPos3f);
 
