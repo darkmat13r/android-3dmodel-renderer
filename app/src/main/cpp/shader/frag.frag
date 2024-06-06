@@ -52,7 +52,7 @@ vec4 calculateLightInternal(Light light, vec3 direction, vec3 normal){
 
     vec3 ambientColor = uMaterial.ambientColor * light.color * light.ambientIntensity;
 
-    vec4 diffuseColor = vec4(uMaterial.diffuseColor, 1.0);
+    vec4 diffuseColor = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 specularColor = vec4(0.0, 0.0, 0.0, 1.0);
     float diffuseFactor = max(dot(normal, normalize(direction)), 0.0);
 
@@ -97,6 +97,6 @@ void main() {
         totalLight += calculatePointLight(i, normal);
     }
 
-    outColor = textureColor * totalLight;
+    outColor = textureColor * totalLight ;
 
 }
