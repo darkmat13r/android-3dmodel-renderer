@@ -20,8 +20,8 @@ void PointLight::bind(Shader *shader, const glm::vec3 &cameraLocalPos) {
     glUniform1f(shader->getPointLightAttenuationExp(index), attenuation.exp);
 }
 
-void PointLight::calculateLocalPosition(glm::vec3 worldTransform) {
-    localPosition_ = transform->worldToLocal(worldTransform);
+void PointLight::calculateLocalPosition(const Transform& worldTransform) {
+    localPosition_ = worldTransform.worldToLocal(this->transform->position);
 }
 
 

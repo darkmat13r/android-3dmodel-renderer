@@ -20,7 +20,7 @@ public :
     int index = 0;
     LightAttenuation attenuation;
 
-    void calculateLocalPosition(glm::vec3 worldTransform);
+    void calculateLocalPosition(const Transform& worldTransform);
 
     glm::vec3  getLocalPosition();
 

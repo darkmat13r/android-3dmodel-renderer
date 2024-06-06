@@ -33,7 +33,7 @@ void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) 
 
         auto* pPointLight = dynamic_cast<PointLight*>(light);
         if(pPointLight){
-            pPointLight->calculateLocalPosition(this->transform->position);
+            pPointLight->calculateLocalPosition(*this->transform);
         }
 
         auto cameraLocalPos3f = transform->worldToLocal(camera->transform->position);

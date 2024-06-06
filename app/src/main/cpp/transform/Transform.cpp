@@ -74,3 +74,11 @@ Transform::Transform() :
 glm::vec3 Transform::getPosition() {
     return position;
 }
+
+void Transform::setYPosition(float y) {
+    this->position.y = y;
+}
+
+float Transform::getPositionY() {
+    return position.y;
+}

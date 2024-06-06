@@ -17,6 +17,8 @@ public :
     Transform();
     void setScale(float scaleX, float scaleY, float scaleZ);
     void setPosition(float x, float y, float z);
+    void setYPosition( float y);
+    float getPositionY();
     void setRotation(float x, float y, float z);
     void rotate(float x, float y, float z);
     Mat4f matrix();

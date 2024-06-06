@@ -230,8 +230,11 @@ void Renderer::createModels() {
     light->color = {1, 1, 1, 1};
 */
     std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
-    light->transform->position = { 4, 2, 6};
-    light->color = {0.2, 1.0, 0.8, 1.0};
+    light->transform->position = { 2, 0, 8};
+    light->color = {0.8, 0.2, 0.2, 1.0};
+    light->attenuation.constant = 0.9;
+    light->attenuation.linear = 0.4;
+    light->attenuation.exp = 0.0;
     shaderLoader_->setNumOfLights(1);
 
     scene_->addObject(light);

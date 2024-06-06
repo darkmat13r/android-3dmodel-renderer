@@ -10,6 +10,7 @@
 #include "mesh/MeshRenderer.h"
 #include "Behaviour.h"
 #include "light/Light.h"
+#include "light/PointLight.h"
 
 /*!
  * Half the height of the projection matrix. This gives you a renderable area of height 4 ranging
