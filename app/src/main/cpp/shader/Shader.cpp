@@ -258,5 +258,9 @@ GLint Shader::getPointLightAttenuationExp(int index) const {
     }
 }
 
+GLint Shader::getNumberOfLightsLocation() const {
+    return numberOfPointLightLocation_;
+}
+
 
 

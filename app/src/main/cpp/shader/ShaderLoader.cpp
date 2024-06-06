@@ -18,3 +18,9 @@ ShaderLoader::ShaderLoader() : shaders_() {
         return nullptr; // or handle the case where the shader is not found
     }
 }
+
+void ShaderLoader::setNumOfLights(int count) const {
+    for (const auto &item: shaders_){
+        glUniform1i(item.second->getNumberOfLightsLocation(), count);
+    }
+}

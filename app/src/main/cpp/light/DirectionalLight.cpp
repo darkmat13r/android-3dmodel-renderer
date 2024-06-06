@@ -8,7 +8,7 @@ const glm::vec3 &DirectionalLight::GetLocalDirection() {
     return localDirection;
 }
 
-void DirectionalLight::CalLocalDirection(Mat4f worldMat) {
+void DirectionalLight::calLocalDirection(Mat4f worldMat) {
     //glm::mat3 world(glm::inverse(worldMat));
     Mat3f world3Mat(worldMat);
     localDirection = -glm::normalize(world3Mat.Transpose() * direction);

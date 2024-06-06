@@ -52,13 +52,14 @@ public:
 
     GLint getDiffuseIntensityLocation() const;
 
+    GLint getNumberOfLightsLocation() const;
+
     GLint getPointLightColor(int index) const;
 
     GLint getPointLightAmbientIntensity(int index) const;
 
     GLint getPointLightDiffuseIntensity(int index) const;
 
-    GLint getPointLightDirection(int index) const;
 
     GLint getPointLightLocalPosition(int index) const;
 

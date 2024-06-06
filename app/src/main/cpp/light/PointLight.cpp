@@ -4,10 +4,6 @@
 
 #include "PointLight.h"
 
-void PointLight::calculateLocalPosition(const glm::vec3 &worldTransform) {
-   localPosition_ = transform->worldToLocal(worldTransform);
-}
-
 glm::vec3 PointLight::getLocalPosition() {
     return localPosition_;
 }
@@ -22,6 +18,10 @@ void PointLight::bind(Shader *shader, const glm::vec3 &cameraLocalPos) {
     glUniform1f(shader->getPointLightAttenuationConstant(index), attenuation.constant);
     glUniform1f(shader->getPointLightAttenuationLinear(index), attenuation.linear);
     glUniform1f(shader->getPointLightAttenuationExp(index), attenuation.exp);
+}
+
+void PointLight::calculateLocalPosition(glm::vec3 worldTransform) {
+    localPosition_ = transform->worldToLocal(worldTransform);
 }
 
 

@@ -223,16 +223,20 @@ void Renderer::createModels() {
 
     scene_->addObject(environment);
 
-    std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
+   /* std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
     light->ambientIntensity = 0.8f;
     light->direction  = { 4, 2, 6};
     light->diffuseIntensity = 1.0f;
     light->color = {1, 1, 1, 1};
-
-   /* std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
-    light->transform->position = { 4, 2, 6};*/
+*/
+    std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
+    light->transform->position = { 4, 2, 6};
+    light->color = {0.2, 1.0, 0.8, 1.0};
+    shaderLoader_->setNumOfLights(1);
 
     scene_->addObject(light);
+
+
 
 }
 

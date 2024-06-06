@@ -14,7 +14,7 @@ private:
 public :
     glm::vec3 direction = {0, 0, 0};
 
-    void CalLocalDirection(Mat4f worldMat);
+    void calLocalDirection(Mat4f worldMat);
     void bind(Shader *shader, const glm::vec3 & cameraLocalPos) override;
 
     const glm::vec3 &GetLocalDirection();
