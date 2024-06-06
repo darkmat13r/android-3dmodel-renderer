@@ -68,7 +68,7 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
                                                       const aiMesh *aiMesh,
                                                       const std::string& path) {
 
-    auto material = std::make_shared<Material>();
+    auto material = std::make_shared<Material>(shaderLoader_);
     if (pScene->mMaterials) {
         auto aiMaterial = pScene->mMaterials[aiMesh->mMaterialIndex];
 
@@ -76,7 +76,7 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
         if(diffuseTexture){
             material->diffuseTexture = diffuseTexture;
         }
-        auto specularTexture =  getDiffuseTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
+        auto specularTexture = getDiffuseTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
         if(specularTexture){
             material->specularTexture = specularTexture;
         }
@@ -155,7 +155,7 @@ std::string ModelImporter::getStringAfterAssets(const std::string &filePath) {
     return ""; // Return an empty string if "assets" is not found
 }
 
-ModelImporter::ModelImporter(AAssetManager *aAssetManager) : assetManager(aAssetManager) {
+ModelImporter::ModelImporter(AAssetManager *aAssetManager, ShaderLoader* shaderLoader) : assetManager(aAssetManager), shaderLoader_(shaderLoader) {
 
 }
 

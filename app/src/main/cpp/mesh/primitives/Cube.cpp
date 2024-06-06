@@ -81,9 +81,9 @@ void Cube::generateIndices() {
     };
 }
 
-Cube::Cube(float size) {
+Cube::Cube(float size, ShaderLoader* shaderLoader) {
     size_ = size;
     generateVertices();
     generateIndices();
-    material_ = std::make_shared<Material>();
+    material_ = std::make_shared<Material>(shaderLoader);
 }

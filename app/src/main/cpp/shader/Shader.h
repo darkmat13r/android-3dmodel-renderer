@@ -20,7 +20,7 @@ public:
     GLint normalAttribute = 0;
 
 
-    Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath);
+    Shader();
 
     void bind() const;
 
@@ -52,6 +52,23 @@ public:
 
     GLint getDiffuseIntensityLocation() const;
 
+    GLint getPointLightColor(int index) const;
+
+    GLint getPointLightAmbientIntensity(int index) const;
+
+    GLint getPointLightDiffuseIntensity(int index) const;
+
+    GLint getPointLightDirection(int index) const;
+
+    GLint getPointLightLocalPosition(int index) const;
+
+    GLint getPointLightAttenuationConstant(int index) const;
+
+    GLint getPointLightAttenuationLinear(int index) const;
+
+    GLint getPointLightAttenuationExp(int index) const;
+
+
 private:
     GLuint program_ = 0;
     GLint projectionMatrixLocation_ = 0;
@@ -79,12 +96,11 @@ private:
         GLint color = 0;
         GLint ambientIntensity = 0;
         GLint diffuseIntensity = 0;
-        GLint direction = 0;
         GLint localPosition = 0;
         struct {
-            GLuint constant = 1.0;
-            GLuint linear = 0.0;
-            GLuint exp = 0.0;
+            GLint constant = 1.0;
+            GLint linear = 0.0;
+            GLint exp = 0.0;
         } attenuation;
     } pointLightLocation[MAX_POINT_LIGHTS];
 
@@ -92,6 +108,7 @@ private:
 
     static GLuint compileShader(const char *shaderCode, GLenum shaderType);
 
+    bool isValidIndex(int index) const;
 };
 
 

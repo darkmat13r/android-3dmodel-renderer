@@ -11,10 +11,10 @@ const glm::vec3 &DirectionalLight::GetLocalDirection() {
 void DirectionalLight::CalLocalDirection(Mat4f worldMat) {
     //glm::mat3 world(glm::inverse(worldMat));
     Mat3f world3Mat(worldMat);
-    localDirection = -glm::normalize( world3Mat.Transpose() * direction);
+    localDirection = -glm::normalize(world3Mat.Transpose() * direction);
 }
 
-void DirectionalLight::bind(Shader *shader, const glm::vec3 & cameraLocalPos) {
+void DirectionalLight::bind(Shader *shader, const glm::vec3 &cameraLocalPos) {
     Light::bind(shader, cameraLocalPos);
     glUniform1f(shader->lightTypeLocation, 1);
 
@@ -23,8 +23,9 @@ void DirectionalLight::bind(Shader *shader, const glm::vec3 & cameraLocalPos) {
                     localDirection.z);
 
     if (shader->getDiffuseIntensityLocation() != -1)
-        glUniform1f(shader->getDiffuseIntensityLocation(), intensity);
+        glUniform1f(shader->getDiffuseIntensityLocation(), diffuseIntensity);
 
-
+    if (shader->getAmbientIntensityLocation() != -1)
+        glUniform1f(shader->getAmbientIntensityLocation(), ambientIntensity);
 }
 

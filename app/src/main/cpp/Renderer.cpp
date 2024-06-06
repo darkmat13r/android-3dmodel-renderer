@@ -18,6 +18,7 @@
 #include "assimp/port/AndroidJNI/AndroidJNIIOSystem.h"
 #include "light/DirectionalLight.h"
 #include "mesh/primitives/Sphere.h"
+#include "light/PointLight.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -174,6 +175,8 @@ void Renderer::initRenderer() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
+
+    shaderLoader_ = std::make_shared<ShaderLoader>();
 }
 
 void Renderer::updateRenderArea() {
@@ -210,7 +213,7 @@ void Renderer::createModels() {
 
     importer->SetIOHandler(ioSystem);
 
-    std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
+    std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager, shaderLoader_.get());
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
                                                                       "ceres/scene.gltf");
@@ -218,19 +221,17 @@ void Renderer::createModels() {
     environment->transform->setScale(0.5, 0.5, 0.5);
     environment->transform->setRotation(90, 0, 0);
 
-
-
-    std::shared_ptr<MeshRenderer> sphereRenderer = std::make_shared<MeshRenderer>();
-    std::shared_ptr<Mesh> sphere = std::make_shared<Sphere>(2, 20, 20);
-    sphereRenderer->addMesh(sphere);
-
     scene_->addObject(environment);
 
     std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
     light->ambientIntensity = 0.8f;
     light->direction  = { 4, 2, 6};
-    light->intensity = 1.0f;
+    light->diffuseIntensity = 1.0f;
     light->color = {1, 1, 1, 1};
+
+   /* std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
+    light->transform->position = { 4, 2, 6};*/
+
     scene_->addObject(light);
 
 }

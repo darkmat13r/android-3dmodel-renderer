@@ -10,7 +10,7 @@
 
 class Cube : public Mesh{
 public :
-    Cube(float size);
+    Cube(float size, ShaderLoader *shaderLoader);
 private:
     float size_;
     void generateVertices();

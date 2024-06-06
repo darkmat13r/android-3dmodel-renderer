@@ -12,7 +12,7 @@
 #include <iostream>
 
 
-Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
+Shader::Shader() {
     program_ = glCreateProgram();
     GLuint vertexShader = compileShader(vertexShaderSource, GL_VERTEX_SHADER);
     GLuint fragmentShader = compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
@@ -190,6 +190,72 @@ GLint Shader::getLightDirectionLocation() const {
 
 GLint Shader::getDiffuseIntensityLocation() const {
     return lightLoc.diffuseIntensity;
+}
+
+bool Shader::isValidIndex(int index) const {
+    if (index >= 0 && index < MAX_POINT_LIGHTS) {
+        return true;
+    } else {
+        std::cerr << "Index out of bounds: " << index << std::endl;
+        return false;
+    }
+}
+
+GLint Shader::getPointLightColor(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].color;
+    } else {
+        return -1; // or appropriate error value
+    }
+}
+
+GLint Shader::getPointLightAmbientIntensity(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].ambientIntensity;
+    } else {
+        return -1; // or appropriate error value
+    }
+}
+
+GLint Shader::getPointLightDiffuseIntensity(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].diffuseIntensity;
+    } else {
+        return -1; // or appropriate error value
+    }
+}
+
+
+GLint Shader::getPointLightLocalPosition(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].localPosition;
+    } else {
+        return -1; // or appropriate error value
+    }
+}
+
+GLint Shader::getPointLightAttenuationConstant(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].attenuation.constant;
+    } else {
+        return 0; // or appropriate error value
+    }
+}
+
+GLint Shader::getPointLightAttenuationLinear(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].attenuation.linear;
+    } else {
+        return 0; // or appropriate error value
+    }
+}
+
+GLint Shader::getPointLightAttenuationExp(int index) const {
+    if (isValidIndex(index)) {
+        return pointLightLocation[index].attenuation.exp;
+    } else {
+        return 0; // or appropriate error value
+    }
 }
 
 

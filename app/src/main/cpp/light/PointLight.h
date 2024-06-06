@@ -17,11 +17,14 @@ struct LightAttenuation{
 class PointLight : public Light{
 
 public :
+    int index = 0;
     LightAttenuation attenuation;
 
     void calculateLocalPosition(const glm::vec3& worldTransform);
 
     glm::vec3  getLocalPosition();
+
+    void bind(Shader *shader, const glm::vec3 &cameraLocalPos) override;
 
 private:
     glm::vec3  localPosition_;
