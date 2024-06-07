@@ -11,8 +11,8 @@ android {
         applicationId = "com.drawgestures.learnopengl"
         minSdk = 30
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "0.0.2"
         ndk {
             abiFilters.add("arm64-v8a")
         }
