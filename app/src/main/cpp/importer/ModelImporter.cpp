@@ -87,7 +87,7 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
                 material->diffuseColor = {diffuseColor.r, diffuseColor.g, diffuseColor.b};
             }
 
-            aiColor3D specularColor(0.f, 0.f, 0.f);
+            aiColor3D specularColor(1.f, 1.f, 1.f);
             if(aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS){
                 material->specularColor = {specularColor.r, specularColor.g, specularColor.b};
             }

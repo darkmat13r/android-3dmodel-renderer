@@ -10,6 +10,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <string.h>
+#include <stdio.h>
 
 
 Shader::Shader() {
@@ -55,42 +57,8 @@ Shader::Shader() {
         cameraLocalPosLocation_ = glGetUniformLocation(program_, "uCameraLocalPos");
         numberOfPointLightLocation_ = glGetUniformLocation(program_, "uNumOfLights");
 
-        for (int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(pointLightLocation); ++i) {
-            char name[128];
-            memset(name, 0, sizeof(name));
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].light.color", i);
-            pointLightLocation[i].color = glGetUniformLocation(program_, name);
+        loadPointLightUniforms();
 
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].light.ambientIntensity", i);
-            pointLightLocation[i].ambientIntensity = glGetUniformLocation(program_, name);
-
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].localPos", i);
-            pointLightLocation[i].localPosition = glGetUniformLocation(program_, name);
-
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].light.diffuseIntensity", i);
-            pointLightLocation[i].diffuseIntensity = glGetUniformLocation(program_, name);
-
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.constant", i);
-            pointLightLocation[i].attenuation.constant = glGetUniformLocation(program_, name);
-
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.linear", i);
-            pointLightLocation[i].attenuation.linear = glGetUniformLocation(program_, name);
-
-            SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.exp", i);
-            pointLightLocation[i].attenuation.exp = glGetUniformLocation(program_, name);
-
-            if (
-                    pointLightLocation[i].color == INVALID_UNIFORM_LOCATION ||
-                    pointLightLocation[i].ambientIntensity == INVALID_UNIFORM_LOCATION ||
-                    pointLightLocation[i].localPosition == INVALID_UNIFORM_LOCATION ||
-                    pointLightLocation[i].diffuseIntensity == INVALID_UNIFORM_LOCATION ||
-                    pointLightLocation[i].attenuation.constant == INVALID_UNIFORM_LOCATION ||
-                    pointLightLocation[i].attenuation.linear == INVALID_UNIFORM_LOCATION ||
-                    pointLightLocation[i].attenuation.exp == INVALID_UNIFORM_LOCATION
-                    ) {
-                glDeleteProgram(program_);
-            }
-        }
         if (projectionMatrixLocation_ == INVALID_UNIFORM_LOCATION
             || positionAttribute_ == INVALID_UNIFORM_LOCATION
             || materialLoc.useDiffText_ == INVALID_UNIFORM_LOCATION
@@ -103,6 +71,90 @@ Shader::Shader() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+}
+
+void Shader::loadSpotLightUniforms() {
+    for (int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(spotLightLocation); ++i) {
+        char name[128];
+        memset(name, 0, sizeof(name));
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].light.color", i);
+        spotLightLocation[i].color = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].light.ambientIntensity", i);
+        spotLightLocation[i].ambientIntensity = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].localPos", i);
+        spotLightLocation[i].localPosition = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].light.diffuseIntensity", i);
+        spotLightLocation[i].diffuseIntensity = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].atten.constant", i);
+        spotLightLocation[i].attenuation.constant = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].atten.linear", i);
+        spotLightLocation[i].attenuation.linear = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].atten.exp", i);
+        spotLightLocation[i].attenuation.exp = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].direction", i);
+        spotLightLocation[i].direction = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uSpotLights[%d].cutOff", i);
+        spotLightLocation[i].cutOff = glGetUniformLocation(program_, name);
+
+        if (
+                spotLightLocation[i].color == INVALID_UNIFORM_LOCATION ||
+                spotLightLocation[i].ambientIntensity == INVALID_UNIFORM_LOCATION ||
+                spotLightLocation[i].localPosition == INVALID_UNIFORM_LOCATION ||
+                spotLightLocation[i].diffuseIntensity == INVALID_UNIFORM_LOCATION ||
+                spotLightLocation[i].attenuation.constant == INVALID_UNIFORM_LOCATION ||
+                spotLightLocation[i].attenuation.linear == INVALID_UNIFORM_LOCATION ||
+                spotLightLocation[i].attenuation.exp == INVALID_UNIFORM_LOCATION
+                ) {
+            glDeleteProgram(program_);
+        }
+    }
+}
+
+void Shader::loadPointLightUniforms() {
+    for (int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(pointLightLocation); ++i) {
+        char name[128];
+        memset(name, 0, sizeof(name));
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].light.color", i);
+        pointLightLocation[i].color = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].light.ambientIntensity", i);
+        pointLightLocation[i].ambientIntensity = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].localPos", i);
+        pointLightLocation[i].localPosition = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].light.diffuseIntensity", i);
+        pointLightLocation[i].diffuseIntensity = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.constant", i);
+        pointLightLocation[i].attenuation.constant = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.linear", i);
+        pointLightLocation[i].attenuation.linear = glGetUniformLocation(program_, name);
+
+        SNPRINTF(name, sizeof(name), "uPointLights[%d].atten.exp", i);
+        pointLightLocation[i].attenuation.exp = glGetUniformLocation(program_, name);
+
+        if (
+                pointLightLocation[i].color == INVALID_UNIFORM_LOCATION ||
+                pointLightLocation[i].ambientIntensity == INVALID_UNIFORM_LOCATION ||
+                pointLightLocation[i].localPosition == INVALID_UNIFORM_LOCATION ||
+                pointLightLocation[i].diffuseIntensity == INVALID_UNIFORM_LOCATION ||
+                pointLightLocation[i].attenuation.constant == INVALID_UNIFORM_LOCATION ||
+                pointLightLocation[i].attenuation.linear == INVALID_UNIFORM_LOCATION ||
+                pointLightLocation[i].attenuation.exp == INVALID_UNIFORM_LOCATION
+                ) {
+            glDeleteProgram(program_);
+        }
+    }
 }
 
 GLint Shader::getPositionAttrib() const {
@@ -260,6 +312,46 @@ GLint Shader::getPointLightAttenuationExp(int index) const {
 
 GLint Shader::getNumberOfLightsLocation() const {
     return numberOfPointLightLocation_;
+}
+
+GLint Shader::getNumberOfSpotLightsLocation() const {
+    return numberOfSpotLightLocation_;
+}
+
+GLint Shader::getSpotLightColor(int index) const {
+    return spotLightLocation->color;
+}
+
+GLint Shader::getSpotLightAmbientIntensity(int index) const {
+    return spotLightLocation->ambientIntensity;
+}
+
+GLint Shader::getSpotLightDiffuseIntensity(int index) const {
+    return spotLightLocation->diffuseIntensity;
+}
+
+GLint Shader::getSpotLightLocalPosition(int index) const {
+    return spotLightLocation->localPosition;
+}
+
+GLint Shader::getSpotLightAttenuationConstant(int index) const {
+    return spotLightLocation->attenuation.constant;
+}
+
+GLint Shader::getSpotLightAttenuationLinear(int index) const {
+    return spotLightLocation->attenuation.linear;
+}
+
+GLint Shader::getSpotLightAttenuationExp(int index) const {
+    return spotLightLocation->attenuation.exp;
+}
+
+GLint Shader::getSpotLightDirection(int index) const {
+    return spotLightLocation->direction;
+}
+
+GLint Shader::getSpotLightCutOff(int index) const {
+    return spotLightLocation->cutOff;
 }
 
 

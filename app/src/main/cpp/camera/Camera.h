@@ -14,7 +14,7 @@
 class Camera : public Component {
 
 public:
-    Camera(const glm::vec3& pos, const glm::vec3& targe, const glm::vec3& up);
+    Camera(const glm::vec3& pos, const glm::vec3& target, const glm::vec3& up);
     void Init();
 
     void SetPosition(float x, float y, float z);
@@ -38,6 +38,8 @@ public:
     static void Rotate(float Angle, const glm::vec3& V,  glm::vec3& target);
 
     glm::vec3& getPos();
+
+    glm::vec3 getTarget();
 
 private :
     glm::vec3 target_{};

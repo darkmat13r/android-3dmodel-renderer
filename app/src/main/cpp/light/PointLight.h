@@ -26,7 +26,7 @@ public :
 
     void bind(Shader *shader, const glm::vec3 &cameraLocalPos) override;
 
-private:
+protected:
     glm::vec3  localPosition_;
 };
 

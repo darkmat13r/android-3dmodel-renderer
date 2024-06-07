@@ -21,11 +21,13 @@ public :
     float getPositionY();
     void setRotation(float x, float y, float z);
     void rotate(float x, float y, float z);
-    Mat4f matrix();
+    Mat4f matrix() const;
     glm::vec3 getPosition();
     Mat4f getReversedRotation() const;
     Mat4f getReversedTranslation() const;
     glm::vec3 worldToLocal(glm::vec3 worldPosition) const;
+
+    glm::vec3 worldDirectionToLocal(glm::vec3 direction) const;
 
 protected:
     Quaternion rotation_;

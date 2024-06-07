@@ -17,6 +17,7 @@ private:
 public:
     ShaderLoader();
     void setNumOfLights(int count) const;
+    void setNumOfSpotLights(int count) const;
     Shader *load(const char *name);
 };
 
