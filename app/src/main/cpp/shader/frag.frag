@@ -118,7 +118,7 @@ void main() {
     }
 
     for (int i = 0; i < uNumOfSpotLights; i++) {
-        totalLight += calculateSpotLight(uSpotLights[i], normal);
+        totalLight += calculatePointLight(uSpotLights[i].pointLight, normal);
     }
 
     outColor = textureColor * totalLight;

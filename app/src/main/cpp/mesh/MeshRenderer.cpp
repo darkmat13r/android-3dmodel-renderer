@@ -34,8 +34,7 @@ void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) 
 
         auto* pSpotLight = dynamic_cast<SpotLight*>(light);
         if(pSpotLight){
-            pSpotLight->transform->position = camera->getPos();
-            pSpotLight->direction = camera->getTarget();
+
             pSpotLight->calculateDirectionAndPosition(*this->transform);
         }else{
             auto* pPointLight = dynamic_cast<PointLight*>(light);

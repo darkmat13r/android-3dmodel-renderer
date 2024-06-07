@@ -56,6 +56,7 @@ Shader::Shader() {
         materialLoc.specularColor = glGetUniformLocation(program_, "uMaterial.specularColor");
         cameraLocalPosLocation_ = glGetUniformLocation(program_, "uCameraLocalPos");
         numberOfPointLightLocation_ = glGetUniformLocation(program_, "uNumOfLights");
+        numberOfSpotLightLocation_ = glGetUniformLocation(program_, "uNumOfSpotLights");
 
         loadPointLightUniforms();
 

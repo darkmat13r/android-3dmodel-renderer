@@ -60,6 +60,10 @@ void Scene::render() {
         }
     }
     for (const auto &pLight: lights) {
+        if(  pLight->transform->position.y > 10 || pLight->transform->position.y < -10){
+            deltaY = -deltaY;
+        }
+       // pLight->transform->setYPosition(pLight->transform->position.y + deltaY);
         for (const auto &component: meshRenderers) {
             component->transform->rotate(0, rotation_, 0);
             Mat4f model = component->transform->matrix();
@@ -73,6 +77,7 @@ void Scene::render() {
 void Scene::update() {
     for (const auto &component: components_) {
         if (component && component->transform) {
+
             component->update();
         } else {
             aout << "Update::Component transform is gone " << component << std::endl;
