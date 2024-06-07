@@ -12,6 +12,7 @@
 #include "math/mat4f.h"
 
 const int MAX_POINT_LIGHTS = 10;
+const int MAX_SPOT_LIGHTS = 10;
 
 class Shader {
 public:
@@ -60,7 +61,6 @@ public:
 
     GLint getPointLightDiffuseIntensity(int index) const;
 
-
     GLint getPointLightLocalPosition(int index) const;
 
     GLint getPointLightAttenuationConstant(int index) const;
@@ -70,6 +70,25 @@ public:
     GLint getPointLightAttenuationExp(int index) const;
 
 
+    GLint getNumberOfSpotLightsLocation() const;
+
+    GLint getSpotLightColor(int index) const;
+
+    GLint getSpotLightAmbientIntensity(int index) const;
+
+    GLint getSpotLightDiffuseIntensity(int index) const;
+
+    GLint getSpotLightLocalPosition(int index) const;
+
+    GLint getSpotLightAttenuationConstant(int index) const;
+
+    GLint getSpotLightAttenuationLinear(int index) const;
+
+    GLint getSpotLightAttenuationExp(int index) const;
+    GLint getSpotLightDirection(int index) const;
+    GLint getSpotLightCutOff(int index) const;
+
+
 private:
     GLuint program_ = 0;
     GLint projectionMatrixLocation_ = 0;
@@ -77,6 +96,7 @@ private:
     GLint uvAttribute_ = 0;
     GLint cameraLocalPosLocation_ = 0;
     GLint numberOfPointLightLocation_ = 0;
+    GLint numberOfSpotLightLocation_ = 0;
 
     struct {
         GLint diffuseColor = 0;
@@ -105,11 +125,28 @@ private:
         } attenuation;
     } pointLightLocation[MAX_POINT_LIGHTS];
 
+    struct {
+        GLint color = 0;
+        GLint ambientIntensity = 0;
+        GLint diffuseIntensity = 0;
+        GLint localPosition = 0;
+        GLint direction = 0;
+        GLint cutOff = 0;
+        struct {
+            GLint constant = 1.0;
+            GLint linear = 0.0;
+            GLint exp = 0.0;
+        } attenuation;
+    } spotLightLocation[MAX_SPOT_LIGHTS];
+
     std::string readFile(std::string &fileName) const;
 
     static GLuint compileShader(const char *shaderCode, GLenum shaderType);
 
     bool isValidIndex(int index) const;
+
+    void loadPointLightUniforms();
+    void loadSpotLightUniforms();
 };
 
 

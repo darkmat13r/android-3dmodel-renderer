@@ -139,12 +139,20 @@ void Camera::Rotate(float Angle, const glm::vec3 &V, glm::vec3 &target) {
     target.z = W.z;
 }
 
-Camera::Camera(const glm::vec3 &pos, const glm::vec3 &targe, const glm::vec3 &up) {
+Camera::Camera(const glm::vec3 &pos, const glm::vec3 &target, const glm::vec3 &up) {
     transform->setPosition(pos.x, pos.y, pos.z);
-    target_ = targe;
+    target_ = target;
     up_ = up;
 
     Init();
+}
+
+glm::vec3 Camera::getTarget() {
+    return target_;
+}
+
+glm::vec3 &Camera::getPos() {
+    return transform->position;
 }
 
 

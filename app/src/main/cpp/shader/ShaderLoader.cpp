@@ -24,3 +24,9 @@ void ShaderLoader::setNumOfLights(int count) const {
         glUniform1i(item.second->getNumberOfLightsLocation(), count);
     }
 }
+
+void ShaderLoader::setNumOfSpotLights(int count) const {
+    for (const auto &item: shaders_){
+        glUniform1i(item.second->getNumberOfSpotLightsLocation(), count);
+    }
+}

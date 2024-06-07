@@ -8,26 +8,26 @@
 
 #include "Light.h"
 
-struct LightAttenuation{
+struct LightAttenuation {
     float constant = 1.0;
     float linear = 0.0;
     float exp = 0.0;
 };
 
-class PointLight : public Light{
+class PointLight : public Light {
 
 public :
     int index = 0;
     LightAttenuation attenuation;
 
-    void calculateLocalPosition(const Transform& worldTransform);
+    void calculateLocalPosition(const Transform &worldTransform);
 
-    glm::vec3  getLocalPosition();
+    glm::vec3 getLocalPosition();
 
     void bind(Shader *shader, const glm::vec3 &cameraLocalPos) override;
 
-private:
-    glm::vec3  localPosition_;
+protected:
+    glm::vec3 localPosition_;
 };
 
 

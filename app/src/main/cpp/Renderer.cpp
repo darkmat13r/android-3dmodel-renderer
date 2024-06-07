@@ -19,6 +19,7 @@
 #include "light/DirectionalLight.h"
 #include "mesh/primitives/Sphere.h"
 #include "light/PointLight.h"
+#include "light/SpotLight.h"
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -227,19 +228,20 @@ void Renderer::createModels() {
     light->ambientIntensity = 0.8f;
     light->direction  = { 4, 2, 6};
     light->diffuseIntensity = 1.0f;
-    light->color = {1, 1, 1, 1};
-*/
+    light->color = {1, 1, 1, 1};*/
+
     std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
-    light->transform->position = { 2, 0, 8};
+    light->transform->position = { 2, 0, 12};
     light->color = {0.8, 0.2, 0.2, 1.0};
     light->attenuation.constant = 0.9;
-    light->attenuation.linear = 0.4;
+    light->attenuation.linear = 0.01;
     light->attenuation.exp = 0.0;
+   // light->cutOff = 20.0;
+    //light->transform->position = {0.0, 0.0, 0.0};
+    //light->direction = {0.0, 2.0, 0.0};
     shaderLoader_->setNumOfLights(1);
 
     scene_->addObject(light);
-
-
 
 }
 

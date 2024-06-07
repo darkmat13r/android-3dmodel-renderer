@@ -4,6 +4,7 @@
 
 #include "Transform.h"
 #include "AndroidOut.h"
+#include "geometric.hpp"
 
 void Transform::setScale(float scaleX, float scaleY, float scaleZ) {
     this->scale_.x = scaleX;
@@ -51,7 +52,7 @@ Mat4f Transform::getReversedRotation() const{
     return reversedTranslation;
 }
 
-Mat4f Transform::matrix() {
+Mat4f Transform::matrix() const {
     Mat4f rotMat;
 
     rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
@@ -81,4 +82,12 @@ void Transform::setYPosition(float y) {
 
 float Transform::getPositionY() {
     return position.y;
+}
+
+glm::vec3 Transform::worldDirectionToLocal(glm::vec3 direction) const {
+    Mat3f world3Mat(matrix());
+
+    //TODO non-uniform scaling is not supported yet. Calculate the inverse of the matrix instead of using transpose
+    return -glm::normalize(world3Mat.Transpose() *
+                                     direction);
 }
