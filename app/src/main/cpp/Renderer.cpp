@@ -218,19 +218,19 @@ void Renderer::createModels() {
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
                                                                       "ceres/scene.gltf");
-    environment->transform->setPosition(0, -1, 4);
+    environment->transform->setPosition(0, 0, 4);
     environment->transform->setScale(0.5, 0.5, 0.5);
     environment->transform->setRotation(90, 0, 0);
 
     scene_->addObject(environment);
 
-   /* std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
+    std::shared_ptr<DirectionalLight> light = std::make_shared<DirectionalLight>();
     light->ambientIntensity = 0.8f;
     light->direction  = { 4, 2, 6};
     light->diffuseIntensity = 1.0f;
-    light->color = {1, 1, 1, 1};*/
+    light->color = {1, 1, 1, 1};
 
-    std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
+   /* std::shared_ptr<PointLight> light = std::make_shared<PointLight>();
     light->transform->position = { 2, 0, 12};
     light->color = {0.8, 0.2, 0.2, 1.0};
     light->attenuation.constant = 0.9;
@@ -239,10 +239,14 @@ void Renderer::createModels() {
    // light->cutOff = 20.0;
     //light->transform->position = {0.0, 0.0, 0.0};
     //light->direction = {0.0, 2.0, 0.0};
-    shaderLoader_->setNumOfLights(1);
+    shaderLoader_->setNumOfLights(1);*/
 
     scene_->addObject(light);
 
+    scene_->getMainCamera()->setPosition(0, 4, 0);
+    glm::vec3 target = environment->transform->position;
+    target.y = 3;
+    scene_->getMainCamera()->setTarget(target);
 }
 
 void Renderer::handleInput() {
@@ -304,7 +308,7 @@ void Renderer::handleInput() {
                     float deltaY = y - lastY;
                     aout << "deltaX : " << deltaX;
                     aout << "deltaY : " << deltaY;
-                    scene_->getMainCamera()->OnMove(deltaX, deltaY);
+                    scene_->getMainCamera()->onMove(deltaX, deltaY);
 
                 }
 
@@ -328,10 +332,10 @@ void Renderer::handleInput() {
                         float movedX = (x1 - lastX) / width_;
                         float movedY = (y1 - lastY) / height_;
                         // Move the camera left or right based on the x movement
-                        scene_->getMainCamera()->MoveLeft(movedX); // Scale the movement for smoother panning
-                        scene_->getMainCamera()->MoveUp( - movedY);   // Scale the movement for smoother panning
+                        scene_->getMainCamera()->moveLeft(movedX); // Scale the movement for smoother panning
+                        scene_->getMainCamera()->moveUp(-movedY);   // Scale the movement for smoother panning
                     }else if(abs(initialDistance) > 0){
-                        scene_->getMainCamera()->MoveForward(distanceMoved);
+                        scene_->getMainCamera()->moveForward(distanceMoved);
                     }
 
                     initialDistance = currentDistance;

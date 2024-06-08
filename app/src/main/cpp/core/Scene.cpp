@@ -41,9 +41,9 @@ Camera *Scene::getMainCamera() const {
 }
 
 void Scene::render() {
-    mainCamera_->OnRender();
+    mainCamera_->onRender();
 
-    Mat4f View = mainCamera_->Matrix();
+    Mat4f View = mainCamera_->matrix();
     std::vector<MeshRenderer *> meshRenderers;
     std::vector<Light *> lights;
     for (const auto &component: components_) {
@@ -80,7 +80,7 @@ void Scene::update() {
 
             component->update();
         } else {
-            aout << "Update::Component transform is gone " << component << std::endl;
+            aout << "update::Component transform is gone " << component << std::endl;
         }
     }
 }
@@ -94,7 +94,7 @@ void Scene::onDestroy() {
         if (component && component->transform) {
             component->onDestroy();
         } else {
-            aout << "Update::Component transform is gone " << component << std::endl;
+            aout << "update::Component transform is gone " << component << std::endl;
         }
     }
 }

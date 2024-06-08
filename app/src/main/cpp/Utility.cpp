@@ -34,7 +34,7 @@ Utility::buildOrthographicMatrix(Mat4f *outMatrix, float halfHeight, float aspec
 
     float A = -2.f / (far - near);
     float B = -(far + near) / (far - near);
-    outMatrix->InitIdentity();
+    outMatrix->initIdentity();
     outMatrix->m[0][0] = 1/aspect;
     outMatrix->m[1][1] = 1/aspect;
     outMatrix->m[2][2] = A;
@@ -54,7 +54,7 @@ Utility::buildPerspectiveMat(Mat4f *outMatrix, float halfHeight, float aspect, f
     float zRange = (near - far);
     float A = (-far - near) / zRange;
     float B = 2 * far * near / zRange;
-    outMatrix->InitIdentity();
+    outMatrix->initIdentity();
     outMatrix->m[0][0] = d/aspect;
     outMatrix->m[1][1] = d;
     outMatrix->m[2][2] = A;

@@ -24,15 +24,15 @@ struct Mat4f {
           float a30, float a31, float a32, float a33);
 
     // Member functions
-    void InitScaleMatrix(float scaleX, float scaleY, float scaleZ);
-    void InitRotationX(float x);
-    void InitRotationY(float y);
-    void InitRotationZ(float z);
-    void InitRotationMatrix(float rotationX, float rotationY, float rotationZ);
-    void InitTranslation(float x, float y, float z);
-    void InitCameraTransform(glm::vec3 Target, glm::vec3 Up);
-    void InitCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up);
-    void InitIdentity();
+    void initScaleMatrix(float scaleX, float scaleY, float scaleZ);
+    void initRotationX(float x);
+    void initRotationY(float y);
+    void initRotationZ(float z);
+    void initRotationMatrix(float rotationX, float rotationY, float rotationZ);
+    void initTranslation(float x, float y, float z);
+    void initCameraTransform(glm::vec3 Target, glm::vec3 Up);
+    void initCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up);
+    void initIdentity();
 
     // Static method to create an identity matrix and return a unique_ptr
     static std::unique_ptr<Mat4f> Identity();
@@ -42,6 +42,8 @@ struct Mat4f {
     glm::vec4 operator*(const glm::vec4 &other) const;
 
     Mat4f inverse();
+
+    void lookAt(glm::vec3 target, glm::vec3 pos, glm::vec3 up);
 };
 
 
