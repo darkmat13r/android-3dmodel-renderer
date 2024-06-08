@@ -55,7 +55,7 @@ Welcome to the 3D Model Viewer for Android! This project aims to provide a light
 ## Usage (Under Development)
 
 1. **Load a Model:** (Currently loaded from assets folder)
-   Put 3d model in assets folder. Update the path in ModelImporter.
+   Put 3d model in assets folder. update the path in ModelImporter.
 
 2. **View Controls:**
     - ~~**rotate:** Use one finger to rotate the model.~~

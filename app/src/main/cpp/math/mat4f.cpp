@@ -37,8 +37,8 @@ Mat4f::Mat4f(float a00, float a01, float a02, float a03,
 }
 
 // Initialize scale matrix
-void Mat4f::InitScaleMatrix(float scaleX, float scaleY, float scaleZ) {
-    InitIdentity();
+void Mat4f::initScaleMatrix(float scaleX, float scaleY, float scaleZ) {
+    initIdentity();
     m[0][0] = scaleX;
     m[0][1] = 0.0f;
     m[0][2] = 0.0f;
@@ -58,8 +58,8 @@ void Mat4f::InitScaleMatrix(float scaleX, float scaleY, float scaleZ) {
 }
 
 // Initialize rotation matrix around X axis
-void Mat4f::InitRotationX(float x) {
-    InitIdentity();
+void Mat4f::initRotationX(float x) {
+    initIdentity();
     m[1][1] = cosf(x);
     m[1][2] = sinf(x);
     m[2][1] = -sinf(x);
@@ -67,8 +67,8 @@ void Mat4f::InitRotationX(float x) {
 }
 
 // Initialize rotation matrix around Y axis
-void Mat4f::InitRotationY(float y) {
-    InitIdentity();
+void Mat4f::initRotationY(float y) {
+    initIdentity();
     m[0][0] = cosf(y);
     m[0][2] = -sinf(y);
     m[2][0] = sinf(y);
@@ -76,8 +76,8 @@ void Mat4f::InitRotationY(float y) {
 }
 
 // Initialize rotation matrix around Z axis
-void Mat4f::InitRotationZ(float z) {
-    InitIdentity();
+void Mat4f::initRotationZ(float z) {
+    initIdentity();
     m[0][0] = cosf(z);
     m[0][1] = sinf(z);
     m[1][0] = -sinf(z);
@@ -85,30 +85,30 @@ void Mat4f::InitRotationZ(float z) {
 }
 
 // Initialize rotation matrix for combined rotations
-void Mat4f::InitRotationMatrix(float rotationX, float rotationY, float rotationZ) {
+void Mat4f::initRotationMatrix(float rotationX, float rotationY, float rotationZ) {
     Mat4f rx, ry, rz;
 
     float x = ToRadian(rotationX);
     float y = ToRadian(rotationY);
     float z = ToRadian(rotationZ);
 
-    rx.InitRotationX(x);
-    ry.InitRotationY(y);
-    rz.InitRotationZ(z);
+    rx.initRotationX(x);
+    ry.initRotationY(y);
+    rz.initRotationZ(z);
 
     *this = rz * ry * rx;
 }
 
 // Initialize translation matrix
-void Mat4f::InitTranslation(float x, float y, float z) {
-    InitIdentity();
+void Mat4f::initTranslation(float x, float y, float z) {
+    initIdentity();
     m[0][3] = x;
     m[1][3] = y;
     m[2][3] = z;
 }
 
 // Initialize camera transformation matrix
-void Mat4f::InitCameraTransform(glm::vec3 Target, glm::vec3 Up) {
+void Mat4f::initCameraTransform(glm::vec3 Target, glm::vec3 Up) {
     glm::vec3 N = glm::normalize(Target);
 
     glm::vec3 UpNorm = Up;
@@ -138,20 +138,45 @@ void Mat4f::InitCameraTransform(glm::vec3 Target, glm::vec3 Up) {
 }
 
 // Initialize camera matrix with position and target
-void Mat4f::InitCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up) {
+void Mat4f::initCamera(glm::vec3 target, glm::vec3 pos, glm::vec3 up) {
     Mat4f translation;
-    translation.InitIdentity();
-    translation.InitTranslation(-pos.x, -pos.y, -pos.z);
+    translation.initIdentity();
+    translation.initTranslation(-pos.x, -pos.y, -pos.z);
 
     Mat4f camMat;
-    camMat.InitIdentity();
-    camMat.InitCameraTransform(target, up);
+    camMat.initIdentity();
+    camMat.initCameraTransform(target, up);
 
     *this = camMat * translation;
 }
 
+// Initialize camera matrix with position and target
+void Mat4f::lookAt(glm::vec3 target, glm::vec3 pos, glm::vec3 up) {
+    glm::vec3 forward = glm::normalize(target - pos);
+    glm::vec3 right = glm::normalize(glm::cross(glm::normalize(up), forward));
+    glm::vec3  cameraUp = glm::cross(forward, right);
+
+    Mat4f translation;
+    translation.initTranslation(-pos.x, -pos.y, -pos.z);
+
+    // Create a rotation matrix to align the camera's axes with the world's axes
+    Mat4f rotation;
+    rotation.initIdentity();
+    rotation.m[0][0] = right.x;
+    rotation.m[0][1] = right.y;
+    rotation.m[0][2] = right.z;
+    rotation.m[1][0] = cameraUp.x;
+    rotation.m[1][1] = cameraUp.y;
+    rotation.m[1][2] = cameraUp.z;
+    rotation.m[2][0] = forward.x;
+    rotation.m[2][1] = forward.y;
+    rotation.m[2][2] = forward.z;
+
+    *this = rotation * translation;
+}
+
 // Initialize identity matrix
-void Mat4f::InitIdentity() {
+void Mat4f::initIdentity() {
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             m[i][j] = (i == j) ? 1.0f : 0.0f;
@@ -184,13 +209,14 @@ glm::vec4 Mat4f::operator*(const glm::vec4 &other) const {
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             ret[j] = m[i][0] * other[0] +
-                          m[i][1] * other[1] +
-                          m[i][2] * other[2] +
-                          m[i][3] * other[3];
+                     m[i][1] * other[1] +
+                     m[i][2] * other[2] +
+                     m[i][3] * other[3];
         }
     }
     return ret;
 }
+
 Mat4f Mat4f::inverse() {
     Mat4f invMat;
     glm::mat4 mat = glm::mat4(1.0);

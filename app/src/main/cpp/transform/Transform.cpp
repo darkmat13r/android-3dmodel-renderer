@@ -33,7 +33,7 @@ void Transform::rotate(float x, float y, float z) {
 
 Mat4f Transform::getReversedTranslation() const {
     Mat4f reversedTranslation;
-    reversedTranslation.InitTranslation(-position.x, - position.y, -position.z );
+    reversedTranslation.initTranslation(-position.x, -position.y, -position.z);
     return reversedTranslation;
 }
 
@@ -48,20 +48,20 @@ glm::vec3 Transform::worldToLocal(glm::vec3 worldPosition) const{
 
 Mat4f Transform::getReversedRotation() const{
     Mat4f reversedTranslation;
-    reversedTranslation.InitRotationMatrix(-rotation_.x, - rotation_.y, -rotation_.z );
+    reversedTranslation.initRotationMatrix(-rotation_.x, -rotation_.y, -rotation_.z);
     return reversedTranslation;
 }
 
 Mat4f Transform::matrix() const {
     Mat4f rotMat;
 
-    rotMat.InitRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
+    rotMat.initRotationMatrix(rotation_.x, rotation_.y, rotation_.z);
 
     Mat4f transMat;
-    transMat.InitTranslation(position.x, position.y, position.z);
+    transMat.initTranslation(position.x, position.y, position.z);
 
     Mat4f scaleMat;
-    scaleMat.InitScaleMatrix(scale_.x, scale_.y, scale_.z);
+    scaleMat.initScaleMatrix(scale_.x, scale_.y, scale_.z);
 
     return transMat * rotMat * scaleMat;
 }
