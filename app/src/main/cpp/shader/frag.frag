@@ -5,6 +5,8 @@ const int MAX_SPOT_LIGHTS = 10;
 in vec2 fragUV;
 in vec3 normal0;
 in vec3 localPos0;
+in vec3 tangent0;
+in vec3 worldPos0;
 
 struct Material {
     vec3 diffuseColor;
@@ -46,6 +48,7 @@ struct SpotLight {
 
 uniform sampler2D uTexture;
 uniform sampler2D uSpecTexture;
+uniform sampler2D uNormalTexture;
 uniform Material uMaterial;
 uniform DirectionalLight uLight;
 uniform int uNumOfLights;
@@ -56,6 +59,20 @@ uniform vec3 uCameraLocalPos;
 
 out vec4 outColor;
 
+vec3 calculateBumpedNormal(){
+    vec3 normal = normalize(normal0);
+    vec3 tangent = normalize(tangent0);
+    tangent = normalize(tangent - dot(tangent, normal) * normal);
+    vec3 biTangent = cross(tangent, normal);
+    vec3 bumpedNormal = texture(uNormalTexture, fragUV).xyz;
+    bumpedNormal = 2.0 * bumpedNormal - vec3(1.0, 1.0,1.0);
+    vec3 newNormal;
+    mat3 tbn = mat3(tangent, biTangent, normal);
+    newNormal = tbn * bumpedNormal;
+    newNormal = normalize(newNormal);
+    return newNormal;
+
+}
 
 vec4 calculateLightInternal(Light light, vec3 direction, vec3 normal) {
 
@@ -110,7 +127,7 @@ vec4 calculateSpotLight(SpotLight spotLight, vec3 normal) {
 void main() {
 
     vec4 textureColor = texture(uTexture, fragUV);
-    vec3 normal = normalize(normal0);
+    vec3 normal = calculateBumpedNormal();
 
     vec4 totalLight = calculateDirectionalLight(normal);
     for (int i = 0; i < uNumOfLights; i++) {
@@ -118,7 +135,7 @@ void main() {
     }
 
     for (int i = 0; i < uNumOfSpotLights; i++) {
-        totalLight += calculatePointLight(uSpotLights[i].pointLight, normal);
+        totalLight += calculateSpotLight(uSpotLights[i], normal);
     }
 
     outColor = textureColor * totalLight;

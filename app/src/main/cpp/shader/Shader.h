@@ -19,6 +19,7 @@ public:
 
     GLint lightTypeLocation = 0;
     GLint normalAttribute = 0;
+    GLint tangentAttribute = 0;
 
 
     Shader();
@@ -85,13 +86,18 @@ public:
     GLint getSpotLightAttenuationLinear(int index) const;
 
     GLint getSpotLightAttenuationExp(int index) const;
+
     GLint getSpotLightDirection(int index) const;
+
     GLint getSpotLightCutOff(int index) const;
 
+    GLint getNormalTexLocation() const;
 
+    void setModelMatrix(const Mat4f &matrix) const;
 private:
     GLuint program_ = 0;
     GLint projectionMatrixLocation_ = 0;
+    GLint modelProjectionMatrixLocation_ = 0;
     GLint positionAttribute_ = 0;
     GLint uvAttribute_ = 0;
     GLint cameraLocalPosLocation_ = 0;
@@ -103,6 +109,7 @@ private:
         GLint useDiffText_ = 0;
         GLint ambientColor = 0;
         GLint samplerSpecularExponentLocation = 0;
+        GLint normalTextureLocation = 0;
         GLint specularColor = 0;
     } materialLoc;
 
@@ -146,7 +153,10 @@ private:
     bool isValidIndex(int index) const;
 
     void loadPointLightUniforms();
+
     void loadSpotLightUniforms();
+
+
 };
 
 

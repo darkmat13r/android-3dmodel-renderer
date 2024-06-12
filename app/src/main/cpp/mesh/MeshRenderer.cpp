@@ -19,10 +19,12 @@ MeshRenderer::MeshRenderer() {
 
 void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) {
     unsigned int textureN = 0;
+    Mat4f modelMatrix = transform->matrix();
     for (const auto &mesh: meshes_) {
         Material *material = mesh->getMaterial();
         Shader *shader = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
+        shader->setModelMatrix(modelMatrix);
         shader->bind();
 
         material->bindTexture();
@@ -100,6 +102,17 @@ void MeshRenderer::initMesh(Mesh *mesh) const {
             GL_FALSE,
             sizeof(Vertex),
             (void *) offsetof(Vertex, normal)
+    );
+
+    GLint tangentAttribute = mesh->getMaterial()->getShader()->tangentAttribute;
+    glEnableVertexAttribArray(tangentAttribute);
+    glVertexAttribPointer(
+            tangentAttribute,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void *) offsetof(Vertex, tangent)
     );
 
 

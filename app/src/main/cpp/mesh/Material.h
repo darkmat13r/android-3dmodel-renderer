@@ -16,6 +16,7 @@ public:
     std::string materialName;
     std::shared_ptr<TextureAsset> diffuseTexture;
     std::shared_ptr<TextureAsset> specularTexture;
+    std::shared_ptr<TextureAsset> normalTexture;
 
     glm::vec3 diffuseColor = {0.0, 0.0, 0.0};
     glm::vec3 specularColor = {0.0, 0.0, 0.0};
