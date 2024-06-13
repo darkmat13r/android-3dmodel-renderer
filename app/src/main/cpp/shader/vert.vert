@@ -19,6 +19,5 @@ void main() {
     normal0 = inNormal;
     localPos0 = inPosition;
     tangent0 = (uModelProjection * vec4(inTangent, 0.0)).xyz;
-    worldPos0 = gl_Position.xyz;
-
+    worldPos0 = (uModelProjection * vec4(inPosition, 1.0)).xyz;
 }
