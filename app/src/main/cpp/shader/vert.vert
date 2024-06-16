@@ -16,8 +16,8 @@ uniform mat4 uModelProjection;
 void main() {
     fragUV = inUV;
     gl_Position = uProjection * vec4(inPosition, 1.0);
-    normal0 = inNormal;
     localPos0 = inPosition;
+    normal0 = (uModelProjection * vec4(inNormal, 0.0)).xyz;
     tangent0 = (uModelProjection * vec4(inTangent, 0.0)).xyz;
     worldPos0 = (uModelProjection * vec4(inPosition, 1.0)).xyz;
 }
