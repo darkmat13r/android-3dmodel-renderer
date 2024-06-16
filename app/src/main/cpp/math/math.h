@@ -11,19 +11,21 @@
 
 struct Vertex {
     constexpr Vertex(const glm::vec3 &inPosition,
-                     const glm::vec2 &inUV)
+                     const glm::vec2 &inUV, const glm::vec3  &tangent)
             : position(inPosition),
-              uv(inUV), normal(glm::vec3{}) {};
+              uv(inUV), normal(glm::vec3{}), tangent(tangent) {};
 
     constexpr Vertex(const glm::vec3 &inPosition,
                      const glm::vec2 &inUV,
-                     const glm::vec3 &inNormal)
+                     const glm::vec3 &inNormal, const glm::vec3  &tangent)
             : position(inPosition),
-                uv(inUV), normal(inNormal) {}
+                uv(inUV), normal(inNormal), tangent(tangent) {}
 
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 uv;
+    glm::vec3 tangent;
+    glm::vec3 biTangent;
 };
 
 #endif // LEARNOPENGL_MATH_H

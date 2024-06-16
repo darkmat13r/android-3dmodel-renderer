@@ -19,7 +19,7 @@ public:
     GLint normalAttribute = 0;
 
 
-    Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath);
+    Shader();
 
     void bind() const;
 

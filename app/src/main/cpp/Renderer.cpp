@@ -80,7 +80,7 @@ void Renderer::render() {
     scene_->render();
 
     GLenum err;
-    Utility::checkAndLogGlError();
+    CHECK_GL_ERROR();
 
     scene_->update();
 
@@ -174,6 +174,8 @@ void Renderer::initRenderer() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
+
+    shaderLoader_ = std::make_shared<ShaderLoader>();
 }
 
 void Renderer::updateRenderArea() {
@@ -210,7 +212,7 @@ void Renderer::createModels() {
 
     importer->SetIOHandler(ioSystem);
 
-    std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager);
+    std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager, shaderLoader_.get());
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
                                                                       "ceres/scene.gltf");
@@ -219,10 +221,6 @@ void Renderer::createModels() {
     environment->transform->setRotation(90, 0, 0);
 
 
-
-    std::shared_ptr<MeshRenderer> sphereRenderer = std::make_shared<MeshRenderer>();
-    std::shared_ptr<Mesh> sphere = std::make_shared<Sphere>(2, 20, 20);
-    sphereRenderer->addMesh(sphere);
 
     scene_->addObject(environment);
 

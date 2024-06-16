@@ -77,7 +77,7 @@ ShaderBase *ShaderBase::loadShader(
 }
 
 GLuint ShaderBase::loadShader(GLenum shaderType, const std::string &shaderSource) {
-    Utility::assertGlError();
+    CHECK_GL_ERROR();
     GLuint shader = glCreateShader(shaderType);
     if (shader) {
         auto *shaderRawString = (GLchar *) shaderSource.c_str();

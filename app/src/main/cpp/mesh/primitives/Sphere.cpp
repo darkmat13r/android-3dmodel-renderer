@@ -5,11 +5,11 @@
 #include "Sphere.h"
 
 Sphere::Sphere(float radius, int latitudeSegments,
-               int longitudeSegments) {
+               int longitudeSegments, ShaderLoader* shaderLoader) {
     radius_ = radius;
     latitudeSegments_ = latitudeSegments;
     longitudeSegments_ = longitudeSegments;
-    material_ = std::make_shared<Material>(glm::vec3(1, 0, 0));
+    material_ = std::make_shared<Material>(shaderLoader);
     generateVertices();
     generateIndices();
 }

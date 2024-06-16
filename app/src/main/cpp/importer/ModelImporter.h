@@ -16,9 +16,10 @@
 class ModelImporter {
 private:
     AAssetManager *assetManager;
+    ShaderLoader *shaderLoader_;
     std::unordered_map<std::string, std::shared_ptr<TextureAsset>> textures_;
 public:
-    ModelImporter(AAssetManager *aAssetManager);
+    ModelImporter(AAssetManager *aAssetManager, ShaderLoader* shaderLoader);
 
     std::shared_ptr<MeshRenderer> import(Assimp::Importer *importer, const char *modelPath);
 
@@ -35,7 +36,7 @@ public:
     static std::string getStringAfterAssets(const std::string &filePath);
 
     std::shared_ptr<TextureAsset>
-    getDiffuseTexture(const aiMaterial *aiMaterial, const std::string& path, aiTextureType type, GLint format = GL_RGBA);
+    getTexture(const aiMaterial *aiMaterial, const std::string& path, aiTextureType type, GLint format = GL_RGBA);
 };
 
 

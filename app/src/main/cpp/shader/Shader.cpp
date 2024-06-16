@@ -5,13 +5,17 @@
 #include "Shader.h"
 #include "AndroidOut.h"
 #include "gtc/type_ptr.hpp"
+#include "utils.h"
+#include "Utility.h"
 #include <shader/Shaders.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <string.h>
+#include <stdio.h>
 
 
-Shader::Shader(std::string &vertexShaderPath, std::string &fragmentShaderPath) {
+Shader::Shader() {
     program_ = glCreateProgram();
     GLuint vertexShader = compileShader(vertexShaderSource, GL_VERTEX_SHADER);
     GLuint fragmentShader = compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);

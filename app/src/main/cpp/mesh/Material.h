@@ -8,20 +8,21 @@
 
 #include "shader/Shader.h"
 #include "TextureAsset.h"
+#include "string"
+#include "shader/ShaderLoader.h"
 
 class Material {
 public:
     std::string materialName;
     std::shared_ptr<TextureAsset> diffuseTexture;
     std::shared_ptr<TextureAsset> specularTexture;
+    std::shared_ptr<TextureAsset> normalTexture;
 
-    glm::vec3 diffuseColor = {1.0, 1.0, 1.0};
-    glm::vec3 specularColor = {1.0, 1.0, 1.0};
+    glm::vec3 diffuseColor = {0.0, 0.0, 0.0};
+    glm::vec3 specularColor = {0.0, 0.0, 0.0};
     glm::vec3 ambientColor = {0.0, 0.0, 0.0};
 
-    Material();
-
-    explicit Material(glm::vec3 diffuseColor);
+    Material(ShaderLoader* shaderLoader);
 
     ~Material();
 
@@ -33,7 +34,9 @@ public:
 
 
 private :
-    std::shared_ptr<Shader> shader_;
+    Shader* shader_;
+    std::shared_ptr<ShaderLoader> shaderLoader_;
+    const char* shaderPath = "default";
 
     void loadShader();
 };
