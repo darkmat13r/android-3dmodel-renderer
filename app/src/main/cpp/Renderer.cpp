@@ -218,8 +218,9 @@ void Renderer::createModels() {
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
                                                                       "ceres/scene.gltf");
+    float scale = 0.5;
     environment->transform->setPosition(0, 0, 4);
-    environment->transform->setScale(0.5, 0.5, 0.5);
+    environment->transform->setScale(scale, scale, scale);
     environment->transform->setRotation(90, 0, 0);
 
     scene_->addObject(environment);
