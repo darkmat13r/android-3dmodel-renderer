@@ -2,14 +2,39 @@
 #define ANDROIDGLINVESTIGATIONS_UTILITY_H
 
 #include <cassert>
+#include <GLES3/gl3.h>
 #include "math/quaternion.h"
 #include "math/mat4f.h"
+#include "AndroidOut.h"
+
+#define CHECK_ERROR(e) case e: aout << "GL Error: "#e << " at " << file << ":" << line << " in function " << func << std::endl; break;
 
 class Utility {
 public:
-    static bool checkAndLogGlError(bool alwaysLog = false);
+    static inline bool checkAndLogGlError(const char* file, const char* func, int line, bool alwaysLog = false) {
+        GLenum error = glGetError();
+        if (error == GL_NO_ERROR) {
+            if (alwaysLog) {
+                aout << "No GL error in " << file << ":" << line << " in function " << func << std::endl;
+            }
+            return true;
+        } else {
+            switch (error) {
+                CHECK_ERROR(GL_INVALID_ENUM);
+                CHECK_ERROR(GL_INVALID_VALUE);
+                CHECK_ERROR(GL_INVALID_OPERATION);
+                CHECK_ERROR(GL_INVALID_FRAMEBUFFER_OPERATION);
+                CHECK_ERROR(GL_OUT_OF_MEMORY);
+                default:
+                    aout << "Unknown GL error: " << error << " at " << file << ":" << line << " in function " << func << std::endl;
+            }
+            return false;
+        }
+    }
 
-    static inline void assertGlError() { assert(checkAndLogGlError()); }
+    static inline void assertGlError(const char* file, const char* func, int line) {
+        assert(checkAndLogGlError(file, func, line));
+    }
 
     /**
      * Generates an orthographic projection matrix given the half height, aspect ratio, near, and far
@@ -34,5 +59,8 @@ public:
     buildOrthographicMatrix(Mat4f *outMatrix, float halfHeight, float aspect, float near,
                             float far);
 };
+
+#define CHECK_GL_ERROR() Utility::checkAndLogGlError(__FILE__, __FUNCTION__, __LINE__)
+#define ASSERT_GL_ERROR() Utility::assertGlError(__FILE__, __FUNCTION__, __LINE__)
 
 #endif //ANDROIDGLINVESTIGATIONS_UTILITY_H

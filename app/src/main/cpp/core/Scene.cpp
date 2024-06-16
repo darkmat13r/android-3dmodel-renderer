@@ -42,7 +42,7 @@ Camera *Scene::getMainCamera() const {
 
 void Scene::render() {
     mainCamera_->onRender();
-
+    CHECK_GL_ERROR();
     Mat4f View = mainCamera_->matrix();
     std::vector<MeshRenderer *> meshRenderers;
     std::vector<Light *> lights;
