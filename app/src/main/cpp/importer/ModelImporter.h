@@ -36,7 +36,7 @@ public:
     static std::string getStringAfterAssets(const std::string &filePath);
 
     std::shared_ptr<TextureAsset>
-    getDiffuseTexture(const aiMaterial *aiMaterial, const std::string& path, aiTextureType type, GLint format = GL_RGBA);
+    getTexture(const aiMaterial *aiMaterial, const std::string& path, aiTextureType type, GLint format = GL_RGBA);
 };
 
 

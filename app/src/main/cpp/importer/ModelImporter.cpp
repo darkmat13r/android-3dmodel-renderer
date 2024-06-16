@@ -44,12 +44,14 @@ void ModelImporter::loadSingleMesh(const aiMesh *aiMesh, std::vector<Vertex> &ve
     for (int index = 0; index < aiMesh->mNumVertices; ++index) {
         const aiVector3D &aPos = aiMesh->mVertices[index];
         const aiVector3D &aNormal = aiMesh->mNormals[index];
+        const aiVector3D &aTangent = aiMesh->mTangents[index];
         const auto aTextCoor = aiMesh->HasTextureCoords(0) ? aiMesh->mTextureCoords[0][index]
                                                            : zero;
 
         vertices.emplace_back(glm::vec3(aPos.x, aPos.y, aPos.z),
                               glm::vec2(aTextCoor.x, aTextCoor.y),
-                              glm::vec3(aNormal.x, aNormal.y, aNormal.z)
+                              glm::vec3(aNormal.x, aNormal.y, aNormal.z),
+                              glm::vec3(aTangent.x, aTangent.y, aTangent.z)
         );
     }
 
@@ -72,13 +74,18 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
     if (pScene->mMaterials) {
         auto aiMaterial = pScene->mMaterials[aiMesh->mMaterialIndex];
 
-        auto diffuseTexture =  getDiffuseTexture(aiMaterial, path, aiTextureType_DIFFUSE);
+        auto diffuseTexture = getTexture(aiMaterial, path, aiTextureType_DIFFUSE);
         if(diffuseTexture){
             material->diffuseTexture = diffuseTexture;
         }
-        auto specularTexture = getDiffuseTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
+        auto specularTexture = getTexture(aiMaterial, path, aiTextureType_SHININESS, GL_RED);
         if(specularTexture){
             material->specularTexture = specularTexture;
+        }
+
+        auto normalTexture = getTexture(aiMaterial, path, aiTextureType_NORMALS);
+        if(normalTexture){
+            material->normalTexture = normalTexture;
         }
 
         if (aiMaterial->mNumProperties > 0) {
@@ -97,10 +104,11 @@ std::shared_ptr<Material> ModelImporter::loadMaterial(const aiScene *pScene,
     return material;
 }
 
-std::shared_ptr<TextureAsset> ModelImporter::getDiffuseTexture(const aiMaterial *aiMaterial,
-                                                           const std::string& path,  aiTextureType type, GLint format )  {
+std::shared_ptr<TextureAsset> ModelImporter::getTexture(const aiMaterial *aiMaterial,
+                                                        const std::string& path, aiTextureType type, GLint format )  {
 
-    if (aiMaterial->GetTextureCount(type) == 0) {
+    unsigned int textureCount = aiMaterial->GetTextureCount(type);
+    if (textureCount == 0) {
         return nullptr;
     }
 

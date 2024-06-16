@@ -47,6 +47,12 @@ void Material::bindTexture() const {
         glUniform1i(shader_->getSpecularExponentLocation(), SPECULAR_EXPONENT_UNIT_INDEX);
     }
 
+    if (normalTexture) {
+        glActiveTexture(NORMAL_UNIT);
+        glBindTexture(GL_TEXTURE_2D, normalTexture->getTextureID());
+        glUniform1i(shader_->getNormalTexLocation(), NORMAL_UNIT_INDEX);
+    }
+
     //Push Color to fragment shader
     glUniform3fv(shader_->getAmbientColorLocation(), 1, (const GLfloat *) &ambientColor.x);
 

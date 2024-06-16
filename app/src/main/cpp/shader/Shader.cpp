@@ -40,6 +40,7 @@ Shader::Shader() {
         glDeleteProgram(program_);
     } else {
         projectionMatrixLocation_ = glGetUniformLocation(program_, "uProjection");
+        modelProjectionMatrixLocation_ = glGetUniformLocation(program_, "uModelProjection");
         materialLoc.diffuseColor = glGetUniformLocation(program_, "uMaterial.diffuseColor");
         materialLoc.useDiffText_ = glGetUniformLocation(program_, "uMaterial.useTexture");
         materialLoc.ambientColor = glGetUniformLocation(program_, "uMaterial.ambientColor");
@@ -50,9 +51,12 @@ Shader::Shader() {
         lightTypeLocation = glGetUniformLocation(program_, "uLight.light.type");
         positionAttribute_ = glGetAttribLocation(program_, "inPosition");
         normalAttribute = glGetAttribLocation(program_, "inNormal");
+        tangentAttribute = glGetAttribLocation(program_, "inTangent");
         uvAttribute_ = glGetAttribLocation(program_, "inUV");
         materialLoc.samplerSpecularExponentLocation = glGetUniformLocation(program_,
                                                                            "uSpecTexture");
+        materialLoc.normalTextureLocation = glGetUniformLocation(program_,
+                                                                           "uNormalTexture");
         materialLoc.specularColor = glGetUniformLocation(program_, "uMaterial.specularColor");
         cameraLocalPosLocation_ = glGetUniformLocation(program_, "uCameraLocalPos");
         numberOfPointLightLocation_ = glGetUniformLocation(program_, "uNumOfLights");
@@ -205,6 +209,10 @@ void Shader::setProjectionMatrix(const Mat4f *projectionMatrix) const {
     glUniformMatrix4fv(projectionMatrixLocation_, 1, GL_TRUE, &projectionMatrix->m[0][0]);
 }
 
+void Shader::setModelMatrix(const Mat4f &matrix) const {
+    glUniformMatrix4fv(modelProjectionMatrixLocation_, 1, GL_TRUE, &matrix.m[0][0]);
+}
+
 GLint Shader::getDiffColorLocation() const {
     return materialLoc.diffuseColor;
 }
@@ -227,6 +235,9 @@ GLint Shader::getAmbientIntensityLocation() const {
 
 GLint Shader::getSpecularExponentLocation() const {
     return materialLoc.samplerSpecularExponentLocation;
+}
+GLint Shader::getNormalTexLocation() const {
+    return materialLoc.normalTextureLocation;
 }
 
 GLint Shader::getSpecularColorLocation() const {
