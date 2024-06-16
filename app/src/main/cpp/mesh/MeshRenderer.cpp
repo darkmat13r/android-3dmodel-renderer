@@ -9,6 +9,7 @@
 #include "camera/Camera.h"
 #include "light/PointLight.h"
 #include "light/SpotLight.h"
+#include "Utility.h"
 
 MeshRenderer::MeshRenderer() {
     transform->setRotation(0, 0, 0);
@@ -20,20 +21,20 @@ MeshRenderer::MeshRenderer() {
 void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) {
     unsigned int textureN = 0;
     Mat4f modelMatrix = transform->matrix();
+    CHECK_GL_ERROR();
     for (const auto &mesh: meshes_) {
         Material *material = mesh->getMaterial();
+        CHECK_GL_ERROR();
         Shader *shader = material->getShader();
         shader->setProjectionMatrix(projectionMatrix);
         shader->setModelMatrix(modelMatrix);
-        shader->bind();
-
         material->bindTexture();
-
+        CHECK_GL_ERROR();
         auto* pDirectionalLight = dynamic_cast<DirectionalLight*>(light);
         if(pDirectionalLight){
             pDirectionalLight->calLocalDirection(*transform);
         }
-
+        CHECK_GL_ERROR();
         auto* pSpotLight = dynamic_cast<SpotLight*>(light);
         if(pSpotLight){
 
@@ -44,7 +45,7 @@ void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) 
                 pPointLight->calculateLocalPosition(*this->transform);
             }
         }
-
+        CHECK_GL_ERROR();
         auto cameraLocalPos3f = transform->worldToLocal(camera->transform->position);
 
         light->bind(shader, cameraLocalPos3f);
@@ -54,6 +55,8 @@ void MeshRenderer::render(Mat4f *projectionMatrix,Camera* camera, Light *light) 
         glBindVertexArray(0);
         material->unbindTexture();
         textureN++;
+       // aout << "textureN : " << textureN << std::endl;
+        CHECK_GL_ERROR();
        // shader->unbind();
     }
 }
@@ -155,7 +158,8 @@ void MeshRenderer::update() {
 
 void MeshRenderer::addMesh(const std::shared_ptr<Mesh> &mesh) {
     meshes_.push_back(mesh);
-    mesh->getMaterial()->getShader()->bind();
+    CHECK_GL_ERROR();
+   // mesh->getMaterial()->getShader()->bind();
     initMesh(mesh.get());
 }
 

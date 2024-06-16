@@ -3,6 +3,7 @@
 //
 
 #include "DirectionalLight.h"
+#include "Utility.h"
 
 const glm::vec3 &DirectionalLight::GetLocalDirection() {
     return localDirection;
@@ -26,5 +27,7 @@ void DirectionalLight::bind(Shader *shader, const glm::vec3 &cameraLocalPos) {
 
     if (shader->getAmbientIntensityLocation() != -1)
         glUniform1f(shader->getAmbientIntensityLocation(), ambientIntensity);
+
+    CHECK_GL_ERROR();
 }
 

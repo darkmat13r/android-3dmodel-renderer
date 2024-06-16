@@ -6,6 +6,7 @@
 #include "AndroidOut.h"
 #include "gtc/type_ptr.hpp"
 #include "utils.h"
+#include "Utility.h"
 #include <shader/Shaders.h>
 #include <fstream>
 #include <sstream>
@@ -72,7 +73,7 @@ Shader::Shader() {
             glDeleteProgram(program_);
         }
     }
-
+    bind();
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
@@ -198,7 +199,9 @@ std::string Shader::readFile(std::string &fileName) const {
 
 
 void Shader::bind() const {
+    CHECK_GL_ERROR();
     glUseProgram(program_);
+    CHECK_GL_ERROR();
 }
 
 void Shader::unbind() const {

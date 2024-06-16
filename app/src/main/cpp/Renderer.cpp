@@ -82,7 +82,7 @@ void Renderer::render() {
     scene_->render();
 
     GLenum err;
-    Utility::checkAndLogGlError();
+    CHECK_GL_ERROR();
 
     scene_->update();
 
@@ -143,10 +143,12 @@ void Renderer::initRenderer() {
     eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format);
     EGLSurface surface = eglCreateWindowSurface(display, config, app_->window, nullptr);
 
+
     // Create a GLES 3 context
     EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
     EGLContext context = eglCreateContext(display, config, nullptr, contextAttribs);
-
+    auto versionDetails = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    // aout << "VERSION " << *versionDetails << std::endl;
     // get some window metrics
     auto madeCurrent = eglMakeCurrent(display, surface, surface, context);
     assert(madeCurrent);
@@ -162,6 +164,7 @@ void Renderer::initRenderer() {
     PRINT_GL_STRING(GL_VENDOR);
     PRINT_GL_STRING(GL_RENDERER);
     PRINT_GL_STRING(GL_VERSION);
+    PRINT_GL_STRING(GL_SHADING_LANGUAGE_VERSION);
     PRINT_GL_STRING_AS_LIST(GL_EXTENSIONS);
 
     glEnable(GL_CULL_FACE);
