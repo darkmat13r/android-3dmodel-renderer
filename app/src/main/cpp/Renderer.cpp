@@ -220,11 +220,11 @@ void Renderer::createModels() {
     std::shared_ptr<ModelImporter> modelImporter = std::make_shared<ModelImporter>(assetManager, shaderLoader_.get());
     //Load one model
     std::shared_ptr<MeshRenderer> environment = modelImporter->import(importer,
-                                                                      "ceres/scene.gltf");
-    float scale = 0.5;
+                                                                      "megatron__transformers_dotm/scene.gltf");
+    float scale = 0.2;
     environment->transform->setPosition(0, 0, 4);
     environment->transform->setScale(scale, scale, scale);
-    environment->transform->setRotation(90, 0, 0);
+    environment->transform->setRotation(0, 0, 0);
 
     scene_->addObject(environment);
 

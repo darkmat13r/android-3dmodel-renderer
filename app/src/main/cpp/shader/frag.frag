@@ -126,18 +126,28 @@ vec4 calculateSpotLight(SpotLight spotLight, vec3 normal) {
 
 void main() {
 
-    vec4 textureColor = texture(uTexture, fragUV);
+
+    vec4 finalColor = vec4(1.0, 1.0, 1.0, 1.0);
+    vec4 diffuseColor = vec4(0.0, 0.0, 0.0, 1.0);
+    vec4 specularColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+    if (uMaterial.useTexture) {
+        vec4 textureColor = texture(uTexture, fragUV);
+        finalColor = textureColor;
+    }
     vec3 normal = calculateBumpedNormal();
+    vec4 lighColor = calculateDirectionalLight(normal);
 
-    vec4 totalLight = calculateDirectionalLight(normal);
-    for (int i = 0; i < uNumOfLights; i++) {
-        totalLight += calculatePointLight(uPointLights[i], normal);
+    for(int i = 0 ; i < uNumOfLights; i++){
+        PointLight pointLight = uPointLights[i];
+        lighColor += calculatePointLight(pointLight, normal);
     }
 
-    for (int i = 0; i < uNumOfSpotLights; i++) {
-        totalLight += calculateSpotLight(uSpotLights[i], normal);
+    for(int i = 0 ; i < uNumOfSpotLights; i++){
+        SpotLight spotLight = uSpotLights[i];
+        lighColor += calculateSpotLight(spotLight, normal);
     }
 
-    outColor = textureColor * totalLight;
+    outColor = finalColor * lighColor;
 
 }
